@@ -7,10 +7,10 @@ interface HeaderProps {}
 
 const Header: FC<HeaderProps> = ({}) => {
   return (
-    <header className='h-[80px]'>
+    <header className='py-10'>
       <Container>
-        <nav className='flex justify-between'>
-          <ul className='flex-grow basis-0 flex gap-3'>
+        <nav className='flex justify-between items-center'>
+          <ul className='flex-grow basis-0 flex items-center gap-3'>
             <li>
               <Link href='/'>Choose Game</Link>
             </li>
@@ -24,7 +24,7 @@ const Header: FC<HeaderProps> = ({}) => {
           <Link className='' href='/'>
             <Image src='/rankguess.svg' alt='Logo' width={130} height={25} />
           </Link>
-          <ul className='flex-grow basis-0 flex justify-end gap-3'>
+          <ul className='flex-grow basis-0 flex justify-end items-center gap-3'>
             <li>
               <Link href='/login'>Login</Link>
             </li>
