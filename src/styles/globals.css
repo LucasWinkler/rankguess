@@ -5,6 +5,6 @@
 @layer base {
   html,
   body {
-    @apply max-w-[100vw] overflow-x-hidden;
+    @apply max-w-[100vw] overflow-x-hidden bg-dark-blue text-white;
   }
 }
