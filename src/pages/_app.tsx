@@ -13,13 +13,8 @@ const poppins = Poppins({
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <>
-      <style jsx global>{`
-        html {
-          font-family: ${poppins.style.fontFamily};
-        }
-      `}</style>
-      <Header />
-      <div className='min-h-screen'>
+      <div className={`${poppins.variable} min-h-screen font-sans`}>
+        <Header />
         <Component {...pageProps} />
       </div>
     </>

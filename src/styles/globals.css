@@ -8,3 +8,30 @@
     @apply max-w-[100vw] overflow-x-hidden bg-dark-blue text-neutral-100;
   }
 }
+
+@layer utilities {
+  .grid-games {
+    --grid-layout-gap: 30px;
+    --grid-column-count: 4;
+    --grid-item--min-width: 192px;
+
+    --gap-count: calc(var(--grid-column-count) - 1);
+    --total-gap-width: calc(var(--gap-count) * var(--grid-layout-gap));
+    --grid-item--max-width: calc(
+      (100% - var(--total-gap-width)) / var(--grid-column-count)
+    );
+
+    display: grid;
+    grid-template-columns: repeat(
+      auto-fill,
+      minmax(max(var(--grid-item--min-width), var(--grid-item--max-width)), 1fr)
+    );
+    grid-gap: var(--grid-layout-gap);
+  }
+}
+
+@media screen(sm) {
+  .grid-games {
+    --grid-layout-gap: 50px;
+  }
+}

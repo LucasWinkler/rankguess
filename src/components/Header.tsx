@@ -8,7 +8,7 @@ const Header: FC = () => {
     <header className='py-10'>
       <Container>
         <nav className='flex items-center justify-between text-neutral-300'>
-          <ul className='flex flex-grow basis-0 items-center gap-3'>
+          <ul className='flex flex-grow basis-0 items-center gap-7'>
             <li>
               <Link
                 className='transition-colors duration-200 hover:text-neutral-100'
@@ -34,7 +34,7 @@ const Header: FC = () => {
           <Link className='' href='/'>
             <Image src='/rankguess.svg' alt='Logo' width={130} height={25} />
           </Link>
-          <ul className='flex flex-grow basis-0 items-center justify-end gap-3'>
+          <ul className='flex flex-grow basis-0 items-center justify-end gap-7'>
             <li>
               <Link
                 className='transition-colors duration-200 hover:text-neutral-100'
