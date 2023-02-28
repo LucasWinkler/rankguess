@@ -13,7 +13,7 @@
   .grid-games {
     --grid-layout-gap: 30px;
     --grid-column-count: 4;
-    --grid-item--min-width: 192px;
+    --grid-item--min-width: 220px;
 
     --gap-count: calc(var(--grid-column-count) - 1);
     --total-gap-width: calc(var(--gap-count) * var(--grid-layout-gap));
