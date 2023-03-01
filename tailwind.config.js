@@ -20,9 +20,6 @@ module.exports = {
         xs: '420px',
         ...defaultTheme.screens,
       },
-      // gridTemplateColumns: {
-      //   games: 'repeat(auto-fill, minmax(192px, 1fr))',
-      // },
     },
   },
   plugins: [],
