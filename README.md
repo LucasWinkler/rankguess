@@ -1,14 +1,10 @@
 [![MIT License][license-shield]][license-url]
-[![LinkedIn][linkedin-shield]][linkedin-url]
 
 <br />
 <p align="center">
   <img src="./public/rankguess.svg" alt="rankguess logo" width="130" height="25">
 </p>
 
-<h1 align="center">
-  rankguess
-</h1>
 <p align="center">
   Guess the rank of user submitted clips from Apex Legends, CSGO, League of Legends, and more!
 </p>
