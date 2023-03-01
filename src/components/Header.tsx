@@ -30,12 +30,13 @@ const Header: FC = () => {
       'left-0',
       'right-0',
       'bottom-0',
+      'top-0',
     ];
 
     if (html) {
-      for (const classToToggle in classesToToggle) {
+      classesToToggle.forEach(classToToggle => {
         html.classList.toggle(classToToggle, isMobileMenuOpen);
-      }
+      });
     }
   }, [isMobileMenuOpen]);
 
