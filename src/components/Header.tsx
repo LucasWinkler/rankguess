@@ -4,6 +4,12 @@ import Link from 'next/link';
 import clsx from 'clsx';
 import Container from './Container';
 import ConditionalWrapper from './ConditionalWrapper';
+import Submit from './icons/Submit';
+import Login from './icons/Login';
+import Logout from './icons/Logout';
+import Changelog from './icons/Changelog';
+import Question from './icons/Question';
+import FourCircles from './icons/FourCircles';
 
 const Header: FC = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -31,12 +37,12 @@ const Header: FC = () => {
         <nav className='flex w-full items-center justify-between text-neutral-300'>
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className='flex flex-grow basis-0 text-[0.9375rem] md:hidden'>
+            className='flex flex-grow basis-0 text-[0.9375rem] lg:hidden'>
             {isMobileMenuOpen ? 'Close' : 'Open'}
           </button>
           <div
             className={clsx(
-              'flex-grow basis-0 md:flex',
+              'flex-grow basis-0 lg:flex',
               isMobileMenuOpen
                 ? 'absolute left-0 top-navigation-height right-0 block h-[calc(100%-var(--navigation-height))] border-t border-t-blueish-grey-700/25 bg-blueish-grey-800'
                 : 'hidden'
@@ -46,50 +52,56 @@ const Header: FC = () => {
               wrapper={(children: ReactNode) => (
                 <Container>{children}</Container>
               )}>
-              <ul className='flex flex-grow basis-0 flex-col gap-6 py-5 text-base font-medium md:flex-row md:items-center md:gap-7 md:text-[0.9375rem] md:font-normal'>
+              <ul className='flex flex-grow basis-0 flex-col gap-6 py-5 text-base font-medium lg:flex-row lg:items-center lg:gap-7 lg:text-[0.9375rem] lg:font-normal'>
                 <li>
                   <Link
-                    className='py-2 transition-colors duration-200 hover:text-neutral-100'
+                    className='flex items-center gap-2 py-2 transition-colors duration-200 hover:text-neutral-100'
                     href='/'>
+                    <FourCircles className='h-5 w-auto' />
                     Choose Game
                   </Link>
                 </li>
-                <li className='md:hidden'>
+                <li className='lg:hidden'>
                   <Link
-                    className='py-2 transition-colors duration-200 hover:text-neutral-100'
+                    className='flex items-center gap-2 py-2 transition-colors duration-200 hover:text-neutral-100'
                     href='/submit'>
+                    <Submit className='h-5 w-auto' />
                     Submit Clips
                   </Link>
                 </li>
                 <li>
                   <Link
-                    className='py-2 transition-colors duration-200 hover:text-neutral-100'
+                    className='flex items-center gap-2 py-2 transition-colors duration-200 hover:text-neutral-100'
                     href='/faq'>
+                    <Question className='h-5 w-auto' />
                     FAQ
                   </Link>
                 </li>
                 <li>
                   <Link
-                    className='py-2 transition-colors duration-200 hover:text-neutral-100'
+                    className='flex items-center gap-2 py-2 transition-colors duration-200 hover:text-neutral-100'
                     href='/changelog'>
+                    <Changelog className='h-5 w-auto' />
                     Changelog
                   </Link>
                 </li>
               </ul>
-              <ul className='flex flex-col gap-6 border-t border-t-blueish-grey-500/25 pt-5 text-base font-medium md:hidden'>
+              <ul className='flex flex-col gap-6 border-t border-t-blueish-grey-500/25 pt-5 text-base font-medium lg:hidden'>
                 {isLoggedIn ? (
                   <li>
                     <Link
-                      className='py-2 transition-colors duration-200 hover:text-neutral-100'
+                      className='flex items-center gap-2 py-2 transition-colors duration-200 hover:text-neutral-100'
                       href='/'>
+                      <Logout className='h-5 w-auto' />
                       Logout
                     </Link>
                   </li>
                 ) : (
                   <li>
                     <Link
-                      className='py-2 transition-colors duration-200 hover:text-neutral-100'
+                      className='flex items-center gap-2 py-2 transition-colors duration-200 hover:text-neutral-100'
                       href='/login'>
+                      <Login className='h-5 w-auto' />
                       Login
                     </Link>
                   </li>
@@ -100,7 +112,7 @@ const Header: FC = () => {
           <Link className='' href='/'>
             <Image src='/rankguess.svg' alt='Logo' width={130} height={25} />
           </Link>
-          <ul className='hidden flex-grow basis-0 items-center justify-end gap-7 text-[0.9375rem] md:flex'>
+          <ul className='hidden flex-grow basis-0 items-center justify-end gap-7 text-[0.9375rem] lg:flex'>
             {isLoggedIn ? (
               <li>
                 <Link
@@ -128,7 +140,7 @@ const Header: FC = () => {
           </ul>
           <button
             onClick={() => console.log('toggle info modal')}
-            className='flex flex-grow basis-0 justify-end text-[0.9375rem] md:hidden'>
+            className='flex flex-grow basis-0 justify-end text-[0.9375rem] lg:hidden'>
             Info
           </button>
         </nav>

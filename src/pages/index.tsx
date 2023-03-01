@@ -13,7 +13,7 @@ export default function Home() {
         <meta name='viewport' content='width=device-width, initial-scale=1' />
         <link rel='icon' href='/favicon.ico' />
       </Head>
-      <main className='mt-16'>
+      <main className='mt-16 mb-32'>
         <Container>
           <h1 className='text-center text-2xl font-medium uppercase tracking-[0.2em] text-neutral-200'>
             Choose a game
