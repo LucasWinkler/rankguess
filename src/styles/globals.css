@@ -5,7 +5,7 @@
 @layer base {
   html,
   body {
-    @apply max-w-[100vw] overflow-x-hidden bg-dark-blue text-neutral-100 antialiased;
+    @apply max-w-[100vw] overflow-x-hidden bg-darkest-blueish-grey text-neutral-100 antialiased;
   }
 }
 

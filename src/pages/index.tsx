@@ -19,28 +19,28 @@ export default function Home() {
             Choose a game
           </h1>
           <div className='grid-games mt-16 font-bold uppercase tracking-[0.2em]'>
-            <div className='mx-auto flex min-h-[10rem] w-full max-w-[18rem] items-center justify-center rounded-lg border border-pale-blueish-grey/50 bg-pale-blueish-grey/50 text-center xs:max-w-[22rem] sm:min-h-[23.5rem] sm:max-w-[18rem]'>
+            <div className='mx-auto flex min-h-[10rem] w-full max-w-[18rem] items-center justify-center rounded-lg border border-dark-blueish-grey/50 bg-dark-blueish-grey/50 text-center xs:max-w-[22rem] sm:min-h-[23.5rem] sm:max-w-[18rem]'>
               Game Title
             </div>
-            <div className='mx-auto flex min-h-[10rem] w-full max-w-[18rem] items-center justify-center rounded-lg border border-pale-blueish-grey/50 bg-pale-blueish-grey/50 text-center xs:max-w-[22rem] sm:min-h-[23.5rem] sm:max-w-[18rem]'>
+            <div className='mx-auto flex min-h-[10rem] w-full max-w-[18rem] items-center justify-center rounded-lg border border-dark-blueish-grey/50 bg-dark-blueish-grey/50 text-center xs:max-w-[22rem] sm:min-h-[23.5rem] sm:max-w-[18rem]'>
               Game Title
             </div>
-            <div className='mx-auto flex min-h-[10rem] w-full max-w-[18rem] items-center justify-center rounded-lg border border-pale-blueish-grey/50 bg-pale-blueish-grey/50 text-center xs:max-w-[22rem] sm:min-h-[23.5rem] sm:max-w-[18rem]'>
+            <div className='mx-auto flex min-h-[10rem] w-full max-w-[18rem] items-center justify-center rounded-lg border border-dark-blueish-grey/50 bg-dark-blueish-grey/50 text-center xs:max-w-[22rem] sm:min-h-[23.5rem] sm:max-w-[18rem]'>
               Game Title
             </div>
-            <div className='mx-auto flex min-h-[10rem] w-full max-w-[18rem] items-center justify-center rounded-lg border border-pale-blueish-grey/50 bg-pale-blueish-grey/50 text-center xs:max-w-[22rem] sm:min-h-[23.5rem] sm:max-w-[18rem]'>
+            <div className='mx-auto flex min-h-[10rem] w-full max-w-[18rem] items-center justify-center rounded-lg border border-dark-blueish-grey/50 bg-dark-blueish-grey/50 text-center xs:max-w-[22rem] sm:min-h-[23.5rem] sm:max-w-[18rem]'>
               Game Title
             </div>
-            <div className='mx-auto flex min-h-[10rem] w-full max-w-[18rem] items-center justify-center rounded-lg border border-pale-blueish-grey/50 bg-pale-blueish-grey/50 text-center xs:max-w-[22rem] sm:min-h-[23.5rem] sm:max-w-[18rem]'>
+            <div className='mx-auto flex min-h-[10rem] w-full max-w-[18rem] items-center justify-center rounded-lg border border-dark-blueish-grey/50 bg-dark-blueish-grey/50 text-center xs:max-w-[22rem] sm:min-h-[23.5rem] sm:max-w-[18rem]'>
               Game Title
             </div>
-            <div className='mx-auto flex min-h-[10rem] w-full max-w-[18rem] items-center justify-center rounded-lg border border-pale-blueish-grey/50 bg-pale-blueish-grey/50 text-center xs:max-w-[22rem] sm:min-h-[23.5rem] sm:max-w-[18rem]'>
+            <div className='mx-auto flex min-h-[10rem] w-full max-w-[18rem] items-center justify-center rounded-lg border border-dark-blueish-grey/50 bg-dark-blueish-grey/50 text-center xs:max-w-[22rem] sm:min-h-[23.5rem] sm:max-w-[18rem]'>
               Game Title
             </div>
-            <div className='mx-auto flex min-h-[10rem] w-full max-w-[18rem] items-center justify-center rounded-lg border border-pale-blueish-grey/50 bg-pale-blueish-grey/50 text-center xs:max-w-[22rem] sm:min-h-[23.5rem] sm:max-w-[18rem]'>
+            <div className='mx-auto flex min-h-[10rem] w-full max-w-[18rem] items-center justify-center rounded-lg border border-dark-blueish-grey/50 bg-dark-blueish-grey/50 text-center xs:max-w-[22rem] sm:min-h-[23.5rem] sm:max-w-[18rem]'>
               Game Title
             </div>
-            <div className='mx-auto flex min-h-[10rem] w-full max-w-[18rem] items-center justify-center rounded-lg border border-pale-blueish-grey/50 bg-pale-blueish-grey/50 text-center xs:max-w-[22rem] sm:min-h-[23.5rem] sm:max-w-[18rem]'>
+            <div className='mx-auto flex min-h-[10rem] w-full max-w-[18rem] items-center justify-center rounded-lg border border-dark-blueish-grey/50 bg-dark-blueish-grey/50 text-center xs:max-w-[22rem] sm:min-h-[23.5rem] sm:max-w-[18rem]'>
               Game Title
             </div>
           </div>
