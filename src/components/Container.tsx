@@ -2,6 +2,7 @@ import clsx from 'clsx';
 import type { FC, PropsWithChildren } from 'react';
 
 interface ContainerProps {
+  children: React.ReactNode;
   className?: string;
 }
 

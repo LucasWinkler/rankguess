@@ -1,14 +1,30 @@
-import type { FC } from 'react';
+import { FC, useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import Container from './Container';
 
 const Header: FC = () => {
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(true);
+
+  useEffect(() => {
+    const handleViewportChange = () => {
+      setIsMobileMenuOpen(false);
+    };
+
+    window.addEventListener('resize', handleViewportChange);
+    screen.orientation.addEventListener('change', handleViewportChange);
+
+    return () => {
+      window.removeEventListener('resize', handleViewportChange);
+      screen.orientation.removeEventListener('change', handleViewportChange);
+    };
+  }, []);
+
   return (
-    <header className='py-10'>
+    <header className='border-b border-b-pale-blueish-grey/25 py-10'>
       <Container>
         <nav className='flex items-center justify-between text-neutral-300'>
-          <ul className='flex flex-grow basis-0 items-center gap-7'>
+          <ul className='hidden flex-grow basis-0 items-center gap-7 md:flex'>
             <li>
               <Link
                 className='transition-colors duration-200 hover:text-neutral-100'
@@ -31,10 +47,10 @@ const Header: FC = () => {
               </Link>
             </li>
           </ul>
-          <Link className='' href='/'>
+          <Link className='mx-auto' href='/'>
             <Image src='/rankguess.svg' alt='Logo' width={130} height={25} />
           </Link>
-          <ul className='flex flex-grow basis-0 items-center justify-end gap-7'>
+          <ul className='hidden flex-grow basis-0 items-center justify-end gap-7 md:flex'>
             <li>
               <Link
                 className='transition-colors duration-200 hover:text-neutral-100'
