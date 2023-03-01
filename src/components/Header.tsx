@@ -30,7 +30,7 @@ const Header: FC = () => {
         <nav className='flex items-center justify-between text-neutral-300'>
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className='md:hidden'>
+            className='flex flex-grow basis-0 md:hidden'>
             Menu
           </button>
 
@@ -114,7 +114,7 @@ const Header: FC = () => {
 
           <button
             onClick={() => console.log('toggle info modal')}
-            className='md:hidden'>
+            className='flex flex-grow basis-0 justify-end md:hidden'>
             Info
           </button>
         </nav>
