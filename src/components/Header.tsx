@@ -34,6 +34,8 @@ const Header: FC = () => {
     };
   }, [setIsMobileMenuOpen]);
 
+  // todo: close nav when clicking a link. close nav when pressing escape. prevent scrolling when nav is open
+
   return (
     <header className='z-10 border-b border-b-blueish-grey-700/25'>
       <Container className='flex h-navigation-height items-center'>
@@ -43,9 +45,15 @@ const Header: FC = () => {
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               className='text-neutral-1 text-[0.9375rem] transition-colors duration-200 hover:text-neutral-100'>
               {isMobileMenuOpen ? (
-                <Close className='h-5 w-5' />
+                <>
+                  <span className='sr-only'>Close navigation menu</span>
+                  <Close className='h-5 w-5' />
+                </>
               ) : (
-                <Hamburger className='h-5 w-5' />
+                <>
+                  <span className='sr-only'>Open navigation menu</span>
+                  <Hamburger className='h-5 w-5' />
+                </>
               )}
             </button>
           </div>
@@ -152,7 +160,10 @@ const Header: FC = () => {
               <button
                 onClick={() => console.log('toggle info modal')}
                 className='text-[0.9375rem] text-neutral-200 transition-colors duration-200 hover:text-neutral-100'>
-                <Info className='h-6 w-6' />
+                <>
+                  <span className='sr-only'>Toggle information modal</span>
+                  <Info className='h-6 w-6' />
+                </>
               </button>
             </div>
           </div>
