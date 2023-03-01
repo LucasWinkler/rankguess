@@ -38,15 +38,17 @@ const Header: FC = () => {
     <header className='z-10 border-b border-b-blueish-grey-700/25'>
       <Container className='flex h-navigation-height items-center'>
         <nav className='flex w-full items-center justify-between gap-2 text-neutral-300'>
-          <button
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className='text-neutral-1 flex flex-grow basis-0 text-[0.9375rem] lg:hidden'>
-            {isMobileMenuOpen ? (
-              <Close className='h-5 w-5' />
-            ) : (
-              <Hamburger className='h-5 w-5' />
-            )}
-          </button>
+          <div className='flex flex-grow basis-0 lg:hidden'>
+            <button
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              className='text-neutral-1 text-[0.9375rem] transition-colors duration-200 hover:text-neutral-100'>
+              {isMobileMenuOpen ? (
+                <Close className='h-5 w-5' />
+              ) : (
+                <Hamburger className='h-5 w-5' />
+              )}
+            </button>
+          </div>
           <div
             className={clsx(
               'flex-grow basis-0 lg:flex',
@@ -62,7 +64,7 @@ const Header: FC = () => {
               <ul className='flex flex-grow basis-0 flex-col gap-6 py-5 text-base font-medium lg:flex-row lg:items-center lg:gap-7 lg:text-[0.9375rem] lg:font-normal'>
                 <li>
                   <Link
-                    className='flex items-center gap-2 py-2 transition-colors duration-200 hover:text-neutral-100'
+                    className='inline-flex items-center gap-2 py-2 pr-2 transition-colors duration-200 hover:text-neutral-100'
                     href='/'>
                     <FourCircles className='h-5 w-auto' />
                     Choose Game
@@ -70,7 +72,7 @@ const Header: FC = () => {
                 </li>
                 <li className='lg:hidden'>
                   <Link
-                    className='flex items-center gap-2 py-2 transition-colors duration-200 hover:text-neutral-100'
+                    className='inline-flex items-center gap-2 py-2 pr-2 transition-colors duration-200 hover:text-neutral-100'
                     href='/submit'>
                     <Submit className='h-5 w-auto' />
                     Submit Clips
@@ -78,7 +80,7 @@ const Header: FC = () => {
                 </li>
                 <li>
                   <Link
-                    className='flex items-center gap-2 py-2 transition-colors duration-200 hover:text-neutral-100'
+                    className='inline-flex items-center gap-2 py-2 pr-2 transition-colors duration-200 hover:text-neutral-100'
                     href='/faq'>
                     <Question className='h-5 w-auto' />
                     FAQ
@@ -86,7 +88,7 @@ const Header: FC = () => {
                 </li>
                 <li>
                   <Link
-                    className='flex items-center gap-2 py-2 transition-colors duration-200 hover:text-neutral-100'
+                    className='inline-flex items-center gap-2 py-2 pr-2 transition-colors duration-200 hover:text-neutral-100'
                     href='/changelog'>
                     <Changelog className='h-5 w-auto' />
                     Changelog
@@ -97,7 +99,7 @@ const Header: FC = () => {
                 {isLoggedIn ? (
                   <li>
                     <Link
-                      className='flex items-center gap-2 py-2 transition-colors duration-200 hover:text-neutral-100'
+                      className='inline-flex items-center gap-2 py-2 pr-2 transition-colors duration-200 hover:text-neutral-100'
                       href='/'>
                       <Logout className='h-5 w-auto' />
                       Logout
@@ -106,7 +108,7 @@ const Header: FC = () => {
                 ) : (
                   <li>
                     <Link
-                      className='flex items-center gap-2 py-2 transition-colors duration-200 hover:text-neutral-100'
+                      className='inline-flex items-center gap-2 py-2 pr-2 transition-colors duration-200 hover:text-neutral-100'
                       href='/login'>
                       <Login className='h-5 w-auto' />
                       Login
@@ -140,17 +142,19 @@ const Header: FC = () => {
               )}
               <li>
                 <Link
-                  className='rounded-full border border-blueish-grey-700/50 bg-blueish-grey-700/50 px-6 py-2 text-neutral-200'
+                  className='rounded-full border border-blueish-grey-700/50 bg-blueish-grey-700/50 px-6 py-2 text-neutral-200 transition-colors duration-200 hover:text-neutral-100'
                   href='/submit'>
                   Submit Clips
                 </Link>
               </li>
             </ul>
-            <button
-              onClick={() => console.log('toggle info modal')}
-              className='flex justify-end text-[0.9375rem] text-neutral-200'>
-              <Info className='h-6 w-6' />
-            </button>
+            <div className='flex justify-end'>
+              <button
+                onClick={() => console.log('toggle info modal')}
+                className='text-[0.9375rem] text-neutral-200 transition-colors duration-200 hover:text-neutral-100'>
+                <Info className='h-6 w-6' />
+              </button>
+            </div>
           </div>
         </nav>
       </Container>
