@@ -154,7 +154,7 @@ const Header: FC = () => {
               </ul>
             </ConditionalWrapper>
           </div>
-          <Link className='' href='/'>
+          <Link href='/' onClick={() => setIsMobileMenuOpen(false)}>
             <Image src='/rankguess.svg' alt='Logo' width={130} height={25} />
           </Link>
           <div className='flex flex-grow basis-0 justify-end gap-4'>
@@ -186,7 +186,7 @@ const Header: FC = () => {
             </ul>
             <div className='flex justify-end'>
               <button
-                onClick={() => console.log('toggle info modal')}
+                onClick={() => setIsMobileMenuOpen(false)}
                 className='text-[0.9375rem] text-neutral-200 transition-colors duration-200 hover:text-neutral-100'>
                 <>
                   <span className='sr-only'>Toggle information modal</span>
