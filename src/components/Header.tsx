@@ -20,6 +20,15 @@ const Header: FC = () => {
   // For testing purposes
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
+  // Prevent scrolling when the mobile nav is open
+  useEffect(() => {
+    const html = document.querySelector('html');
+    if (html) {
+      html.classList.toggle('overflow-hidden', isMobileMenuOpen);
+    }
+  }, [isMobileMenuOpen]);
+
+  // Close the mobile nav when the viewport changes in size or orientation
   useEffect(() => {
     const handleViewportChange = () => {
       setIsMobileMenuOpen(false);
@@ -34,7 +43,20 @@ const Header: FC = () => {
     };
   }, [setIsMobileMenuOpen]);
 
-  // todo: close nav when clicking a link. close nav when pressing escape. prevent scrolling when nav is open
+  // Close the mobile nav when the escape key is pressed
+  useEffect(() => {
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setIsMobileMenuOpen(false);
+      }
+    };
+
+    window.addEventListener('keydown', handleEscape);
+
+    return () => {
+      window.removeEventListener('keydown', handleEscape);
+    };
+  }, []);
 
   return (
     <header className='z-10 border-b border-b-blueish-grey-700/25'>
@@ -73,7 +95,8 @@ const Header: FC = () => {
                 <li>
                   <Link
                     className='inline-flex items-center gap-2 py-2 pr-2 transition-colors duration-200 hover:text-neutral-100'
-                    href='/'>
+                    href='/'
+                    onClick={() => setIsMobileMenuOpen(false)}>
                     <FourCircles className='h-5 w-auto' />
                     Choose Game
                   </Link>
@@ -81,7 +104,8 @@ const Header: FC = () => {
                 <li className='lg:hidden'>
                   <Link
                     className='inline-flex items-center gap-2 py-2 pr-2 transition-colors duration-200 hover:text-neutral-100'
-                    href='/submit'>
+                    href='/submit'
+                    onClick={() => setIsMobileMenuOpen(false)}>
                     <Submit className='h-5 w-auto' />
                     Submit Clips
                   </Link>
@@ -89,7 +113,8 @@ const Header: FC = () => {
                 <li>
                   <Link
                     className='inline-flex items-center gap-2 py-2 pr-2 transition-colors duration-200 hover:text-neutral-100'
-                    href='/faq'>
+                    href='/faq'
+                    onClick={() => setIsMobileMenuOpen(false)}>
                     <Question className='h-5 w-auto' />
                     FAQ
                   </Link>
@@ -97,7 +122,8 @@ const Header: FC = () => {
                 <li>
                   <Link
                     className='inline-flex items-center gap-2 py-2 pr-2 transition-colors duration-200 hover:text-neutral-100'
-                    href='/changelog'>
+                    href='/changelog'
+                    onClick={() => setIsMobileMenuOpen(false)}>
                     <Changelog className='h-5 w-auto' />
                     Changelog
                   </Link>
@@ -108,7 +134,8 @@ const Header: FC = () => {
                   <li>
                     <Link
                       className='inline-flex items-center gap-2 py-2 pr-2 transition-colors duration-200 hover:text-neutral-100'
-                      href='/'>
+                      href='/'
+                      onClick={() => setIsMobileMenuOpen(false)}>
                       <Logout className='h-5 w-auto' />
                       Logout
                     </Link>
@@ -117,7 +144,8 @@ const Header: FC = () => {
                   <li>
                     <Link
                       className='inline-flex items-center gap-2 py-2 pr-2 transition-colors duration-200 hover:text-neutral-100'
-                      href='/login'>
+                      href='/login'
+                      onClick={() => setIsMobileMenuOpen(false)}>
                       <Login className='h-5 w-auto' />
                       Login
                     </Link>
