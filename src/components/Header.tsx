@@ -46,7 +46,7 @@ const Header: FC = () => {
               wrapper={(children: ReactNode) => (
                 <Container>{children}</Container>
               )}>
-              <ul className='flex flex-grow basis-0 flex-col gap-6 py-5 text-base font-semibold md:flex-row md:items-center md:gap-7 md:text-[0.9375rem] md:font-normal'>
+              <ul className='flex flex-grow basis-0 flex-col gap-6 py-5 text-base font-medium md:flex-row md:items-center md:gap-7 md:text-[0.9375rem] md:font-normal'>
                 <li>
                   <Link
                     className='py-2 transition-colors duration-200 hover:text-neutral-100'
@@ -76,7 +76,7 @@ const Header: FC = () => {
                   </Link>
                 </li>
               </ul>
-              <ul className='flex flex-col gap-6 border-t border-t-blueish-grey-500/25 pt-5 text-base font-semibold md:hidden'>
+              <ul className='flex flex-col gap-6 border-t border-t-blueish-grey-500/25 pt-5 text-base font-medium md:hidden'>
                 {isLoggedIn ? (
                   <li>
                     <Link
