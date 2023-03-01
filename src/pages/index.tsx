@@ -14,7 +14,7 @@ export default function Home() {
         <link rel='icon' href='/favicon.ico' />
       </Head>
 
-      <Container className='mt-16 mb-32'>
+      <Container className='mt-16 mb-16 lg:mb-32'>
         <h1 className='text-center text-2xl font-medium uppercase tracking-[0.2em] text-neutral-200'>
           Choose a game
         </h1>

@@ -16,6 +16,11 @@
     @apply max-w-[100vw] overflow-x-hidden bg-blueish-grey-900 text-neutral-100 antialiased;
   }
 
+  nav {
+    scrollbar-width: thin;
+    scrollbar-color: @apply bg-blueish-grey-700 border-blueish-grey-800;
+  }
+
   nav::-webkit-scrollbar {
     @apply w-[14px];
   }

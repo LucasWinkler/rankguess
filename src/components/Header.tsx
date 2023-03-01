@@ -141,7 +141,7 @@ const Header: FC = () => {
                   </Link>
                 </li>
               </ul>
-              <ul className='flex flex-col gap-6 border-t border-t-blueish-grey-500/25 pt-5 text-base font-medium lg:hidden'>
+              <ul className='flex flex-col gap-6 border-t border-t-blueish-grey-500/25 py-5 text-base font-medium lg:hidden'>
                 {isLoggedIn ? (
                   <li>
                     <Link
