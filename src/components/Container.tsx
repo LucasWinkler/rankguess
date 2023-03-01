@@ -1,5 +1,5 @@
-import clsx from 'clsx';
 import type { FC, PropsWithChildren } from 'react';
+import clsx from 'clsx';
 
 interface ContainerProps {
   className?: string;

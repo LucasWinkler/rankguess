@@ -1,8 +1,8 @@
 import { FC, ReactNode, useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import Container from './Container';
 import clsx from 'clsx';
+import Container from './Container';
 import ConditionalWrapper from './ConditionalWrapper';
 
 const Header: FC = () => {
@@ -38,7 +38,7 @@ const Header: FC = () => {
             className={clsx(
               'flex-grow basis-0 md:flex',
               isMobileMenuOpen
-                ? 'absolute left-0 top-navigation-height right-0 block h-[calc(100%-var(--navigation-height))] bg-blueish-grey-800'
+                ? 'absolute left-0 top-navigation-height right-0 block h-[calc(100%-var(--navigation-height))] border-t border-t-blueish-grey-700/25 bg-blueish-grey-800'
                 : 'hidden'
             )}>
             <ConditionalWrapper
