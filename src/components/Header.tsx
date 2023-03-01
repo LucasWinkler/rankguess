@@ -96,13 +96,23 @@ const Header: FC = () => {
           </Link>
 
           <ul className='hidden flex-grow basis-0 items-center justify-end gap-7 md:flex'>
-            <li>
-              <Link
-                className='transition-colors duration-200 hover:text-neutral-100'
-                href='/login'>
-                Login
-              </Link>
-            </li>
+            {isLoggedIn ? (
+              <li>
+                <Link
+                  className='transition-colors duration-200 hover:text-neutral-100'
+                  href='/'>
+                  Logout
+                </Link>
+              </li>
+            ) : (
+              <li>
+                <Link
+                  className='transition-colors duration-200 hover:text-neutral-100'
+                  href='/login'>
+                  Login
+                </Link>
+              </li>
+            )}
             <li>
               <Link
                 className='rounded-full border border-dark-blueish-grey/50 bg-dark-blueish-grey/50 px-6 py-2 text-neutral-200'
