@@ -5,7 +5,7 @@
 @layer base {
   html,
   body {
-    @apply max-w-[100vw] overflow-x-hidden bg-dark-blue text-neutral-100;
+    @apply max-w-[100vw] overflow-x-hidden bg-dark-blue text-neutral-100 antialiased;
   }
 }
 
@@ -28,10 +28,10 @@
     );
     grid-gap: var(--grid-layout-gap);
   }
-}
 
-@media screen(sm) {
-  .grid-games {
-    --grid-layout-gap: 50px;
+  @media screen(sm) {
+    .grid-games {
+      --grid-layout-gap: 50px;
+    }
   }
 }
