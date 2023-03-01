@@ -8,6 +8,7 @@ const Hamburger: FC<HamburgerProps> = ({ className }) => {
   return (
     <svg
       className={className}
+      strokeWidth='2'
       width='21'
       height='15'
       viewBox='0 0 21 15'

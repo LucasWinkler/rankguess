@@ -13,6 +13,7 @@ module.exports = {
       'neutral-100': '#FFFFFF',
       'neutral-200': '#D4DDF2',
       'neutral-300': '#C0CDEC',
+      'neutral-400': '#C6CFE6',
     },
     extend: {
       fontFamily: {

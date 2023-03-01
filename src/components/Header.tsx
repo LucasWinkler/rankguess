@@ -10,6 +10,9 @@ import Logout from './icons/Logout';
 import Changelog from './icons/Changelog';
 import Question from './icons/Question';
 import FourCircles from './icons/FourCircles';
+import Close from './icons/Close';
+import Hamburger from './icons/Hamburger';
+import Info from './icons/Info';
 
 const Header: FC = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -34,11 +37,15 @@ const Header: FC = () => {
   return (
     <header className='z-10 border-b border-b-blueish-grey-700/25'>
       <Container className='flex h-navigation-height items-center'>
-        <nav className='flex w-full items-center justify-between text-neutral-300'>
+        <nav className='flex w-full items-center justify-between gap-2 text-neutral-300'>
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className='flex flex-grow basis-0 text-[0.9375rem] lg:hidden'>
-            {isMobileMenuOpen ? 'Close' : 'Open'}
+            className='text-neutral-1 flex flex-grow basis-0 text-[0.9375rem] lg:hidden'>
+            {isMobileMenuOpen ? (
+              <Close className='h-5 w-5' />
+            ) : (
+              <Hamburger className='h-5 w-5' />
+            )}
           </button>
           <div
             className={clsx(
@@ -112,37 +119,39 @@ const Header: FC = () => {
           <Link className='' href='/'>
             <Image src='/rankguess.svg' alt='Logo' width={130} height={25} />
           </Link>
-          <ul className='hidden flex-grow basis-0 items-center justify-end gap-7 text-[0.9375rem] lg:flex'>
-            {isLoggedIn ? (
+          <div className='flex flex-grow basis-0 justify-end gap-4'>
+            <ul className='hidden flex-grow basis-0 items-center justify-end gap-4 text-[0.9375rem] lg:flex'>
+              {isLoggedIn ? (
+                <li>
+                  <Link
+                    className='transition-colors duration-200 hover:text-neutral-100'
+                    href='/'>
+                    Logout
+                  </Link>
+                </li>
+              ) : (
+                <li>
+                  <Link
+                    className='transition-colors duration-200 hover:text-neutral-100'
+                    href='/login'>
+                    Login
+                  </Link>
+                </li>
+              )}
               <li>
                 <Link
-                  className='transition-colors duration-200 hover:text-neutral-100'
-                  href='/'>
-                  Logout
+                  className='rounded-full border border-blueish-grey-700/50 bg-blueish-grey-700/50 px-6 py-2 text-neutral-200'
+                  href='/submit'>
+                  Submit Clips
                 </Link>
               </li>
-            ) : (
-              <li>
-                <Link
-                  className='transition-colors duration-200 hover:text-neutral-100'
-                  href='/login'>
-                  Login
-                </Link>
-              </li>
-            )}
-            <li>
-              <Link
-                className='rounded-full border border-blueish-grey-700/50 bg-blueish-grey-700/50 px-6 py-2 text-neutral-200'
-                href='/submit'>
-                Submit Clips
-              </Link>
-            </li>
-          </ul>
-          <button
-            onClick={() => console.log('toggle info modal')}
-            className='flex flex-grow basis-0 justify-end text-[0.9375rem] lg:hidden'>
-            Info
-          </button>
+            </ul>
+            <button
+              onClick={() => console.log('toggle info modal')}
+              className='flex justify-end text-[0.9375rem] text-neutral-200'>
+              <Info className='h-6 w-6' />
+            </button>
+          </div>
         </nav>
       </Container>
     </header>
