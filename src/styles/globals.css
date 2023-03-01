@@ -7,9 +7,29 @@
     --navigation-height: 6.5rem;
   }
 
+  html {
+    @apply scroll-smooth;
+  }
+
   html,
   body {
     @apply max-w-[100vw] overflow-x-hidden bg-blueish-grey-900 text-neutral-100 antialiased;
+  }
+
+  nav::-webkit-scrollbar {
+    @apply w-[14px];
+  }
+
+  nav::-webkit-scrollbar-thumb {
+    @apply rounded-lg border-2 border-solid border-blueish-grey-800 bg-blueish-grey-700;
+  }
+
+  nav::-webkit-scrollbar-thumb:hover {
+    @apply bg-blueish-grey-500/60;
+  }
+
+  nav::-webkit-scrollbar-track {
+    @apply bg-blueish-grey-800;
   }
 }
 

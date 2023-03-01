@@ -20,11 +20,22 @@ const Header: FC = () => {
   // For testing purposes
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  // Prevent scrolling when the mobile nav is open
+  // Prevent scrolling when the mobile nav is open and force scrollbar to prevent content shifting
   useEffect(() => {
     const html = document.querySelector('html');
+    const classesToToggle = [
+      'overflow-hidden',
+      'overflow-y-scroll',
+      'fixed',
+      'left-0',
+      'right-0',
+      'bottom-0',
+    ];
+
     if (html) {
-      html.classList.toggle('overflow-hidden', isMobileMenuOpen);
+      for (const classToToggle in classesToToggle) {
+        html.classList.toggle(classToToggle, isMobileMenuOpen);
+      }
     }
   }, [isMobileMenuOpen]);
 
@@ -61,7 +72,7 @@ const Header: FC = () => {
   return (
     <header className='z-10 border-b border-b-blueish-grey-700/25'>
       <Container className='flex h-navigation-height items-center'>
-        <nav className='flex w-full items-center justify-between gap-2 text-neutral-300'>
+        <div className='flex w-full items-center justify-between gap-2 text-neutral-300'>
           <div className='flex flex-grow basis-0 lg:hidden'>
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -79,7 +90,7 @@ const Header: FC = () => {
               )}
             </button>
           </div>
-          <div
+          <nav
             className={clsx(
               'flex-grow basis-0 lg:flex',
               isMobileMenuOpen
@@ -153,7 +164,7 @@ const Header: FC = () => {
                 )}
               </ul>
             </ConditionalWrapper>
-          </div>
+          </nav>
           <Link href='/' onClick={() => setIsMobileMenuOpen(false)}>
             <Image src='/rankguess.svg' alt='Logo' width={130} height={25} />
           </Link>
@@ -195,7 +206,7 @@ const Header: FC = () => {
               </button>
             </div>
           </div>
-        </nav>
+        </div>
       </Container>
     </header>
   );
