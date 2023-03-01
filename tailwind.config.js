@@ -6,9 +6,10 @@ module.exports = {
   content: ['./src/**/*.{js,ts,jsx,tsx}'],
   theme: {
     colors: {
-      'lighter-blueish-grey': '#425B99',
-      'dark-blueish-grey': '#202C4A',
-      'darkest-blueish-grey': '#0A1020',
+      'blueish-grey-500': '#425B99',
+      'blueish-grey-700': '#202C4A',
+      'blueish-grey-800': '#0B1324',
+      'blueish-grey-900': '#0A1020',
       'neutral-100': '#FFFFFF',
       'neutral-200': '#D4DDF2',
       'neutral-300': '#C0CDEC',
@@ -20,6 +21,9 @@ module.exports = {
       screens: {
         xs: '420px',
         ...defaultTheme.screens,
+      },
+      spacing: {
+        'navigation-height': 'var(--navigation-height)',
       },
     },
   },

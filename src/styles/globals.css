@@ -3,9 +3,13 @@
 @tailwind utilities;
 
 @layer base {
+  :root {
+    --navigation-height: 6.5rem;
+  }
+
   html,
   body {
-    @apply max-w-[100vw] overflow-x-hidden bg-darkest-blueish-grey text-neutral-100 antialiased;
+    @apply max-w-[100vw] overflow-x-hidden bg-blueish-grey-900 text-neutral-100 antialiased;
   }
 }
 

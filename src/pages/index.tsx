@@ -5,7 +5,7 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>RankGuess | Choose a Game</title>
+        <title>Choose a Game | rankguess</title>
         <meta
           name='description'
           content='Guess the rank of user submitted clips from Apex Legends, CSGO, League of Legends, and more!'
@@ -19,28 +19,28 @@ export default function Home() {
             Choose a game
           </h1>
           <div className='grid-games mt-16 font-bold uppercase tracking-[0.2em]'>
-            <div className='mx-auto flex min-h-[10rem] w-full max-w-[18rem] items-center justify-center rounded-lg border border-dark-blueish-grey/50 bg-dark-blueish-grey/50 text-center xs:max-w-[22rem] sm:min-h-[23.5rem] sm:max-w-[18rem]'>
+            <div className='mx-auto flex min-h-[10rem] w-full max-w-[18rem] items-center justify-center rounded-lg border border-blueish-grey-700/50 bg-blueish-grey-700/50 text-center xs:max-w-[22rem] sm:min-h-[23.5rem] sm:max-w-[18rem]'>
               Game Title
             </div>
-            <div className='mx-auto flex min-h-[10rem] w-full max-w-[18rem] items-center justify-center rounded-lg border border-dark-blueish-grey/50 bg-dark-blueish-grey/50 text-center xs:max-w-[22rem] sm:min-h-[23.5rem] sm:max-w-[18rem]'>
+            <div className='mx-auto flex min-h-[10rem] w-full max-w-[18rem] items-center justify-center rounded-lg border border-blueish-grey-700/50 bg-blueish-grey-700/50 text-center xs:max-w-[22rem] sm:min-h-[23.5rem] sm:max-w-[18rem]'>
               Game Title
             </div>
-            <div className='mx-auto flex min-h-[10rem] w-full max-w-[18rem] items-center justify-center rounded-lg border border-dark-blueish-grey/50 bg-dark-blueish-grey/50 text-center xs:max-w-[22rem] sm:min-h-[23.5rem] sm:max-w-[18rem]'>
+            <div className='mx-auto flex min-h-[10rem] w-full max-w-[18rem] items-center justify-center rounded-lg border border-blueish-grey-700/50 bg-blueish-grey-700/50 text-center xs:max-w-[22rem] sm:min-h-[23.5rem] sm:max-w-[18rem]'>
               Game Title
             </div>
-            <div className='mx-auto flex min-h-[10rem] w-full max-w-[18rem] items-center justify-center rounded-lg border border-dark-blueish-grey/50 bg-dark-blueish-grey/50 text-center xs:max-w-[22rem] sm:min-h-[23.5rem] sm:max-w-[18rem]'>
+            <div className='mx-auto flex min-h-[10rem] w-full max-w-[18rem] items-center justify-center rounded-lg border border-blueish-grey-700/50 bg-blueish-grey-700/50 text-center xs:max-w-[22rem] sm:min-h-[23.5rem] sm:max-w-[18rem]'>
               Game Title
             </div>
-            <div className='mx-auto flex min-h-[10rem] w-full max-w-[18rem] items-center justify-center rounded-lg border border-dark-blueish-grey/50 bg-dark-blueish-grey/50 text-center xs:max-w-[22rem] sm:min-h-[23.5rem] sm:max-w-[18rem]'>
+            <div className='mx-auto flex min-h-[10rem] w-full max-w-[18rem] items-center justify-center rounded-lg border border-blueish-grey-700/50 bg-blueish-grey-700/50 text-center xs:max-w-[22rem] sm:min-h-[23.5rem] sm:max-w-[18rem]'>
               Game Title
             </div>
-            <div className='mx-auto flex min-h-[10rem] w-full max-w-[18rem] items-center justify-center rounded-lg border border-dark-blueish-grey/50 bg-dark-blueish-grey/50 text-center xs:max-w-[22rem] sm:min-h-[23.5rem] sm:max-w-[18rem]'>
+            <div className='mx-auto flex min-h-[10rem] w-full max-w-[18rem] items-center justify-center rounded-lg border border-blueish-grey-700/50 bg-blueish-grey-700/50 text-center xs:max-w-[22rem] sm:min-h-[23.5rem] sm:max-w-[18rem]'>
               Game Title
             </div>
-            <div className='mx-auto flex min-h-[10rem] w-full max-w-[18rem] items-center justify-center rounded-lg border border-dark-blueish-grey/50 bg-dark-blueish-grey/50 text-center xs:max-w-[22rem] sm:min-h-[23.5rem] sm:max-w-[18rem]'>
+            <div className='mx-auto flex min-h-[10rem] w-full max-w-[18rem] items-center justify-center rounded-lg border border-blueish-grey-700/50 bg-blueish-grey-700/50 text-center xs:max-w-[22rem] sm:min-h-[23.5rem] sm:max-w-[18rem]'>
               Game Title
             </div>
-            <div className='mx-auto flex min-h-[10rem] w-full max-w-[18rem] items-center justify-center rounded-lg border border-dark-blueish-grey/50 bg-dark-blueish-grey/50 text-center xs:max-w-[22rem] sm:min-h-[23.5rem] sm:max-w-[18rem]'>
+            <div className='mx-auto flex min-h-[10rem] w-full max-w-[18rem] items-center justify-center rounded-lg border border-blueish-grey-700/50 bg-blueish-grey-700/50 text-center xs:max-w-[22rem] sm:min-h-[23.5rem] sm:max-w-[18rem]'>
               Game Title
             </div>
           </div>
