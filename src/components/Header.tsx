@@ -167,7 +167,15 @@ const Header: FC = () => {
             </ConditionalWrapper>
           </nav>
           <Link href='/' onClick={() => setIsMobileMenuOpen(false)}>
-            <Image src='/rankguess.svg' alt='Logo' width={130} height={25} />
+            <Image
+              src='/rankguess.svg'
+              alt='Logo'
+              width={130}
+              height={25}
+              priority
+              placeholder='blur'
+              blurDataURL='/rankguess.svg'
+            />
           </Link>
           <div className='flex flex-grow basis-0 justify-end gap-4'>
             <ul className='hidden flex-grow basis-0 items-center justify-end gap-4 text-[0.9375rem] lg:flex'>
