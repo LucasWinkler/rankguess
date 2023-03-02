@@ -30,6 +30,7 @@ const renderTempGrid = (amount: number, img?: any) => {
             src={img}
             alt='temp thumbnail'
             fill
+            priority
           />
         )}
       </div>
