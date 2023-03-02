@@ -92,7 +92,7 @@ const Header: FC = () => {
             className={clsx(
               'flex-grow basis-0 lg:flex',
               isMobileMenuOpen
-                ? 'absolute left-0 top-navigation-height right-0 z-10 block h-[calc(100%-var(--navigation-height))] overflow-y-auto border-t border-t-blueish-grey-700/25 bg-blueish-grey-800'
+                ? 'mobile-scrollbar absolute left-0 top-navigation-height right-0 z-10 block h-[calc(100%-var(--navigation-height))] overflow-y-auto border-t border-t-blueish-grey-700/25 bg-blueish-grey-800'
                 : 'hidden'
             )}>
             <ConditionalWrapper
