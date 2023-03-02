@@ -14,11 +14,8 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <>
       <div className={`${poppins.variable} min-h-screen font-sans`}>
-        <SkipNavigation />
         <Header />
-        <main id='main-content'>
-          <Component {...pageProps} />
-        </main>
+        <Component {...pageProps} />
       </div>
     </>
   );

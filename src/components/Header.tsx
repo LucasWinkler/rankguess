@@ -106,7 +106,7 @@ const Header: FC = () => {
               <ul className='flex flex-grow basis-0 flex-col gap-6 py-5 text-base font-medium lg:flex-row lg:items-center lg:gap-7 lg:text-[0.9375rem] lg:font-normal'>
                 <li>
                   <Link
-                    className='inline-flex items-center gap-2 py-2 pr-2 transition-colors duration-200 hover:text-neutral-100'
+                    className='inline-flex items-center gap-2 py-2 pr-2 transition-colors duration-200 hover:text-neutral-100 lg:pr-0'
                     href='/'
                     onClick={() => setIsMobileMenuOpen(false)}>
                     <FourCircles className='h-5 w-auto' />
@@ -115,7 +115,7 @@ const Header: FC = () => {
                 </li>
                 <li className='lg:hidden'>
                   <Link
-                    className='inline-flex items-center gap-2 py-2 pr-2 transition-colors duration-200 hover:text-neutral-100'
+                    className='inline-flex items-center gap-2 py-2 pr-2 transition-colors duration-200 hover:text-neutral-100 lg:pr-0'
                     href='/submit'
                     onClick={() => setIsMobileMenuOpen(false)}>
                     <Submit className='h-5 w-auto' />
@@ -124,7 +124,7 @@ const Header: FC = () => {
                 </li>
                 <li>
                   <Link
-                    className='inline-flex items-center gap-2 py-2 pr-2 transition-colors duration-200 hover:text-neutral-100'
+                    className='inline-flex items-center gap-2 py-2 pr-2 transition-colors duration-200 hover:text-neutral-100 lg:pr-0'
                     href='/faq'
                     onClick={() => setIsMobileMenuOpen(false)}>
                     <Question className='h-5 w-auto' />
@@ -133,7 +133,7 @@ const Header: FC = () => {
                 </li>
                 <li>
                   <Link
-                    className='inline-flex items-center gap-2 py-2 pr-2 transition-colors duration-200 hover:text-neutral-100'
+                    className='inline-flex items-center gap-2 py-2 pr-2 transition-colors duration-200 hover:text-neutral-100 lg:pr-0'
                     href='/changelog'
                     onClick={() => setIsMobileMenuOpen(false)}>
                     <Changelog className='h-5 w-auto' />
