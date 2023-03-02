@@ -63,4 +63,11 @@
   .mobile-scrollbar::-webkit-scrollbar-track {
     @apply bg-blueish-grey-800;
   }
+
+  .background-grid {
+    background-size: 40px 40px;
+    background-image: linear-gradient(to right, grey 1px, transparent 1px),
+      linear-gradient(to bottom, grey 1px, transparent 1px);
+    mask-image: linear-gradient(to bottom, transparent, black, transparent);
+  }
 }
