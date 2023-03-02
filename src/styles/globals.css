@@ -65,7 +65,7 @@
   }
 
   .background-grid {
-    background-size: 40px 40px;
+    background-size: 30px 30px;
     background-image: linear-gradient(to right, grey 1px, transparent 1px),
       linear-gradient(to bottom, grey 1px, transparent 1px);
     mask-image: linear-gradient(to bottom, transparent, black, transparent);
