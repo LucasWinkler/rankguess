@@ -1,15 +1,37 @@
 import Head from 'next/head';
 import Container from '@/components/Container';
+import Image from 'next/image';
+import clsx from 'clsx';
 
-const renderTempGrid = () => {
+const tempThumb = '/images/valorant-thumb.jpg';
+
+const renderTempGrid = (amount: number, img?: any) => {
   const items = [];
 
-  for (let i = 0; i < 8; i++) {
+  for (let i = 0; i < amount; i++) {
     items.push(
       <div
         key={i}
-        className='mx-auto flex min-h-[10rem] w-full max-w-[18rem] items-center justify-center rounded-xl border border-blueish-grey-700/80 bg-blueish-grey-700 bg-opacity-[25%] p-6 text-center text-xl font-bold text-neutral-200 backdrop-blur-[1px] xs:max-w-[22rem] sm:min-h-[23.5rem] sm:max-w-[18rem]'>
-        Coming Soon
+        className={clsx(
+          'group relative mx-auto flex min-h-[10rem] w-full max-w-[18rem] items-center justify-center overflow-hidden rounded-xl border border-blueish-grey-700/80 bg-blueish-grey-700 bg-opacity-[25%] p-6 text-center backdrop-blur-[1px] xs:max-w-[22rem] sm:min-h-[23.5rem] sm:max-w-[18rem]',
+          img && 'cursor-pointer'
+        )}>
+        <span
+          className={clsx(
+            'z-[3] text-xl font-bold uppercase tracking-[0.25em] text-neutral-100',
+            img &&
+              'transition-transform duration-[625ms] ease-in-out group-hover:scale-[1.25]'
+          )}>
+          {img ? 'Valorant' : 'Coming Soon'}
+        </span>
+        {img && (
+          <Image
+            className='z-[1] object-cover blur-[1px] brightness-[50%] transition-[blur_scale] duration-500 ease-in-out group-hover:scale-[1.10] group-hover:blur-0 group-hover:brightness-[60%]'
+            src={img}
+            alt='temp thumbnail'
+            fill
+          />
+        )}
       </div>
     );
   }
@@ -37,8 +59,9 @@ export default function Home() {
           <h1 className='relative text-center text-2xl font-medium uppercase tracking-[0.2em] text-neutral-200'>
             Choose a game
           </h1>
-          <div className='grid-games relative mt-12 font-bold uppercase tracking-[0.2em] lg:mt-16'>
-            {renderTempGrid()}
+          <div className='grid-games relative mt-12 lg:mt-16'>
+            {renderTempGrid(4, tempThumb)}
+            {renderTempGrid(4)}
           </div>
         </Container>
       </main>
