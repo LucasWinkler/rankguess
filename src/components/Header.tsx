@@ -27,15 +27,12 @@ const Header: FC = () => {
       'overflow-hidden',
       'overflow-y-scroll',
       'fixed',
-      'left-0',
-      'right-0',
-      'bottom-0',
-      'top-0',
+      'inset-0',
     ];
 
     if (html) {
-      classesToToggle.forEach(classToToggle => {
-        html.classList.toggle(classToToggle, isMobileMenuOpen);
+      classesToToggle.forEach(classesToToggle => {
+        html.classList.toggle(classesToToggle, isMobileMenuOpen);
       });
     }
   }, [isMobileMenuOpen]);
@@ -95,7 +92,7 @@ const Header: FC = () => {
             className={clsx(
               'flex-grow basis-0 lg:flex',
               isMobileMenuOpen
-                ? 'mobile-scrollbar absolute left-0 top-navigation-height right-0 block h-[calc(100%-var(--navigation-height))] overflow-y-auto border-t border-t-blueish-grey-700/25 bg-blueish-grey-800'
+                ? 'absolute left-0 top-navigation-height right-0 z-10 block h-[calc(100%-var(--navigation-height))] overflow-y-auto border-t border-t-blueish-grey-700/25 bg-blueish-grey-800'
                 : 'hidden'
             )}>
             <ConditionalWrapper
@@ -168,13 +165,13 @@ const Header: FC = () => {
           </nav>
           <Link href='/' onClick={() => setIsMobileMenuOpen(false)}>
             <Image
-              src='/rankguess.svg'
+              src='/images/rankguess.svg'
               alt='Logo'
               width={130}
               height={25}
               priority
               placeholder='blur'
-              blurDataURL='/rankguess.svg'
+              blurDataURL='/images/rankguess.svg'
             />
           </Link>
           <div className='flex flex-grow basis-0 justify-end gap-4'>
