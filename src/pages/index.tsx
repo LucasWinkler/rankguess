@@ -20,13 +20,13 @@ const renderTempGrid = (amount: number, img?: any) => {
           className={clsx(
             'z-[3] text-xl font-bold uppercase tracking-[0.25em] text-neutral-100',
             img &&
-              'transition-transform duration-[625ms] ease-in-out group-hover:scale-[1.25]'
+              'transition-transform duration-[725ms] ease-in-out group-hover:scale-[1.25]'
           )}>
           {img ? 'Valorant' : 'Coming Soon'}
         </span>
         {img && (
           <Image
-            className='z-[1] object-cover blur-[1px] brightness-[50%] transition-[blur_scale] duration-500 ease-in-out group-hover:scale-[1.10] group-hover:blur-0 group-hover:brightness-[60%]'
+            className='z-[1] object-cover blur-[1px] brightness-[50%] transition-[blur_scale] duration-[550ms] ease-in-out group-hover:scale-[1.10] group-hover:blur-0 group-hover:brightness-[60%]'
             src={img}
             alt='temp thumbnail'
             fill
