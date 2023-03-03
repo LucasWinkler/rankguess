@@ -2,8 +2,15 @@ import Head from 'next/head';
 import Container from '@/components/Container';
 import Image from 'next/image';
 import clsx from 'clsx';
+import resolveConfig from 'tailwindcss/resolveConfig';
+import { content, theme } from 'tailwind.config.js';
 
-const tempThumb = '/images/valorant-thumb.jpg';
+const fullConfig = resolveConfig({
+  content,
+  theme,
+});
+const screens = fullConfig.theme?.screens as { [key: string]: string };
+const tempThumb = '/images/valorant-thumb.webp';
 
 const renderTempGrid = (amount: number, img?: any) => {
   const items = [];
@@ -31,6 +38,14 @@ const renderTempGrid = (amount: number, img?: any) => {
             alt='temp thumbnail'
             fill
             priority
+            sizes={`
+              (min-width: ${screens.xs}) 50vw,
+              (min-width: ${screens.sm}) 50vw,
+              (min-width: ${screens.md}) 33vw,
+              (min-width: ${screens.lg}) 25vw,
+              100vw
+            `}
+            quality={65}
           />
         )}
       </div>
