@@ -71,7 +71,7 @@ const Header: FC = () => {
     <header className='z-10 border-b border-b-blueish-grey-700/25'>
       <Container className='flex h-navigation-height items-center'>
         <div className='flex w-full items-center justify-between gap-2 text-neutral-300'>
-          <div className='flex flex-grow basis-0 lg:hidden'>
+          <div className='flex flex-grow basis-0 md:hidden'>
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               className='text-neutral-1 text-[0.9375rem] transition-colors duration-200 hover:text-neutral-100'>
@@ -90,7 +90,7 @@ const Header: FC = () => {
           </div>
           <nav
             className={clsx(
-              'flex-grow basis-0 lg:flex',
+              'flex-grow basis-0 md:flex',
               isMobileMenuOpen
                 ? 'mobile-scrollbar absolute left-0 top-navigation-height right-0 z-10 block h-[calc(100%-var(--navigation-height))] overflow-y-auto border-t border-t-blueish-grey-700/25 bg-blueish-grey-800'
                 : 'hidden'
@@ -100,37 +100,37 @@ const Header: FC = () => {
               wrapper={(children: ReactNode) => (
                 <Container>{children}</Container>
               )}>
-              <ul className='flex flex-grow basis-0 flex-col gap-6 py-5 text-base font-medium lg:flex-row lg:items-center lg:gap-7 lg:text-[0.9375rem] lg:font-normal'>
+              <ul className='flex flex-grow basis-0 flex-col gap-4 py-5 text-base font-medium md:flex-row md:items-center md:text-[0.9375rem] md:font-normal lg:gap-7'>
                 <li>
                   <Link
-                    className='inline-flex items-center gap-2 py-2 pr-2 transition-colors duration-200 hover:text-neutral-100 lg:pr-0'
+                    className='inline-flex items-center gap-2 py-2 pr-2 transition-colors duration-200 hover:text-neutral-100 md:pr-0'
                     href='/'
                     onClick={() => setIsMobileMenuOpen(false)}>
                     <FourCircles className='h-5 w-auto' />
                     Choose Game
                   </Link>
                 </li>
-                <li className='lg:hidden'>
+                <li className='md:hidden'>
                   <Link
-                    className='inline-flex items-center gap-2 py-2 pr-2 transition-colors duration-200 hover:text-neutral-100 lg:pr-0'
+                    className='inline-flex items-center gap-2 py-2 pr-2 transition-colors duration-200 hover:text-neutral-100 md:pr-0'
                     href='/submit'
                     onClick={() => setIsMobileMenuOpen(false)}>
                     <Submit className='h-5 w-auto' />
                     Submit Clips
                   </Link>
                 </li>
-                <li>
+                {/* <li>
                   <Link
-                    className='inline-flex items-center gap-2 py-2 pr-2 transition-colors duration-200 hover:text-neutral-100 lg:pr-0'
+                    className='inline-flex items-center gap-2 py-2 pr-2 transition-colors duration-200 hover:text-neutral-100 md:pr-0'
                     href='/faq'
                     onClick={() => setIsMobileMenuOpen(false)}>
                     <Question className='h-5 w-auto' />
                     FAQ
                   </Link>
-                </li>
+                </li> */}
                 <li>
                   <Link
-                    className='inline-flex items-center gap-2 py-2 pr-2 transition-colors duration-200 hover:text-neutral-100 lg:pr-0'
+                    className='inline-flex items-center gap-2 py-2 pr-2 transition-colors duration-200 hover:text-neutral-100 md:pr-0'
                     href='/changelog'
                     onClick={() => setIsMobileMenuOpen(false)}>
                     <Changelog className='h-5 w-auto' />
@@ -138,7 +138,7 @@ const Header: FC = () => {
                   </Link>
                 </li>
               </ul>
-              <ul className='flex flex-col gap-6 border-t border-t-blueish-grey-500/25 py-5 text-base font-medium lg:hidden'>
+              <ul className='flex flex-col gap-6 border-t border-t-blueish-grey-500/25 py-5 text-base font-medium md:hidden'>
                 {isLoggedIn ? (
                   <li>
                     <Link
@@ -175,7 +175,7 @@ const Header: FC = () => {
             />
           </Link>
           <div className='flex flex-grow basis-0 justify-end gap-4'>
-            <ul className='hidden flex-grow basis-0 items-center justify-end gap-4 text-[0.9375rem] lg:flex'>
+            <ul className='hidden flex-grow basis-0 items-center justify-end gap-4 text-[0.9375rem] md:flex'>
               {isLoggedIn ? (
                 <li>
                   <Link
