@@ -1,10 +1,7 @@
+import { IconProps } from '@/types';
 import type { FC } from 'react';
 
-interface LoginProps {
-  className?: string;
-}
-
-const Login: FC<LoginProps> = ({ className }) => {
+const Login: FC<IconProps> = ({ className }) => {
   return (
     <svg
       className={className}

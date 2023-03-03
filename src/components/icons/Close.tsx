@@ -1,10 +1,7 @@
+import { IconProps } from '@/types';
 import type { FC } from 'react';
 
-interface CloseProps {
-  className?: string;
-}
-
-const Close: FC<CloseProps> = ({ className }) => {
+const Close: FC<IconProps> = ({ className }) => {
   return (
     <svg
       className={className}

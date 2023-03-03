@@ -1,10 +1,7 @@
+import { IconProps } from '@/types';
 import type { FC } from 'react';
 
-interface ChangelogProps {
-  className?: string;
-}
-
-const Changelog: FC<ChangelogProps> = ({ className }) => {
+const Changelog: FC<IconProps> = ({ className }) => {
   return (
     <svg
       className={className}

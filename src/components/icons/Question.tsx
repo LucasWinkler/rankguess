@@ -1,10 +1,7 @@
+import { IconProps } from '@/types';
 import type { FC } from 'react';
 
-interface QuestionProps {
-  className?: string;
-}
-
-const Question: FC<QuestionProps> = ({ className }) => {
+const Question: FC<IconProps> = ({ className }) => {
   return (
     <svg
       className={className}

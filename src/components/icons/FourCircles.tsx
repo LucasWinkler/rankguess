@@ -1,10 +1,7 @@
+import { IconProps } from '@/types';
 import type { FC } from 'react';
 
-interface FourCirclesProps {
-  className?: string;
-}
-
-const FourCircles: FC<FourCirclesProps> = ({ className }) => {
+const FourCircles: FC<IconProps> = ({ className }) => {
   return (
     <svg
       className={className}

@@ -1,10 +1,7 @@
+import { IconProps } from '@/types';
 import type { FC } from 'react';
 
-interface InfoProps {
-  className?: string;
-}
-
-const Info: FC<InfoProps> = ({ className }) => {
+const Info: FC<IconProps> = ({ className }) => {
   return (
     <svg
       className={className}

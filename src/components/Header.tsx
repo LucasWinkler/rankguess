@@ -13,6 +13,8 @@ import FourCircles from './icons/FourCircles';
 import Close from './icons/Close';
 import Hamburger from './icons/Hamburger';
 import Info from './icons/Info';
+import NavItem from './NavItem';
+import navigationItems from '@/data/navigationItems';
 
 const Header: FC = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -101,64 +103,32 @@ const Header: FC = () => {
                 <Container>{children}</Container>
               )}>
               <ul className='flex flex-grow basis-0 flex-col gap-4 py-5 text-base font-medium md:flex-row md:items-center md:text-[0.9375rem] md:font-normal lg:gap-7'>
-                <li>
-                  <Link
-                    className='inline-flex items-center gap-2 py-2 pr-2 transition-colors duration-200 hover:text-neutral-100 md:pr-0'
-                    href='/'
-                    onClick={() => setIsMobileMenuOpen(false)}>
-                    <FourCircles className='h-5 w-auto' />
-                    Choose Game
-                  </Link>
-                </li>
-                <li className='md:hidden'>
-                  <Link
-                    className='inline-flex items-center gap-2 py-2 pr-2 transition-colors duration-200 hover:text-neutral-100 md:pr-0'
-                    href='/submit'
-                    onClick={() => setIsMobileMenuOpen(false)}>
-                    <Submit className='h-5 w-auto' />
-                    Submit Clips
-                  </Link>
-                </li>
-                {/* <li>
-                  <Link
-                    className='inline-flex items-center gap-2 py-2 pr-2 transition-colors duration-200 hover:text-neutral-100 md:pr-0'
-                    href='/faq'
-                    onClick={() => setIsMobileMenuOpen(false)}>
-                    <Question className='h-5 w-auto' />
-                    FAQ
-                  </Link>
-                </li> */}
-                <li>
-                  <Link
-                    className='inline-flex items-center gap-2 py-2 pr-2 transition-colors duration-200 hover:text-neutral-100 md:pr-0'
-                    href='/changelog'
-                    onClick={() => setIsMobileMenuOpen(false)}>
-                    <Changelog className='h-5 w-auto' />
-                    Changelog
-                  </Link>
-                </li>
+                {navigationItems.map(navigationItem => (
+                  <NavItem
+                    key={navigationItem.name}
+                    icon={navigationItem.icon}
+                    className={navigationItem.className}
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    href={navigationItem.href}>
+                    {navigationItem.name}
+                  </NavItem>
+                ))}
               </ul>
               <ul className='flex flex-col gap-6 border-t border-t-blueish-grey-500/25 py-5 text-base font-medium md:hidden'>
                 {isLoggedIn ? (
-                  <li>
-                    <Link
-                      className='inline-flex items-center gap-2 py-2 pr-2 transition-colors duration-200 hover:text-neutral-100'
-                      href='/'
-                      onClick={() => setIsMobileMenuOpen(false)}>
-                      <Logout className='h-5 w-auto' />
-                      Logout
-                    </Link>
-                  </li>
+                  <NavItem
+                    icon={<Logout />}
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    href='/'>
+                    Logout
+                  </NavItem>
                 ) : (
-                  <li>
-                    <Link
-                      className='inline-flex items-center gap-2 py-2 pr-2 transition-colors duration-200 hover:text-neutral-100'
-                      href='/login'
-                      onClick={() => setIsMobileMenuOpen(false)}>
-                      <Login className='h-5 w-auto' />
-                      Login
-                    </Link>
-                  </li>
+                  <NavItem
+                    icon={<Login />}
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    href='/'>
+                    Login
+                  </NavItem>
                 )}
               </ul>
             </ConditionalWrapper>

@@ -1,10 +1,7 @@
+import { IconProps } from '@/types';
 import type { FC } from 'react';
 
-interface HamburgerProps {
-  className?: string;
-}
-
-const Hamburger: FC<HamburgerProps> = ({ className }) => {
+const Hamburger: FC<IconProps> = ({ className }) => {
   return (
     <svg
       className={className}

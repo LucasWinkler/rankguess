@@ -1,10 +1,7 @@
+import { IconProps } from '@/types';
 import type { FC } from 'react';
 
-interface LogoutProps {
-  className?: string;
-}
-
-const Logout: FC<LogoutProps> = ({ className }) => {
+const Logout: FC<IconProps> = ({ className }) => {
   return (
     <svg
       className={className}

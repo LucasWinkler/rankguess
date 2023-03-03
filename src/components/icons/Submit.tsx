@@ -1,10 +1,7 @@
+import { IconProps } from '@/types';
 import type { FC } from 'react';
 
-interface SubmitProps {
-  className?: string;
-}
-
-const Submit: FC<SubmitProps> = ({ className }) => {
+const Submit: FC<IconProps> = ({ className }) => {
   return (
     <svg
       className={className}
