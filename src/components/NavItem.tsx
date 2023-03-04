@@ -1,4 +1,3 @@
-import { IconProps } from '@/types';
 import Link from 'next/link';
 import type { FC, PropsWithChildren, ReactElement, ReactNode } from 'react';
 

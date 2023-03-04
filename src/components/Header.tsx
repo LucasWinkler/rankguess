@@ -4,15 +4,11 @@ import Link from 'next/link';
 import clsx from 'clsx';
 import Container from './Container';
 import ConditionalWrapper from './ConditionalWrapper';
-import Submit from './icons/Submit';
 import Login from './icons/Login';
 import Logout from './icons/Logout';
-import Changelog from './icons/Changelog';
 import Question from './icons/Question';
-import FourCircles from './icons/FourCircles';
 import Close from './icons/Close';
 import Hamburger from './icons/Hamburger';
-import Info from './icons/Info';
 import NavItem from './NavItem';
 import navigationItems from '@/data/navigationItems';
 
@@ -175,7 +171,7 @@ const Header: FC = () => {
                 className='text-[0.9375rem] text-neutral-200 transition-colors duration-200 hover:text-neutral-100'>
                 <>
                   <span className='sr-only'>Toggle information modal</span>
-                  <Info className='h-6 w-6' />
+                  <Question className='h-6 w-6' />
                 </>
               </button>
             </div>
