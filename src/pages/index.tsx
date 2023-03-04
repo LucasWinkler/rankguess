@@ -1,55 +1,15 @@
 import Head from 'next/head';
 import Container from '@/components/Container';
-import Image from 'next/image';
-import clsx from 'clsx';
-import resolveConfig from 'tailwindcss/resolveConfig';
-import { content, theme } from 'tailwind.config.js';
+import GameCard from '@/components/GameCard';
 
-const fullConfig = resolveConfig({
-  content,
-  theme,
-});
-const screens = fullConfig.theme?.screens as { [key: string]: string };
 const tempThumb = '/images/valorant-thumb.webp';
 
-const renderTempGrid = (amount: number, img?: any) => {
+const renderTempGrid = (amount: number, thumbnail?: string) => {
   const items = [];
 
   for (let i = 0; i < amount; i++) {
-    items.push(
-      <div
-        key={i}
-        className={clsx(
-          'group relative mx-auto flex min-h-[10rem] w-full max-w-[18rem] items-center justify-center overflow-hidden rounded-xl border border-blueish-grey-700/80 bg-blueish-grey-700 bg-opacity-[25%] p-6 text-center backdrop-blur-[1px] xs:max-w-[22rem] sm:min-h-[23.5rem] sm:max-w-[18rem]',
-          img && 'cursor-pointer'
-        )}>
-        <span
-          className={clsx(
-            'z-[3] text-xl font-bold uppercase tracking-[0.25em] text-neutral-100',
-            img &&
-              'transition-transform duration-[700ms] ease-in-out will-change-transform group-hover:scale-[1.25]'
-          )}>
-          {img ? 'Valorant' : 'Coming Soon'}
-        </span>
-        {img && (
-          <Image
-            className='z-[1] object-cover blur-[1px] brightness-[50%] transition-[blur_scale] duration-[500ms] ease-in-out will-change-transform group-hover:scale-[1.10] group-hover:blur-0 group-hover:brightness-[60%]'
-            src={img}
-            alt='temp thumbnail'
-            fill
-            priority
-            sizes={`
-              (min-width: ${screens.xs}) 50vw,
-              (min-width: ${screens.sm}) 50vw,
-              (min-width: ${screens.md}) 33vw,
-              (min-width: ${screens.lg}) 25vw,
-              100vw
-            `}
-            quality={65}
-          />
-        )}
-      </div>
-    );
+    // Temp key for now
+    items.push(<GameCard key={i} thumbnail={thumbnail} />);
   }
 
   return items;
