@@ -19,7 +19,7 @@ const NavItem: FC<PropsWithChildren<NavItemProps>> = ({
   return (
     <li className={className}>
       <Link
-        className='inline-flex items-center gap-2 py-2 pr-2 transition-colors duration-200 hover:text-neutral-100 [&>svg]:h-5 [&>svg]:w-auto'
+        className='inline-flex flex-nowrap items-center gap-2 whitespace-nowrap py-2 pr-2 transition-colors duration-200 hover:text-neutral-100 [&>svg]:h-5 [&>svg]:w-auto'
         href={href}
         onClick={onClick}>
         <>
