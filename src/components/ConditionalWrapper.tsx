@@ -1,7 +1,7 @@
 import { FC, PropsWithChildren } from 'react';
 
 interface ConditionalWrapperProps {
-  condition: any;
+  condition: boolean;
   wrapper: Function;
 }
 
