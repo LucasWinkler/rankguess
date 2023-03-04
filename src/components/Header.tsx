@@ -39,18 +39,16 @@ const Header: FC = () => {
     }
   }, [isMobileMenuOpen]);
 
-  // Close the mobile nav when the viewport changes in size or orientation
+  // Close the mobile nav when the viewport changes in size
   useEffect(() => {
     const handleViewportChange = () => {
       setIsMobileMenuOpen(false);
     };
 
     window.addEventListener('resize', handleViewportChange);
-    screen.orientation.addEventListener('change', handleViewportChange);
 
     return () => {
       window.removeEventListener('resize', handleViewportChange);
-      screen.orientation.removeEventListener('change', handleViewportChange);
     };
   }, [setIsMobileMenuOpen]);
 
