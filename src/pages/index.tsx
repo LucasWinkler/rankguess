@@ -2,8 +2,9 @@ import Head from 'next/head';
 import Container from '@/components/Container';
 import GameCard, { GameInfoProps } from '@/components/GameCard';
 import { Modal, ModalBody, ModalFooter, ModalHeader } from '@/components/Modal';
-import Link from 'next/link';
+import { useState } from 'react';
 
+const env = process.env.NODE_ENV;
 const valorantThumb = '/images/valorant-thumb.webp';
 const apexThumb = '/images/apex-thumb-test.webp';
 const overwatchThumb = '/images/overwatch-thumb.webp';
@@ -21,6 +22,9 @@ const renderTempGrid = (amount: number, gameProps?: GameInfoProps) => {
 };
 
 export default function Home() {
+  const [isWorkInProgressModalOpen, setIsWorkInProgressModalOpen] =
+    useState(true);
+
   return (
     <>
       <Head>
@@ -32,6 +36,31 @@ export default function Home() {
         <meta name='viewport' content='width=device-width, initial-scale=1' />
         <link rel='icon' href='/favicon.ico' />
       </Head>
+
+      {env === 'production' && (
+        <Modal
+          isOpen={isWorkInProgressModalOpen}
+          setIsOpen={setIsWorkInProgressModalOpen}>
+          <ModalHeader setIsOpen={setIsWorkInProgressModalOpen}>
+            Work In Progress!
+          </ModalHeader>
+          <ModalBody>
+            This project is a work in progress.
+            <br />
+            The UI is currently the main focus and will be updated frequently.
+            <br />I will soon be working on the backend functionality, although
+            authentication will not be available for the public until the
+            project is complete.
+          </ModalBody>
+          <ModalFooter>
+            <button
+              className='rounded-full border border-blueish-grey-700/50 bg-blueish-grey-700/50 px-6 py-2 text-neutral-200 transition-colors duration-200 hover:text-neutral-100'
+              onClick={() => setIsWorkInProgressModalOpen(false)}>
+              Understood
+            </button>
+          </ModalFooter>
+        </Modal>
+      )}
 
       <main id='main-content' className='relative py-12 lg:pt-16 lg:pb-32'>
         <Container>
