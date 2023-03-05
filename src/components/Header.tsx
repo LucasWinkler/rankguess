@@ -15,7 +15,7 @@ import navigationItems from '@/data/navigationItems';
 const Header: FC = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  // For testing purposes
+  // For testing purposes until auth is implemented
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   // Prevent scrolling when the mobile nav is open and force scrollbar to prevent content shifting
@@ -35,7 +35,7 @@ const Header: FC = () => {
     }
   }, [isMobileMenuOpen]);
 
-  // Close the mobile nav when the viewport changes in size
+  // Close the mobile nav when the viewport changes in size/orientation
   useEffect(() => {
     const handleViewportChange = () => {
       setIsMobileMenuOpen(false);

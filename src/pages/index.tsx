@@ -1,15 +1,18 @@
 import Head from 'next/head';
 import Container from '@/components/Container';
-import GameCard from '@/components/GameCard';
+import GameCard, { GameInfoProps } from '@/components/GameCard';
 
-const tempThumb = '/images/valorant-thumb.webp';
+const valorantThumb = '/images/valorant-thumb.webp';
+const apexThumb = '/images/apex-thumb-test.webp';
+const overwatchThumb = '/images/overwatch-thumb.webp';
+const csgoThumb = '/images/csgo-thumb.webp';
 
-const renderTempGrid = (amount: number, thumbnail?: string) => {
+const renderTempGrid = (amount: number, gameProps?: GameInfoProps) => {
   const items = [];
 
   for (let i = 0; i < amount; i++) {
     // Temp key for now
-    items.push(<GameCard key={i} thumbnail={thumbnail} />);
+    items.push(<GameCard key={i} gameProps={gameProps} />);
   }
 
   return items;
@@ -36,7 +39,24 @@ export default function Home() {
             Choose a game
           </h1>
           <div className='grid-games relative mt-12 lg:mt-16'>
-            {renderTempGrid(4, tempThumb)}
+            <GameCard
+              gameProps={{ gameTitle: 'Valorant', thumbnail: valorantThumb }}
+            />
+            <GameCard
+              gameProps={{ gameTitle: 'Apex Legends', thumbnail: apexThumb }}
+            />
+            <GameCard
+              gameProps={{
+                gameTitle: 'CSGO',
+                thumbnail: csgoThumb,
+              }}
+            />
+            <GameCard
+              gameProps={{
+                gameTitle: 'Overwatch',
+                thumbnail: overwatchThumb,
+              }}
+            />
             {renderTempGrid(4)}
           </div>
         </Container>
