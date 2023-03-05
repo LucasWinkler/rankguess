@@ -1,12 +1,11 @@
-import type { FC } from 'react';
+import Container from '@/components/Container';
 
-interface changelogProps {}
-
-const changelog: FC<changelogProps> = ({}) => {
+export default function Changelog() {
   return (
     <>
-      <div></div>
+      <Container>
+        <div>TODO</div>
+      </Container>
     </>
   );
-};
-export default changelog;
+}
