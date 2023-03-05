@@ -5,6 +5,7 @@ import Close from './icons/Close';
 
 interface ModalProps {
   isOpen: boolean;
+  setIsOpen: (isOpen: boolean) => void;
 }
 
 interface ModalHeaderProps {
@@ -73,15 +74,22 @@ export const ModalFooter: FC<PropsWithChildren> = ({ children }) => {
 export const Modal: FC<PropsWithChildren<ModalProps>> = ({
   children,
   isOpen,
+  setIsOpen,
 }) => {
+  const handleClickOutside = () => {
+    setIsOpen(false);
+  };
+
+  if (!isOpen) {
+    return null;
+  }
+
   return (
-    <div
-      className={clsx(
-        'inset-0 z-[15] h-full w-full',
-        isOpen ? 'fixed' : 'hidden'
-      )}>
+    <div className='fixed inset-0 z-[15] h-full w-full'>
       <div className='fixed inset-0 h-full w-full bg-black opacity-50'></div>
-      <div className='fixed inset-0 flex h-full w-full items-center justify-center'>
+      <div
+        onClick={handleClickOutside}
+        className='fixed inset-0 flex h-full w-full items-center justify-center'>
         <Container>
           <div className='flex max-h-[60vh] min-h-[10rem] w-full flex-col items-start overflow-hidden rounded-xl border border-blueish-grey-700/80 bg-blueish-grey-800 bg-opacity-[70%] p-8 backdrop-blur-[6px] md:max-h-[70vh] md:min-w-[35rem] md:max-w-[35rem] lg:min-w-[40rem] lg:max-w-[45rem]'>
             {children}

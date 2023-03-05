@@ -195,7 +195,9 @@ const Header: FC = () => {
                   <Question className='h-6 w-6' />
                 </>
               </button>
-              <Modal isOpen={isInformationModalOpen}>
+              <Modal
+                isOpen={isInformationModalOpen}
+                setIsOpen={setIsInformationModalOpen}>
                 <ModalHeader
                   setIsOpen={setIsInformationModalOpen}
                   onClose={() => {
@@ -203,7 +205,11 @@ const Header: FC = () => {
                   }}>
                   How To Play
                 </ModalHeader>
-                <ModalBody>Guess the rank within 3 guesses</ModalBody>
+                <ModalBody>
+                  Guess the rank within 3 guesses.
+                  <br />
+                  Work in progress...
+                </ModalBody>
                 <ModalFooter>
                   <Link
                     className='text-blue-300 underline underline-offset-2 transition-colors duration-150 hover:no-underline'
