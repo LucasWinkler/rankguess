@@ -3,6 +3,9 @@ import Container from '@/components/Container';
 import GameCard, { GameInfoProps } from '@/components/GameCard';
 import { Modal, ModalBody, ModalFooter, ModalHeader } from '@/components/Modal';
 import { useState } from 'react';
+import { GetServerSideProps } from 'next';
+import { getServerSession } from 'next-auth';
+import { authOptions } from './api/auth/[...nextauth]';
 
 const env = process.env.NODE_ENV;
 const valorantThumb = '/images/valorant-thumb.webp';
@@ -95,3 +98,13 @@ export default function Home() {
     </>
   );
 }
+
+export const getServerSideProps: GetServerSideProps = async context => {
+  const session = await getServerSession(context.req, context.res, authOptions);
+
+  return {
+    props: {
+      session,
+    },
+  };
+};

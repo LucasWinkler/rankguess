@@ -1,4 +1,4 @@
-import { IconProps } from '@/types';
+import { IconProps } from '@/types/icons';
 import type { FC } from 'react';
 
 const Login: FC<IconProps> = ({ className }) => {

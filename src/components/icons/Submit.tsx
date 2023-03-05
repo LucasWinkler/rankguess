@@ -1,4 +1,4 @@
-import { IconProps } from '@/types';
+import { IconProps } from '@/types/icons';
 import type { FC } from 'react';
 
 const Submit: FC<IconProps> = ({ className }) => {

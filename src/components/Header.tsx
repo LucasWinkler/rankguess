@@ -12,14 +12,14 @@ import Hamburger from './icons/Hamburger';
 import NavItem from './NavItem';
 import navigationItems from '@/data/navigationItems';
 import { Modal, ModalBody, ModalFooter, ModalHeader } from './Modal';
+import { signIn } from 'next-auth/react';
+import { useSession } from 'next-auth/react';
 
 const Header: FC = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isInformationModalOpen, setIsInformationModalOpen] = useState(false);
   const informationModalButtonRef = useRef<any>(null);
-
-  // For testing purposes until auth is implemented
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const { data: session, status } = useSession();
 
   const handleInformationModalOpened = () => {
     setIsMobileMenuOpen(false);
@@ -125,18 +125,18 @@ const Header: FC = () => {
                 ))}
               </ul>
               <ul className='flex flex-col gap-6 border-t border-t-blueish-grey-500/25 py-5 text-base font-medium md:hidden'>
-                {isLoggedIn ? (
+                {status === 'authenticated' ? (
                   <NavItem
                     icon={<Logout />}
                     onClick={() => setIsMobileMenuOpen(false)}
-                    href='/'>
+                    href='/api/auth/signout'>
                     Logout
                   </NavItem>
                 ) : (
                   <NavItem
                     icon={<Login />}
                     onClick={() => setIsMobileMenuOpen(false)}
-                    href='/'>
+                    href='/api/auth/signin'>
                     Login
                   </NavItem>
                 )}
@@ -156,11 +156,11 @@ const Header: FC = () => {
           </Link>
           <div className='flex flex-grow basis-0 justify-end gap-4'>
             <ul className='hidden flex-grow basis-0 items-center justify-end gap-4 text-[0.9375rem] md:flex'>
-              {isLoggedIn ? (
+              {status === 'authenticated' ? (
                 <li>
                   <Link
                     className='transition-colors duration-200 hover:text-neutral-100'
-                    href='/'>
+                    href='/api/auth/signout'>
                     Logout
                   </Link>
                 </li>
@@ -168,7 +168,7 @@ const Header: FC = () => {
                 <li>
                   <Link
                     className='transition-colors duration-200 hover:text-neutral-100'
-                    href='/login'>
+                    href='/api/auth/signin'>
                     Login
                   </Link>
                 </li>
@@ -205,11 +205,11 @@ const Header: FC = () => {
                   Work in progress...
                 </ModalBody>
                 <ModalFooter>
-                  <Link
+                  <button
                     className='text-blue-300 underline underline-offset-2 transition-colors duration-150 hover:no-underline'
-                    href='/login'>
+                    onClick={() => signIn()}>
                     Login
-                  </Link>{' '}
+                  </button>{' '}
                   to link your stats and submit your own clips!
                 </ModalFooter>
               </Modal>
