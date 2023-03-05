@@ -1,4 +1,4 @@
-import { FC, ReactNode, useEffect, useState } from 'react';
+import { FC, ReactNode, useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import clsx from 'clsx';
@@ -16,31 +16,26 @@ import { Modal, ModalBody, ModalFooter, ModalHeader } from './Modal';
 const Header: FC = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isInformationModalOpen, setIsInformationModalOpen] = useState(false);
+  const informationModalButtonRef = useRef<any>(null);
 
   // For testing purposes until auth is implemented
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  const handleInformationModalClicked = () => {
-    setIsInformationModalOpen(true);
+  const handleInformationModalOpened = () => {
     setIsMobileMenuOpen(false);
+    setIsInformationModalOpen(true);
   };
 
-  // information modal button clicked
-  // useEffect(() => {
-  //   const handleInformationModal = () => {
-  //     setIsInformationModalOpen(!isInformationModalOpen);
-  //     setIsMobileMenuOpen(false);
-  //   };
-
-  //   window.addEventListener('keydown', handleInformationModal);
-
-  //   return () => {
-  //     window.removeEventListener('keydown', handleInformationModal);
-  //   };
-  // }, [setIsInformationModalOpen]);
+  const handleInformationModalClosed = () => {
+    informationModalButtonRef.current.focus();
+  };
 
   // Prevent scrolling when the mobile nav is open and force scrollbar to prevent content shifting
   useEffect(() => {
+    if (isInformationModalOpen) {
+      return;
+    }
+
     const html = document.querySelector('html');
     const classesToToggle = [
       'overflow-hidden',
@@ -54,7 +49,7 @@ const Header: FC = () => {
         html.classList.toggle(classesToToggle, isMobileMenuOpen);
       });
     }
-  }, [isMobileMenuOpen]);
+  }, [isMobileMenuOpen, isInformationModalOpen]);
 
   // Close the mobile nav when the viewport changes in size/orientation
   useEffect(() => {
@@ -188,17 +183,20 @@ const Header: FC = () => {
             </ul>
             <div className='flex justify-end'>
               <button
-                onClick={handleInformationModalClicked}
+                ref={informationModalButtonRef}
+                onClick={handleInformationModalOpened}
                 className='text-[0.9375rem] text-neutral-200 transition-colors duration-200 hover:text-neutral-100'>
                 <>
-                  <span className='sr-only'>Toggle information modal</span>
+                  <span className='sr-only'>Open information modal</span>
                   <Question className='h-6 w-6' />
                 </>
               </button>
               <Modal
                 isOpen={isInformationModalOpen}
                 setIsOpen={setIsInformationModalOpen}>
-                <ModalHeader setIsOpen={setIsInformationModalOpen}>
+                <ModalHeader
+                  setIsOpen={setIsInformationModalOpen}
+                  onClose={handleInformationModalClosed}>
                   How To Play
                 </ModalHeader>
                 <ModalBody>

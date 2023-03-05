@@ -80,6 +80,23 @@ export const Modal: FC<PropsWithChildren<ModalProps>> = ({
     setIsOpen(false);
   };
 
+  // prevent scrolling when the modal is open
+  useEffect(() => {
+    const html = document.querySelector('html');
+    const classesToToggle = [
+      'overflow-hidden',
+      'overflow-y-scroll',
+      'fixed',
+      'inset-0',
+    ];
+
+    if (html) {
+      classesToToggle.forEach(classesToToggle => {
+        html.classList.toggle(classesToToggle, isOpen);
+      });
+    }
+  }, [isOpen]);
+
   if (!isOpen) {
     return null;
   }
