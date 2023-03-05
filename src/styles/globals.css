@@ -43,24 +43,24 @@
     }
   }
 
-  .mobile-scrollbar {
+  .slim-scrollbar {
     scrollbar-width: thin;
     scrollbar-color: @apply bg-blueish-grey-700 border-blueish-grey-800;
   }
 
-  .mobile-scrollbar::-webkit-scrollbar {
+  .slim-scrollbar::-webkit-scrollbar {
     @apply w-[14px];
   }
 
-  .mobile-scrollbar::-webkit-scrollbar-thumb {
+  .slim-scrollbar::-webkit-scrollbar-thumb {
     @apply rounded-lg border-2 border-solid border-blueish-grey-800 bg-blueish-grey-700;
   }
 
-  .mobile-scrollbar::-webkit-scrollbar-thumb:hover {
+  .slim-scrollbar::-webkit-scrollbar-thumb:hover {
     @apply bg-blueish-grey-500/60;
   }
 
-  .mobile-scrollbar::-webkit-scrollbar-track {
+  .slim-scrollbar::-webkit-scrollbar-track {
     @apply bg-blueish-grey-800;
   }
 

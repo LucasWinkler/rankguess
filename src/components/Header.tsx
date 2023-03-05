@@ -11,12 +11,33 @@ import Close from './icons/Close';
 import Hamburger from './icons/Hamburger';
 import NavItem from './NavItem';
 import navigationItems from '@/data/navigationItems';
+import { Modal, ModalBody, ModalFooter, ModalHeader } from './Modal';
 
 const Header: FC = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isInformationModalOpen, setIsInformationModalOpen] = useState(false);
 
   // For testing purposes until auth is implemented
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  const handleInformationModalClicked = () => {
+    setIsInformationModalOpen(true);
+    setIsMobileMenuOpen(false);
+  };
+
+  // information modal button clicked
+  // useEffect(() => {
+  //   const handleInformationModal = () => {
+  //     setIsInformationModalOpen(!isInformationModalOpen);
+  //     setIsMobileMenuOpen(false);
+  //   };
+
+  //   window.addEventListener('keydown', handleInformationModal);
+
+  //   return () => {
+  //     window.removeEventListener('keydown', handleInformationModal);
+  //   };
+  // }, [setIsInformationModalOpen]);
 
   // Prevent scrolling when the mobile nav is open and force scrollbar to prevent content shifting
   useEffect(() => {
@@ -70,7 +91,7 @@ const Header: FC = () => {
           <div className='flex flex-grow basis-0 md:hidden'>
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className='text-neutral-1 text-[0.9375rem] transition-colors duration-200 hover:text-neutral-100'>
+              className='text-[0.9375rem] transition-colors duration-200 hover:text-neutral-100'>
               {isMobileMenuOpen ? (
                 <>
                   <span className='sr-only'>Close navigation menu</span>
@@ -88,7 +109,7 @@ const Header: FC = () => {
             className={clsx(
               'flex-grow basis-0 md:flex',
               isMobileMenuOpen
-                ? 'mobile-scrollbar absolute left-0 top-navigation-height right-0 z-10 block h-[calc(100%-var(--navigation-height))] overflow-y-auto border-t border-t-blueish-grey-700/25 bg-blueish-grey-800'
+                ? 'slim-scrollbar absolute left-0 top-navigation-height right-0 z-10 block h-[calc(100%-var(--navigation-height))] overflow-y-auto border-t border-t-blueish-grey-700/25 bg-blueish-grey-800'
                 : 'hidden'
             )}>
             <ConditionalWrapper
@@ -167,13 +188,31 @@ const Header: FC = () => {
             </ul>
             <div className='flex justify-end'>
               <button
-                onClick={() => setIsMobileMenuOpen(false)}
+                onClick={handleInformationModalClicked}
                 className='text-[0.9375rem] text-neutral-200 transition-colors duration-200 hover:text-neutral-100'>
                 <>
                   <span className='sr-only'>Toggle information modal</span>
                   <Question className='h-6 w-6' />
                 </>
               </button>
+              <Modal isOpen={isInformationModalOpen}>
+                <ModalHeader
+                  setIsOpen={setIsInformationModalOpen}
+                  onClose={() => {
+                    console.log('close modal');
+                  }}>
+                  How To Play
+                </ModalHeader>
+                <ModalBody>Guess the rank within 3 guesses</ModalBody>
+                <ModalFooter>
+                  <Link
+                    className='text-blue-300 underline underline-offset-2 transition-colors duration-150 hover:no-underline'
+                    href='/login'>
+                    Login
+                  </Link>{' '}
+                  to link your stats and submit your own clips!
+                </ModalFooter>
+              </Modal>
             </div>
           </div>
         </div>

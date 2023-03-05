@@ -1,6 +1,8 @@
 import Head from 'next/head';
 import Container from '@/components/Container';
 import GameCard, { GameInfoProps } from '@/components/GameCard';
+import { Modal, ModalBody, ModalFooter, ModalHeader } from '@/components/Modal';
+import Link from 'next/link';
 
 const valorantThumb = '/images/valorant-thumb.webp';
 const apexThumb = '/images/apex-thumb-test.webp';
