@@ -198,11 +198,7 @@ const Header: FC = () => {
               <Modal
                 isOpen={isInformationModalOpen}
                 setIsOpen={setIsInformationModalOpen}>
-                <ModalHeader
-                  setIsOpen={setIsInformationModalOpen}
-                  onClose={() => {
-                    console.log('close modal');
-                  }}>
+                <ModalHeader setIsOpen={setIsInformationModalOpen}>
                   How To Play
                 </ModalHeader>
                 <ModalBody>
