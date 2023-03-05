@@ -205,12 +205,21 @@ const Header: FC = () => {
                   Work in progress...
                 </ModalBody>
                 <ModalFooter>
-                  <button
-                    className='text-blue-300 underline underline-offset-2 transition-colors duration-150 hover:no-underline'
-                    onClick={() => signIn()}>
-                    Login
-                  </button>{' '}
-                  to link your stats and submit your own clips!
+                  {status === 'authenticated' ? (
+                    <>
+                      You&apos;re signed in! Your stats are linked and
+                      you&apos;re able to submit your own clips.
+                    </>
+                  ) : (
+                    <>
+                      <Link
+                        className='text-blue-300 underline underline-offset-2 transition-colors duration-150 hover:no-underline'
+                        href='/api/auth/signin'>
+                        Login
+                      </Link>{' '}
+                      to link your stats and submit your own clips!
+                    </>
+                  )}
                 </ModalFooter>
               </Modal>
             </div>
