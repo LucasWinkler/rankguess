@@ -24,7 +24,7 @@ const navigationItems: NavigationItemProps[] = [
   },
   {
     name: 'Changelog',
-    href: '/',
+    href: '/changelog',
     icon: <Changelog />,
   },
 ];
