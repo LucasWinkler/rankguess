@@ -1,22 +1,31 @@
 import clsx from 'clsx';
-import { FC, PropsWithChildren, useEffect } from 'react';
+import {
+  Dispatch,
+  FC,
+  PropsWithChildren,
+  SetStateAction,
+  useEffect,
+} from 'react';
 import Container from './Container';
 import Close from './icons/Close';
 
 interface ModalProps {
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
+  canClickOverlayToClose?: boolean;
 }
 
 interface ModalHeaderProps {
   onClose?: () => void;
   setIsOpen: (isOpen: boolean) => void;
+  hasCloseButton?: boolean;
 }
 
 export const ModalHeader: FC<PropsWithChildren<ModalHeaderProps>> = ({
   children,
   onClose,
   setIsOpen,
+  hasCloseButton = true,
 }) => {
   const handleClose = () => {
     setIsOpen(false);
@@ -45,12 +54,14 @@ export const ModalHeader: FC<PropsWithChildren<ModalHeaderProps>> = ({
       <h2 className='text-lg font-semibold text-neutral-100 md:text-xl lg:text-2xl'>
         {children}
       </h2>
-      <button
-        className='absolute right-[-1px] top-[-1px] rounded-bl-xl rounded-tr-xl border border-blueish-grey-600/80 bg-blueish-grey-600 bg-opacity-[20%] p-2 text-neutral-200 transition-colors duration-150 hover:bg-opacity-[60%] hover:text-neutral-100'
-        onClick={handleClose}>
-        <span className='sr-only'>Close information modal</span>
-        <Close className='h-4 w-auto' />
-      </button>
+      {hasCloseButton && (
+        <button
+          className='absolute right-[-1px] top-[-1px] rounded-bl-xl rounded-tr-xl border border-blueish-grey-600/80 bg-blueish-grey-600 bg-opacity-[20%] p-2 text-neutral-200 transition-colors duration-150 hover:bg-opacity-[60%] hover:text-neutral-100'
+          onClick={handleClose}>
+          <span className='sr-only'>Close information modal</span>
+          <Close className='h-4 w-auto' />
+        </button>
+      )}
     </div>
   );
 };
@@ -75,9 +86,12 @@ export const Modal: FC<PropsWithChildren<ModalProps>> = ({
   children,
   isOpen,
   setIsOpen,
+  canClickOverlayToClose = true,
 }) => {
   const handleClickOutside = () => {
-    setIsOpen(false);
+    if (canClickOverlayToClose) {
+      setIsOpen(false);
+    }
   };
 
   // prevent scrolling when the modal is open
