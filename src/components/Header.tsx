@@ -12,14 +12,13 @@ import Hamburger from './icons/Hamburger';
 import NavItem from './NavItem';
 import navigationItems from '@/data/navigationItems';
 import { Modal, ModalBody, ModalFooter, ModalHeader } from './Modal';
-import { signIn } from 'next-auth/react';
 import { useSession } from 'next-auth/react';
 
 const Header: FC = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isInformationModalOpen, setIsInformationModalOpen] = useState(false);
   const informationModalButtonRef = useRef<any>(null);
-  const { data: session, status } = useSession();
+  const { status } = useSession();
 
   const handleInformationModalOpened = () => {
     setIsMobileMenuOpen(false);
@@ -80,7 +79,7 @@ const Header: FC = () => {
   }, []);
 
   return (
-    <header className='z-10 border-b border-b-blueish-grey-700/25'>
+    <header className='z-10 border-b border-b-blueish-grey-600/25'>
       <Container className='flex h-navigation-height items-center'>
         <div className='flex w-full items-center justify-between gap-2 text-neutral-300'>
           <div className='flex flex-grow basis-0 md:hidden'>
@@ -104,7 +103,7 @@ const Header: FC = () => {
             className={clsx(
               'flex-grow basis-0 md:flex',
               isMobileMenuOpen
-                ? 'slim-scrollbar absolute left-0 top-navigation-height right-0 z-10 block h-[calc(100%-var(--navigation-height))] overflow-y-auto border-t border-t-blueish-grey-700/25 bg-blueish-grey-800'
+                ? 'slim-scrollbar absolute left-0 top-navigation-height right-0 z-10 block h-[calc(100%-var(--navigation-height))] overflow-y-auto border-t border-t-blueish-grey-600/25 bg-blueish-grey-800'
                 : 'hidden'
             )}>
             <ConditionalWrapper
@@ -175,7 +174,7 @@ const Header: FC = () => {
               )}
               <li>
                 <Link
-                  className='rounded-full border border-blueish-grey-700/50 bg-blueish-grey-700/50 px-6 py-2 text-neutral-200 transition-colors duration-200 hover:text-neutral-100'
+                  className='rounded-full border border-blueish-grey-600/50 bg-blueish-grey-600/50 px-6 py-2 text-neutral-200 transition-colors duration-200 hover:text-neutral-100'
                   href='/submit'>
                   Submit Clips
                 </Link>

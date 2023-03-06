@@ -57,7 +57,7 @@ export default function Home() {
           </ModalBody>
           <ModalFooter>
             <button
-              className='rounded-full border border-blueish-grey-700/50 bg-blueish-grey-700/50 px-6 py-2 text-neutral-200 transition-colors duration-200 hover:text-neutral-100'
+              className='rounded-full border border-blueish-grey-600/50 bg-blueish-grey-600/50 px-6 py-2 text-neutral-200 transition-colors duration-200 hover:text-neutral-100'
               onClick={() => setIsWorkInProgressModalOpen(false)}>
               Understood
             </button>
@@ -68,11 +68,9 @@ export default function Home() {
       <main id='main-content' className='relative py-12 lg:pt-16 lg:pb-32'>
         <Container>
           <div className='pointer-events-none absolute left-0 right-0 bottom-0 -top-[15.5rem] h-full w-full select-none bg-heading-circle bg-top bg-no-repeat'></div>
-          <div className='background-grid pointer-events-none absolute inset-0 select-none bg-bottom opacity-[7.5%]'></div>
-          <h1 className='relative text-center text-2xl font-medium uppercase tracking-[0.2em] text-neutral-200'>
-            Choose a game
-          </h1>
-          <div className='grid-games relative mt-12 lg:mt-16'>
+          <div className='background-grid pointer-events-none absolute inset-0 select-none opacity-[7.5%]'></div>
+          <h1 className='page-heading-1 relative'>Choose a game</h1>
+          <div className='grid-games relative'>
             <GameCard
               gameProps={{ gameTitle: 'Valorant', thumbnail: valorantThumb }}
             />

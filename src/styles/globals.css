@@ -8,16 +8,20 @@
   }
 
   html {
-    @apply scroll-smooth;
+    @apply scroll-smooth bg-blueish-grey-900 leading-relaxed text-neutral-100 antialiased;
   }
 
   html,
   body {
-    @apply max-w-[100vw] overflow-x-hidden bg-blueish-grey-900 text-neutral-100 antialiased;
+    @apply max-w-[100vw] overflow-x-hidden;
   }
 }
 
 @layer utilities {
+  .page-heading-1 {
+    @apply mb-12 text-center text-2xl font-medium uppercase tracking-[0.2em] text-neutral-100 lg:mb-16 lg:text-3xl;
+  }
+
   .grid-games {
     --grid-layout-gap: 30px;
     --grid-column-count: 4;
@@ -45,7 +49,7 @@
 
   .slim-scrollbar {
     scrollbar-width: thin;
-    scrollbar-color: @apply bg-blueish-grey-700 border-blueish-grey-800;
+    scrollbar-color: @apply bg-blueish-grey-600 border-blueish-grey-800;
   }
 
   .slim-scrollbar::-webkit-scrollbar {
@@ -53,7 +57,7 @@
   }
 
   .slim-scrollbar::-webkit-scrollbar-thumb {
-    @apply rounded-lg border-2 border-solid border-blueish-grey-800 bg-blueish-grey-700;
+    @apply rounded-lg border-2 border-solid border-blueish-grey-800 bg-blueish-grey-600;
   }
 
   .slim-scrollbar::-webkit-scrollbar-thumb:hover {

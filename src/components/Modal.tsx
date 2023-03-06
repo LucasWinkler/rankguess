@@ -41,12 +41,12 @@ export const ModalHeader: FC<PropsWithChildren<ModalHeaderProps>> = ({
   }, [setIsOpen]);
 
   return (
-    <div className='flex w-full items-start justify-between border-b border-b-blueish-grey-700/80 pb-2'>
+    <div className='flex w-full items-start justify-between border-b border-b-blueish-grey-600/80 pb-2'>
       <h2 className='text-lg font-semibold text-neutral-100 md:text-xl lg:text-2xl'>
         {children}
       </h2>
       <button
-        className='absolute right-[-1px] top-[-1px] rounded-bl-xl rounded-tr-xl border border-blueish-grey-700/80 bg-blueish-grey-800 bg-opacity-[20%] p-2 text-neutral-200 transition-colors duration-150 hover:bg-opacity-[80%] hover:text-neutral-100'
+        className='absolute right-[-1px] top-[-1px] rounded-bl-xl rounded-tr-xl border border-blueish-grey-600/80 bg-blueish-grey-600 bg-opacity-[20%] p-2 text-neutral-200 transition-colors duration-150 hover:bg-opacity-[60%] hover:text-neutral-100'
         onClick={handleClose}>
         <span className='sr-only'>Close information modal</span>
         <Close className='h-4 w-auto' />
@@ -57,16 +57,16 @@ export const ModalHeader: FC<PropsWithChildren<ModalHeaderProps>> = ({
 
 export const ModalBody: FC<PropsWithChildren> = ({ children }) => {
   return (
-    <p className='slim-scrollbar w-full overflow-y-auto py-3 text-neutral-200'>
+    <div className='slim-scrollbar w-full overflow-y-auto py-3 text-neutral-200'>
       {children}
-    </p>
+    </div>
   );
 };
 
 export const ModalFooter: FC<PropsWithChildren> = ({ children }) => {
   return (
-    <div className='w-full border-t border-t-blueish-grey-700/80 pt-3 text-sm text-neutral-200 md:text-base'>
-      <p>{children}</p>
+    <div className='w-full border-t border-t-blueish-grey-600/80 pt-3 text-sm text-neutral-200 md:text-base'>
+      {children}
     </div>
   );
 };
@@ -110,7 +110,7 @@ export const Modal: FC<PropsWithChildren<ModalProps>> = ({
         <Container>
           <div
             onClick={e => e.stopPropagation()}
-            className='flex max-h-[60vh] min-h-[10rem] w-full flex-col items-start overflow-hidden rounded-xl border border-blueish-grey-700/80 bg-blueish-grey-800 bg-opacity-[70%] p-8 backdrop-blur-[6px] md:max-h-[70vh] md:min-w-[35rem] md:max-w-[35rem] lg:min-w-[40rem] lg:max-w-[45rem]'>
+            className='flex max-h-[60vh] min-h-[10rem] w-full flex-col items-start overflow-hidden rounded-xl border border-blueish-grey-600/80 bg-blueish-grey-800 bg-opacity-[70%] p-8 backdrop-blur-[6px] md:max-h-[70vh] md:min-w-[35rem] md:max-w-[35rem] lg:min-w-[40rem] lg:max-w-[45rem]'>
             {children}
           </div>
         </Container>

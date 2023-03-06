@@ -58,7 +58,7 @@ const GameCardChildren: FC<GameCardProps> = ({ gameProps }) => {
 
 const GameCard: FC<GameCardProps> = ({ gameProps }) => {
   const gameCardClasses =
-    'group relative mx-auto flex min-h-[10rem] w-full max-w-[18rem] items-center justify-center overflow-hidden rounded-xl border border-blueish-grey-700/80 bg-blueish-grey-700 bg-opacity-[25%] p-8 text-center backdrop-blur-[1px] xs:max-w-[22rem] sm:min-h-[23.5rem] sm:max-w-[18rem]';
+    'group relative mx-auto flex min-h-[10rem] w-full max-w-[18rem] items-center justify-center overflow-hidden rounded-xl border border-blueish-grey-600/80 bg-blueish-grey-600 bg-opacity-[25%] p-8 text-center backdrop-blur-[1px] xs:max-w-[22rem] sm:min-h-[23.5rem] sm:max-w-[18rem]';
 
   if (gameProps) {
     return (
