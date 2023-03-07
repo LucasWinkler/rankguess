@@ -12,7 +12,7 @@ import Hamburger from './icons/Hamburger';
 import NavItem from './NavItem';
 import navigationItems from '@/data/navigationItems';
 import { Modal, ModalBody, ModalFooter, ModalHeader } from './Modal';
-import { useSession } from 'next-auth/react';
+import { signIn, signOut, useSession } from 'next-auth/react';
 
 const Header: FC = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -127,14 +127,20 @@ const Header: FC = () => {
                 {status === 'authenticated' ? (
                   <NavItem
                     icon={<Logout />}
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    href='/api/auth/signout'>
+                    href='/logout'
+                    onClick={() => {
+                      setIsMobileMenuOpen(false);
+                    }}>
                     Logout
                   </NavItem>
                 ) : (
                   <NavItem
                     icon={<Login />}
-                    onClick={() => setIsMobileMenuOpen(false)}
+                    onClick={e => {
+                      e.preventDefault();
+                      setIsMobileMenuOpen(false);
+                      signIn('google');
+                    }}
                     href='/api/auth/signin'>
                     Login
                   </NavItem>
@@ -159,7 +165,10 @@ const Header: FC = () => {
                 <li>
                   <Link
                     className='transition-colors duration-200 hover:text-neutral-100'
-                    href='/api/auth/signout'>
+                    href='/logout'
+                    onClick={() => {
+                      setIsMobileMenuOpen(false);
+                    }}>
                     Logout
                   </Link>
                 </li>
@@ -167,7 +176,10 @@ const Header: FC = () => {
                 <li>
                   <Link
                     className='transition-colors duration-200 hover:text-neutral-100'
-                    href='/api/auth/signin'>
+                    onClick={() => {
+                      setIsMobileMenuOpen(false);
+                    }}
+                    href='/login'>
                     Login
                   </Link>
                 </li>
@@ -213,7 +225,10 @@ const Header: FC = () => {
                     <>
                       <Link
                         className='text-blue-300 underline underline-offset-2 transition-colors duration-150 hover:no-underline'
-                        href='/api/auth/signin'>
+                        onClick={() => {
+                          setIsMobileMenuOpen(false);
+                        }}
+                        href='/login'>
                         Login
                       </Link>{' '}
                       to link your stats and submit your own clips!

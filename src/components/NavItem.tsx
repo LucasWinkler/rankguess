@@ -1,10 +1,16 @@
 import Link from 'next/link';
-import type { FC, PropsWithChildren, ReactElement, ReactNode } from 'react';
+import type {
+  FC,
+  MouseEvent,
+  PropsWithChildren,
+  ReactElement,
+  ReactNode,
+} from 'react';
 
 interface NavItemProps {
   icon?: ReactElement;
   href: string;
-  onClick?: () => void;
+  onClick?: (e: MouseEvent<HTMLElement>) => void;
   className?: string;
 }
 

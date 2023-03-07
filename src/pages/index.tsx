@@ -25,7 +25,7 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>Choose Game | rankguess</title>
+        <title>Choose Game | RankGuess</title>
         <meta
           name='description'
           content='Guess the rank of user submitted clips from Apex Legends, CSGO, League of Legends, and more!'
