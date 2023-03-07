@@ -62,7 +62,7 @@ const GameCard: FC<GameCardProps> = ({ gameProps }) => {
 
   if (gameProps) {
     return (
-      <Link href='/' className={gameCardClasses}>
+      <Link href={`/game/${gameProps.gameTitle}`} className={gameCardClasses}>
         <GameCardChildren gameProps={gameProps} />
       </Link>
     );
