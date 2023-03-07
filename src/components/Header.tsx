@@ -136,12 +136,10 @@ const Header: FC = () => {
                 ) : (
                   <NavItem
                     icon={<Login />}
-                    onClick={e => {
-                      e.preventDefault();
+                    onClick={() => {
                       setIsMobileMenuOpen(false);
-                      signIn('google');
                     }}
-                    href='/api/auth/signin'>
+                    href='/login'>
                     Login
                   </NavItem>
                 )}
