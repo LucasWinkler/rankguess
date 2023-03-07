@@ -1,21 +1,31 @@
 import Container from '@/components/Container';
 import { GetServerSidePropsContext } from 'next';
 import { getServerSession } from 'next-auth';
-import Head from 'next/head';
 import { authOptions } from './api/auth/[...nextauth]';
+import { NextSeo } from 'next-seo';
 
 export default function Submit() {
   return (
     <>
-      <Head>
-        <title>Submit Your Clips | RankGuess</title>
-        <meta
-          name='description'
-          content='Submit your own gameplay clips. The daily game where you guess the rank of user submitted clips from Apex Legends, CSGO, League of Legends, and more!'
-        />
-        <meta name='viewport' content='width=device-width, initial-scale=1' />
-        <link rel='icon' href='/favicon.ico' />
-      </Head>
+      <NextSeo
+        title='Submit Your Clips'
+        description='Submit your own gameplay clips. The daily game where you guess the rank of user submitted clips from Apex Legends, CSGO, League of Legends, and more!'
+        openGraph={{
+          url: 'https://www.rankguess.com/submit',
+          title: 'Submit Your Clips | RankGuess',
+          description:
+            'Submit your own gameplay clips. The daily game where you guess the rank of user submitted clips from Apex Legends, CSGO, League of Legends, and more!',
+          images: [
+            {
+              url: 'https://www.rankguess.com/og.png',
+              width: 1200,
+              height: 600,
+              alt: 'Choose game desktop view',
+              type: 'image/png',
+            },
+          ],
+        }}
+      />
 
       <Container>
         <h1>Submit your own clips</h1>

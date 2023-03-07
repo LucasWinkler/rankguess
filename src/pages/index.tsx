@@ -4,6 +4,7 @@ import GameCard, { GameInfoProps } from '@/components/GameCard';
 import { GetServerSideProps } from 'next';
 import { getServerSession } from 'next-auth';
 import { authOptions } from './api/auth/[...nextauth]';
+import { NextSeo } from 'next-seo';
 
 const valorantThumb = '/images/valorant-thumb.webp';
 const apexThumb = '/images/apex-thumb-test.webp';
@@ -24,15 +25,24 @@ const renderTempGrid = (amount: number, gameProps?: GameInfoProps) => {
 export default function Home() {
   return (
     <>
-      <Head>
-        <title>Choose Game | RankGuess</title>
-        <meta
-          name='description'
-          content='Guess the rank of user submitted clips from Apex Legends, CSGO, League of Legends, and more!'
-        />
-        <meta name='viewport' content='width=device-width, initial-scale=1' />
-        <link rel='icon' href='/favicon.ico' />
-      </Head>
+      <NextSeo
+        title='Choose Game'
+        openGraph={{
+          url: 'https://www.rankguess.com/submit',
+          title: 'Choose Game | RankGuess',
+          description:
+            'Guess the rank of user submitted clips from Apex Legends, CSGO, League of Legends, and more!',
+          images: [
+            {
+              url: 'https://www.rankguess.com/og.png',
+              width: 1200,
+              height: 600,
+              alt: 'Choose game desktop view',
+              type: 'image/png',
+            },
+          ],
+        }}
+      />
 
       <main id='main-content' className='relative py-12 lg:pt-16 lg:pb-32'>
         <Container>

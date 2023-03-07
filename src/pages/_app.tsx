@@ -6,6 +6,8 @@ import Header from '@/components/Header';
 import { useEffect, useState } from 'react';
 import { Modal, ModalBody, ModalFooter, ModalHeader } from '@/components/Modal';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
+import { DefaultSeo } from 'next-seo';
+import SEO from '@/data/next-seo.config';
 
 const poppins = Poppins({
   weight: ['300', '400', '500', '600', '700'],
@@ -50,6 +52,21 @@ export default function App({
           </Modal>
         )}
 
+        <DefaultSeo
+          additionalLinkTags={[
+            {
+              rel: 'icon',
+              href: '/favicon.ico',
+            },
+          ]}
+          additionalMetaTags={[
+            {
+              name: 'viewport',
+              content: 'width=device-width, initial-scale=1',
+            },
+          ]}
+          {...SEO}
+        />
         <Header />
         <Component {...pageProps} />
       </div>

@@ -2,19 +2,30 @@ import Container from '@/components/Container';
 import changelog from '@/data/changelog';
 import Head from 'next/head';
 import { Fragment } from 'react';
+import { NextSeo } from 'next-seo';
 
 export default function Changelog() {
   return (
     <>
-      <Head>
-        <title>Changelog | RankGuess</title>
-        <meta
-          name='description'
-          content='Keep up to date on changes for RankGuess. The daily game where you guess the rank of user submitted clips from Apex Legends, CSGO, League of Legends, and more!'
-        />
-        <meta name='viewport' content='width=device-width, initial-scale=1' />
-        <link rel='icon' href='/favicon.ico' />
-      </Head>
+      <NextSeo
+        title='Changelog'
+        description='Keep up to date on changes for RankGuess. The daily game where you guess the rank of user submitted clips from Apex Legends, CSGO, League of Legends, and more!'
+        openGraph={{
+          url: 'https://www.rankguess.com/changelog',
+          title: 'Changelog | RankGuess',
+          description:
+            'Keep up to date on changes for RankGuess. The daily game where you guess the rank of user submitted clips from Apex Legends, CSGO, League of Legends, and more!',
+          images: [
+            {
+              url: 'https://www.rankguess.com/og.png',
+              width: 1200,
+              height: 600,
+              alt: 'Choose game desktop view',
+              type: 'image/png',
+            },
+          ],
+        }}
+      />
 
       <main id='main-content' className='relative py-12 lg:pt-16 lg:pb-32'>
         <Container>
