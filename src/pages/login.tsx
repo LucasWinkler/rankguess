@@ -5,8 +5,11 @@ import { getServerSession } from 'next-auth';
 import { signIn } from 'next-auth/react';
 import { authOptions } from './api/auth/[...nextauth]';
 import { NextSeo } from 'next-seo';
+import { useRouter } from 'next/router';
 
 export default function Login() {
+  const router = useRouter();
+
   return (
     <>
       <NextSeo
@@ -39,7 +42,12 @@ export default function Login() {
             </p>
             <div className='mt-6'>
               <button
-                onClick={() => signIn('google')}
+                onClick={() =>
+                  signIn('google', {
+                    redirect: true,
+                    callbackUrl: router.query.callbackUrl as string,
+                  })
+                }
                 className='flex w-full items-center gap-3 rounded-xl border border-blueish-grey-600/80 bg-blueish-grey-700 py-3 px-5 text-left text-sm font-light text-neutral-100 transition-colors duration-200 hover:bg-blueish-grey-800/25'>
                 <LoginIcon className='h-5 w-auto' /> Login with Google
               </button>
