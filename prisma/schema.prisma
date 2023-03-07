@@ -21,8 +21,7 @@ model Account {
   scope             String?
   id_token          String? @db.Text
   session_state     String?
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
   @@index([userId])
@@ -38,6 +37,14 @@ model Session {
   @@index([userId])
 }
 
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
 model User {
   id            String    @id @default(cuid())
   name          String?
@@ -46,12 +53,70 @@ model User {
   image         String?
   accounts      Account[]
   sessions      Session[]
+  clips         Clip[]
+  stats         Stats[]
 }
 
-model VerificationToken {
-  identifier String
-  token      String   @unique
-  expires    DateTime
+// User submitted clips that must be accepted before being shown on the site
+// Once accepted the video will be uploaded via the youtube api, and the
+// youtube url will be stored.
+model Clip {
+  id            String       @id @default(cuid())
+  videoFile     String
+  youtubeUrl    String?
+  submittedDate DateTime     @default(now())
+  acceptedDate  DateTime?
+  isAccepted    Boolean      @default(false)
+  game          Game         @relation(fields: [gameId], references: [id])
+  gameId        String
+  player        User         @relation(fields: [playerId], references: [id])
+  playerId      String
+  currentClip   CurrentClip?
 
-  @@unique([identifier, token])
+  @@index([playerId])
+  @@index([gameId])
+}
+
+model Game {
+  id            String       @id @default(cuid())
+  name          String       @unique
+  slug          String       @unique
+  currentClip   CurrentClip?
+  currentClipId String?
+
+  ranks Rank[]
+  stats Stats[]
+  clips Clip[]
+}
+
+model CurrentClip {
+  id     String @id @default(cuid())
+  game   Game   @relation(fields: [gameId], references: [id])
+  gameId String @unique
+  clip   Clip   @relation(fields: [clipId], references: [id])
+  clipId String @unique
+}
+
+model Rank {
+  id     String @id @default(cuid())
+  name   String
+  game   Game   @relation(fields: [gameId], references: [id])
+  gameId String
+
+  @@index([gameId])
+}
+
+model Stats {
+  id            String @id @default(cuid())
+  gamesPlayed   Int    @default(0)
+  gamesWon      Int    @default(0)
+  streak        Int    @default(0)
+  longestStreak Int    @default(0)
+  game          Game   @relation(fields: [gameId], references: [id])
+  gameId        String
+  user          User   @relation(fields: [userId], references: [id])
+  userId        String
+
+  @@index([userId])
+  @@index([gameId])
 }
