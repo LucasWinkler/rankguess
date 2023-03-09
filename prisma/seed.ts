@@ -3,7 +3,7 @@ const prisma = new PrismaClient();
 async function main() {
   console.log('Start seeding ...');
 
-  const valorant = await prisma.game.upsert({
+  await prisma.game.upsert({
     where: { name: 'Valorant' },
     update: {},
     create: {
@@ -13,7 +13,7 @@ async function main() {
     },
   });
 
-  const apexLegends = await prisma.game.upsert({
+  await prisma.game.upsert({
     where: { name: 'Apex Legends' },
     update: {},
     create: {
@@ -23,7 +23,7 @@ async function main() {
     },
   });
 
-  const csgo = await prisma.game.upsert({
+  await prisma.game.upsert({
     where: { name: 'Counter-Strike: Global Offensive' },
     update: {},
     create: {
@@ -34,7 +34,7 @@ async function main() {
     },
   });
 
-  const overwatch = await prisma.game.upsert({
+  await prisma.game.upsert({
     where: { name: 'Overwatch' },
     update: {},
     create: {

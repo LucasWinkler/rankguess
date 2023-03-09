@@ -9,28 +9,21 @@ export default function Submit() {
     <>
       <NextSeo
         title='Submit Your Clips'
-        description='Submit your own gameplay clips. The daily game where you guess the rank of user submitted clips from Apex Legends, CSGO, League of Legends, and more!'
+        description='Submit your own gameplay clips to RankGuess. The daily game where you guess the rank of user submitted clips from Apex Legends, CSGO, League of Legends, and more!'
         openGraph={{
           url: 'https://www.rankguess.com/submit',
           title: 'Submit Your Clips | RankGuess',
           description:
-            'Submit your own gameplay clips. The daily game where you guess the rank of user submitted clips from Apex Legends, CSGO, League of Legends, and more!',
-          images: [
-            {
-              url: 'https://www.rankguess.com/og.png',
-              width: 1200,
-              height: 600,
-              alt: 'Choose game desktop view',
-              type: 'image/png',
-            },
-          ],
+            'Submit your own gameplay clips to RankGuess. The daily game where you guess the rank of user submitted clips from Apex Legends, CSGO, League of Legends, and more!',
         }}
       />
 
-      <Container>
-        <h1>Submit your own clips</h1>
-        <p>Eventually...</p>
-      </Container>
+      <main id='main-content' className='relative py-12 lg:pt-16 lg:pb-32'>
+        <Container>
+          <h1>Submit your own clips</h1>
+          <p>Eventually...</p>
+        </Container>
+      </main>
     </>
   );
 }

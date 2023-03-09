@@ -1,6 +1,5 @@
 import Container from '@/components/Container';
 import changelog from '@/data/changelog';
-import Head from 'next/head';
 import { Fragment } from 'react';
 import { NextSeo } from 'next-seo';
 
@@ -15,15 +14,6 @@ export default function Changelog() {
           title: 'Changelog | RankGuess',
           description:
             'Keep up to date on changes for RankGuess. The daily game where you guess the rank of user submitted clips from Apex Legends, CSGO, League of Legends, and more!',
-          images: [
-            {
-              url: 'https://www.rankguess.com/og.png',
-              width: 1200,
-              height: 600,
-              alt: 'Choose game desktop view',
-              type: 'image/png',
-            },
-          ],
         }}
       />
 

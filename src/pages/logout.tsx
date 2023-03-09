@@ -11,20 +11,12 @@ export default function Logout() {
     <>
       <NextSeo
         title='Logout'
+        description='Logout of your RankGuess account. Your stats will be right where you left them!'
         openGraph={{
           url: 'https://www.rankguess.com/logout',
           title: 'Logout | RankGuess',
           description:
-            'Guess the rank of user submitted clips from Apex Legends, CSGO, League of Legends, and more!',
-          images: [
-            {
-              url: 'https://www.rankguess.com/og.png',
-              width: 1200,
-              height: 600,
-              alt: 'Choose game desktop view',
-              type: 'image/png',
-            },
-          ],
+            'Logout of your RankGuess account. Your stats will be right where you left them!',
         }}
       />
 

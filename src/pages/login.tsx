@@ -14,22 +14,15 @@ export default function Login() {
     <>
       <NextSeo
         title='Login'
+        description='Login to RankGuess to save your stats and submit your own clips!'
         openGraph={{
-          url: 'https://www.rankguess.com/logout',
+          url: 'https://www.rankguess.com/login',
           title: 'Login | RankGuess',
           description:
-            'Guess the rank of user submitted clips from Apex Legends, CSGO, League of Legends, and more!',
-          images: [
-            {
-              url: 'https://www.rankguess.com/og.png',
-              width: 1200,
-              height: 600,
-              alt: 'Choose game desktop view',
-              type: 'image/png',
-            },
-          ],
+            'Login to RankGuess to save your stats and submit your own clips!',
         }}
       />
+
       <main id='main-content' className='relative py-12 lg:pt-16 lg:pb-32'>
         <Container>
           <div className='pointer-events-none absolute left-0 right-0 bottom-0 -top-[15.5rem] h-full w-full select-none bg-heading-circle bg-top bg-no-repeat'></div>
