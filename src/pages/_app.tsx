@@ -3,11 +3,10 @@ import type { AppProps } from 'next/app';
 import { Poppins } from '@next/font/google';
 import { SessionProvider } from 'next-auth/react';
 import Header from '@/components/Header';
-import { useEffect, useState } from 'react';
 import { Modal, ModalBody, ModalFooter, ModalHeader } from '@/components/Modal';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
 import { DefaultSeo } from 'next-seo';
-import SEO from '@/data/next-seo.config';
+import SEO from 'next-seo.config';
 
 const poppins = Poppins({
   weight: ['300', '400', '500', '600', '700'],

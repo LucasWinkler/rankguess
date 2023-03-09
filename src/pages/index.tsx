@@ -1,15 +1,8 @@
-import Head from 'next/head';
 import Container from '@/components/Container';
 import GameCard, { GameInfoProps } from '@/components/GameCard';
-import { GetServerSideProps } from 'next';
-import { getServerSession } from 'next-auth';
-import { authOptions } from './api/auth/[...nextauth]';
+import prisma from '@/lib/prismadb';
 import { NextSeo } from 'next-seo';
-
-const valorantThumb = '/images/valorant-thumb.webp';
-const apexThumb = '/images/apex-thumb-test.webp';
-const overwatchThumb = '/images/overwatch-thumb.webp';
-const csgoThumb = '/images/csgo-thumb.webp';
+import { Game } from '@prisma/client';
 
 const renderTempGrid = (amount: number, gameProps?: GameInfoProps) => {
   const items = [];
@@ -22,7 +15,7 @@ const renderTempGrid = (amount: number, gameProps?: GameInfoProps) => {
   return items;
 };
 
-export default function Home() {
+export default function Home({ games }: { games: Game[] }) {
   return (
     <>
       <NextSeo
@@ -50,24 +43,15 @@ export default function Home() {
           <div className='background-grid pointer-events-none absolute inset-0 select-none opacity-[7.5%]'></div>
           <h1 className='page-heading-1 relative'>Choose a game</h1>
           <div className='grid-games relative'>
-            <GameCard
-              gameProps={{ gameTitle: 'Valorant', thumbnail: valorantThumb }}
-            />
-            <GameCard
-              gameProps={{ gameTitle: 'Apex Legends', thumbnail: apexThumb }}
-            />
-            <GameCard
-              gameProps={{
-                gameTitle: 'CSGO',
-                thumbnail: csgoThumb,
-              }}
-            />
-            <GameCard
-              gameProps={{
-                gameTitle: 'Overwatch',
-                thumbnail: overwatchThumb,
-              }}
-            />
+            {games?.map(game => (
+              <GameCard
+                key={game.id}
+                gameProps={{
+                  name: game.shortName || game.name,
+                  thumbnailPath: game.thumbnailPath,
+                }}
+              />
+            ))}
             {renderTempGrid(4)}
           </div>
         </Container>
@@ -76,12 +60,14 @@ export default function Home() {
   );
 }
 
-export const getServerSideProps: GetServerSideProps = async context => {
-  const session = await getServerSession(context.req, context.res, authOptions);
+export async function getStaticProps() {
+  const games = await prisma.game.findMany();
+  console.log('revaldiate');
 
   return {
     props: {
-      session,
+      games,
     },
+    revalidate: 30 * 60,
   };
-};
+}

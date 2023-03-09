@@ -80,7 +80,8 @@ model Clip {
 model Game {
   id            String       @id @default(cuid())
   name          String       @unique
-  slug          String       @unique
+  shortName     String?      @unique
+  thumbnailPath String
   currentClip   CurrentClip?
   currentClipId String?
 
@@ -98,10 +99,11 @@ model CurrentClip {
 }
 
 model Rank {
-  id     String @id @default(cuid())
-  name   String
-  game   Game   @relation(fields: [gameId], references: [id])
-  gameId String
+  id       String @id @default(cuid())
+  name     String
+  fileName String
+  game     Game   @relation(fields: [gameId], references: [id])
+  gameId   String
 
   @@index([gameId])
 }

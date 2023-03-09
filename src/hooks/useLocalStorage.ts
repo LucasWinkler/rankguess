@@ -11,7 +11,6 @@ export const useLocalStorage = <T>(key: string, initialValue: T) => {
 
   useEffect(() => {
     const value = window.localStorage.getItem(key);
-    console.log(value);
 
     if (value) {
       try {

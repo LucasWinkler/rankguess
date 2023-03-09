@@ -13,8 +13,8 @@ const fullConfig = resolveConfig({
 const screens = fullConfig.theme?.screens as { [key: string]: string };
 
 export interface GameInfoProps {
-  gameTitle: string;
-  thumbnail: string;
+  name: string;
+  thumbnailPath: string;
 }
 
 export interface GameCardProps {
@@ -22,8 +22,8 @@ export interface GameCardProps {
 }
 
 const GameCardChildren: FC<GameCardProps> = ({ gameProps }) => {
-  const thumbnail = gameProps?.thumbnail || '';
-  const gameTitle = gameProps?.gameTitle || 'Unable to retrieve game title';
+  const thumbnail = gameProps?.thumbnailPath || '';
+  const gameName = gameProps?.name || 'Unable to retrieve game title';
 
   return (
     <>
@@ -33,13 +33,13 @@ const GameCardChildren: FC<GameCardProps> = ({ gameProps }) => {
           gameProps &&
             'transition-transform duration-[700ms] ease-in-out will-change-transform group-hover:scale-[1.25] group-focus:scale-[1.25]'
         )}>
-        {gameProps ? gameTitle : 'Coming Soon'}
+        {gameProps ? gameName : 'Coming Soon'}
       </span>
       {gameProps && (
         <Image
           className='z-[1] object-cover blur-[1px] brightness-[50%] transition-[blur_scale] duration-[500ms] ease-in-out will-change-transform group-hover:scale-[1.10] group-hover:blur-0 group-hover:brightness-[60%] group-focus:scale-[1.10] group-focus:blur-0 group-focus:brightness-[60%]'
-          src={thumbnail || ''}
-          alt={gameTitle + ' thumbnail'}
+          src={thumbnail}
+          alt={gameName + ' thumbnail'}
           fill
           priority
           sizes={`
@@ -62,7 +62,7 @@ const GameCard: FC<GameCardProps> = ({ gameProps }) => {
 
   if (gameProps) {
     return (
-      <Link href={`/game/${gameProps.gameTitle}`} className={gameCardClasses}>
+      <Link href={`/game/${gameProps.name}`} className={gameCardClasses}>
         <GameCardChildren gameProps={gameProps} />
       </Link>
     );
