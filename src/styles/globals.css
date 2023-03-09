@@ -19,7 +19,10 @@
 
 @layer utilities {
   .page-heading-1 {
-    @apply mb-12 text-center text-2xl font-medium uppercase tracking-[0.2em] text-neutral-100 lg:mb-16 lg:text-3xl;
+    @apply text-center text-2xl font-medium uppercase tracking-[0.2em] text-neutral-100  lg:text-3xl;
+  }
+  .page-heading-2 {
+    @apply text-center text-xl font-light uppercase text-neutral-200 lg:text-2xl;
   }
 
   .grid-games {

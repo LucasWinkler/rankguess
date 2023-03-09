@@ -81,6 +81,7 @@ model Game {
   id            String       @id @default(cuid())
   name          String       @unique
   shortName     String?      @unique
+  slug          String       @unique
   thumbnailPath String
   currentClip   CurrentClip?
   currentClipId String?

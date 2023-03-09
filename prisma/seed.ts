@@ -8,6 +8,7 @@ async function main() {
     update: {},
     create: {
       name: 'Valorant',
+      slug: 'valorant',
       thumbnailPath: '/images/valorant/thumbnail.webp',
     },
   });
@@ -17,6 +18,7 @@ async function main() {
     update: {},
     create: {
       name: 'Apex Legends',
+      slug: 'apex-legends',
       thumbnailPath: '/images/apex-legends/thumbnail.webp',
     },
   });
@@ -27,7 +29,8 @@ async function main() {
     create: {
       name: 'Counter-Strike: Global Offensive',
       shortName: 'CS:GO',
-      thumbnailPath: '/images/counter-strike/thumbnail.webp',
+      slug: 'csgo',
+      thumbnailPath: '/images/csgo/thumbnail.webp',
     },
   });
 
@@ -36,11 +39,10 @@ async function main() {
     update: {},
     create: {
       name: 'Overwatch',
+      slug: 'overwatch',
       thumbnailPath: '/images/overwatch/thumbnail.webp',
     },
   });
-
-  console.log({ valorant, apexLegends, csgo, overwatch });
 
   console.log('Seeding finished.');
 }

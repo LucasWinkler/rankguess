@@ -42,13 +42,14 @@ export default function Home({ games }: { games: Game[] }) {
           <div className='pointer-events-none absolute left-0 right-0 bottom-0 -top-[15.5rem] h-full w-full select-none bg-heading-circle bg-top bg-no-repeat'></div>
           <div className='background-grid pointer-events-none absolute inset-0 select-none opacity-[7.5%]'></div>
           <h1 className='page-heading-1 relative'>Choose a game</h1>
-          <div className='grid-games relative'>
+          <div className='grid-games relative mt-12 lg:mt-16'>
             {games?.map(game => (
               <GameCard
                 key={game.id}
                 gameProps={{
                   name: game.shortName || game.name,
                   thumbnailPath: game.thumbnailPath,
+                  slug: game.slug,
                 }}
               />
             ))}
@@ -62,7 +63,6 @@ export default function Home({ games }: { games: Game[] }) {
 
 export async function getStaticProps() {
   const games = await prisma.game.findMany();
-  console.log('revaldiate');
 
   return {
     props: {

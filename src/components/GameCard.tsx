@@ -4,6 +4,7 @@ import clsx from 'clsx';
 import resolveConfig from 'tailwindcss/resolveConfig';
 import { content, theme } from 'tailwind.config.js';
 import Link from 'next/link';
+import { Game } from '@prisma/client';
 
 const fullConfig = resolveConfig({
   content,
@@ -15,6 +16,7 @@ const screens = fullConfig.theme?.screens as { [key: string]: string };
 export interface GameInfoProps {
   name: string;
   thumbnailPath: string;
+  slug: string;
 }
 
 export interface GameCardProps {
@@ -62,7 +64,7 @@ const GameCard: FC<GameCardProps> = ({ gameProps }) => {
 
   if (gameProps) {
     return (
-      <Link href={`/game/${gameProps.name}`} className={gameCardClasses}>
+      <Link href={`/game/${gameProps.slug}`} className={gameCardClasses}>
         <GameCardChildren gameProps={gameProps} />
       </Link>
     );

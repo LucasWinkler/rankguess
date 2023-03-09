@@ -33,7 +33,7 @@ export default function Logout() {
           <div className='pointer-events-none absolute left-0 right-0 bottom-0 -top-[15.5rem] h-full w-full select-none bg-heading-circle bg-top bg-no-repeat'></div>
           <div className='background-grid pointer-events-none absolute inset-0 select-none opacity-[7.5%]'></div>
           <h1 className='page-heading-1 relative'>Logout</h1>
-          <div className='relative mx-auto max-w-md rounded-xl border border-blueish-grey-600/80 bg-blueish-grey-700 p-8 sm:p-12'>
+          <div className='relative mx-auto mt-12 max-w-md rounded-xl border border-blueish-grey-600/80 bg-blueish-grey-700 p-8 sm:p-12 lg:mt-16'>
             <h2 className='text-xl font-semibold'>Are you sure?</h2>
             <p className='mt-[0.15rem] text-neutral-200'>
               Your stats will stop being saved

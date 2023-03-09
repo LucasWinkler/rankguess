@@ -12,7 +12,7 @@ import Hamburger from './icons/Hamburger';
 import NavItem from './NavItem';
 import navigationItems from '@/data/navigationItems';
 import { Modal, ModalBody, ModalFooter, ModalHeader } from './Modal';
-import { signIn, signOut, useSession } from 'next-auth/react';
+import { useSession } from 'next-auth/react';
 
 const Header: FC = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -148,13 +148,13 @@ const Header: FC = () => {
           </nav>
           <Link href='/' onClick={() => setIsMobileMenuOpen(false)}>
             <Image
-              src='/images/rankguess.svg'
+              src='/images/logo.svg'
               alt='Logo'
               width={130}
               height={25}
               priority
               placeholder='blur'
-              blurDataURL='/images/rankguess.svg'
+              blurDataURL='/images/logo.svg'
             />
           </Link>
           <div className='flex flex-grow basis-0 justify-end gap-4'>
