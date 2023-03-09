@@ -17,7 +17,7 @@
     "db:seed": "npx dotenv -e .env.local -- prisma db seed",
     "prisma:generate": "npx dotenv -e .env.local -- prisma generate",
     "prisma:studio": "npx dotenv -e .env.local -- prisma studio",
-    "production:build": "npx prisma generate && next build"
+    "production:build": "npx prisma generate && prisma db seed && next build"
   },
   "dependencies": {
     "@next-auth/prisma-adapter": "^1.0.5",

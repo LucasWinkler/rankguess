@@ -99,11 +99,11 @@ model CurrentClip {
 }
 
 model Rank {
-  id       String @id @default(cuid())
-  name     String
-  fileName String
-  game     Game   @relation(fields: [gameId], references: [id])
-  gameId   String
+  id        String @id @default(cuid())
+  name      String
+  imagePath String
+  game      Game   @relation(fields: [gameId], references: [id])
+  gameId    String
 
   @@index([gameId])
 }
