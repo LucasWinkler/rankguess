@@ -2,7 +2,7 @@
 
 <br />
 <p align="center">
-  <img src="./public/images/rankguess.svg" alt="rankguess logo" width="130" height="25">
+  <img src="./public/images/logo.svg" alt="rankguess logo" width="130" height="25">
 </p>
 
 <p align="center">
