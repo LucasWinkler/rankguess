@@ -15,18 +15,18 @@ const poppins = Poppins({
   display: 'swap',
 });
 
-const env = process.env.NODE_ENV;
+// const env = process.env.NODE_ENV;
 
 export default function App({
   Component,
   pageProps: { session, ...pageProps },
 }: AppProps) {
-  const [hasVisited, setHasVisited] = useLocalStorage('hasVisited', false);
+  // const [hasVisited, setHasVisited] = useLocalStorage('hasVisited', false);
 
   return (
     <SessionProvider session={session}>
       <div className={`${poppins.variable} min-h-screen font-sans`}>
-        {env === 'production' && (
+        {/* {env === 'production' && (
           <Modal isOpen={!hasVisited} setIsOpen={setHasVisited}>
             <ModalHeader hasCloseButton={false} setIsOpen={setHasVisited}>
               Work In Progress!
@@ -49,7 +49,7 @@ export default function App({
               </button>
             </ModalFooter>
           </Modal>
-        )}
+        )} */}
 
         <DefaultSeo
           additionalLinkTags={[
