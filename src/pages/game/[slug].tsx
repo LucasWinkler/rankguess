@@ -38,9 +38,10 @@ const GameWrapper: FC<GameProps> = ({ game, children }) => {
 };
 
 const Game: FC<GameProps> = ({ game }) => {
-  const currentClip = game.currentClipId;
+  // const currentClip = game.currentClipId;
+  const env = process.env.NODE_ENV;
 
-  if (!currentClip) {
+  if (env === 'production') {
     return (
       <>
         <GameWrapper game={game}>
