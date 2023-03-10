@@ -42,7 +42,7 @@ export default function Home({ games }: { games: Game[] }) {
                 }}
               />
             ))}
-            {renderTempGrid(4)}
+            {renderTempGrid(3)}
           </div>
         </Container>
       </main>

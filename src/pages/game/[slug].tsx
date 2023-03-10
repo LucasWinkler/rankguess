@@ -4,6 +4,7 @@ import prisma from '@/lib/prismadb';
 import { NextSeo } from 'next-seo';
 import Container from '@/components/Container';
 import { GetStaticProps } from 'next';
+import YouTube from 'react-youtube';
 
 interface GameProps {
   game: Game;
@@ -39,7 +40,7 @@ const GameWrapper: FC<GameProps> = ({ game, children }) => {
 const Game: FC<GameProps> = ({ game }) => {
   const currentClip = game.currentClipId;
 
-  if (!currentClip) {
+  if (currentClip) {
     return (
       <>
         <GameWrapper game={game}>
@@ -57,7 +58,9 @@ const Game: FC<GameProps> = ({ game }) => {
   return (
     <>
       <GameWrapper game={game}>
-        Video
+        <div className='flex items-center justify-center'>
+          <YouTube videoId='Bc8ROqIh4uA' />
+        </div>
         <br />
         Health bar
         <br />
