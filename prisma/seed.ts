@@ -14,7 +14,7 @@ async function main() {
     create: {
       name: 'Valorant',
       slug: 'valorant',
-      thumbnailPath: '/images/valorant/thumbnail.webp',
+      thumbnailPath: '/images/games/valorant/thumbnail.webp',
       ranks: {
         create: ranks.valorant,
       },
@@ -27,7 +27,7 @@ async function main() {
     create: {
       name: 'Apex Legends',
       slug: 'apex-legends',
-      thumbnailPath: '/images/apex-legends/thumbnail.webp',
+      thumbnailPath: '/images/games/apex-legends/thumbnail.webp',
       ranks: {
         create: ranks.apexLegends,
       },
@@ -41,7 +41,7 @@ async function main() {
       name: 'Counter-Strike: Global Offensive',
       shortName: 'CS:GO',
       slug: 'csgo',
-      thumbnailPath: '/images/csgo/thumbnail.webp',
+      thumbnailPath: '/images/games/csgo/thumbnail.webp',
       ranks: {
         create: ranks.csgo,
       },
@@ -54,7 +54,7 @@ async function main() {
     create: {
       name: 'Overwatch',
       slug: 'overwatch',
-      thumbnailPath: '/images/overwatch/thumbnail.webp',
+      thumbnailPath: '/images/games/overwatch/thumbnail.webp',
       ranks: {
         create: ranks.overwatch,
       },
@@ -67,7 +67,7 @@ async function main() {
     create: {
       name: 'League of Legends',
       slug: 'league-of-legends',
-      thumbnailPath: '/images/lol/thumbnail.webp',
+      thumbnailPath: '/images/games/lol/thumbnail.webp',
       ranks: {
         create: ranks.lol,
       },
