@@ -103,7 +103,11 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 };
 
 export const getStaticPaths = async () => {
-  const games = await prisma.game.findMany();
+  const games = await prisma.game.findMany({
+    where: {
+      isEnabled: true,
+    },
+  });
 
   const paths = games.map(game => ({
     params: {

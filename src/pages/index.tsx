@@ -8,7 +8,6 @@ const renderTempGrid = (amount: number, gameProps?: GameInfoProps) => {
   const items = [];
 
   for (let i = 0; i < amount; i++) {
-    // Temp key for now
     items.push(<GameCard key={i} gameProps={gameProps} />);
   }
 
@@ -51,7 +50,11 @@ export default function Home({ games }: { games: Game[] }) {
 }
 
 export async function getStaticProps() {
-  const games = await prisma.game.findMany();
+  const games = await prisma.game.findMany({
+    where: {
+      isEnabled: true,
+    },
+  });
 
   return {
     props: {

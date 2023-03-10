@@ -83,6 +83,7 @@ model Game {
   shortName     String?      @unique
   slug          String       @unique
   thumbnailPath String
+  isEnabled     Boolean      @default(false)
   currentClip   CurrentClip?
   currentClipId String?
 
