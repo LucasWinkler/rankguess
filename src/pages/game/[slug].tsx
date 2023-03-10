@@ -1,13 +1,22 @@
 import type { FC, PropsWithChildren } from 'react';
-import { Game } from '@prisma/client';
+import { Prisma, Rank } from '@prisma/client';
 import prisma from '@/lib/prismadb';
 import { NextSeo } from 'next-seo';
 import Container from '@/components/Container';
 import { GetStaticProps } from 'next';
 import YouTube from 'react-youtube';
+import Image from 'next/image';
+
+const gameInclude = Prisma.validator<Prisma.GameInclude>()({
+  ranks: true,
+});
+
+type GameWithRanks = Prisma.GameGetPayload<{
+  include: typeof gameInclude;
+}>;
 
 interface GameProps {
-  game: Game;
+  game: GameWithRanks;
   children?: React.ReactNode;
 }
 
@@ -37,10 +46,29 @@ const GameWrapper: FC<GameProps> = ({ game, children }) => {
   );
 };
 
-const Game: FC<GameProps> = ({ game }) => {
-  // const currentClip = game.currentClipId;
-  const env = process.env.NODE_ENV;
+const RankCard: FC<{ rank: Rank }> = ({ rank }) => {
+  return (
+    <>
+      <div className='relative h-10 w-24'>
+        <Image
+          className='h-full w-full object-contain'
+          src={rank.imagePath}
+          alt={rank.name}
+          fill
+          priority
+          quality={65}
+        />
+      </div>
+    </>
+  );
+};
 
+const Game: FC<GameProps> = ({ game }) => {
+  const currentClip = game.currentClipId;
+  const env = process.env.NODE_ENV;
+  const ranks = game.ranks;
+
+  // Temp until further development. Will check if theres a current clip and if so then render a screen telling the user that there isn't a game today.
   if (env === 'production') {
     return (
       <>
@@ -63,9 +91,13 @@ const Game: FC<GameProps> = ({ game }) => {
           <YouTube videoId='Bc8ROqIh4uA' />
         </div>
         <br />
-        Health bar
+        <div className='my-4'>Health bar</div>
         <br />
-        Ranks
+        <div className='mx-auto flex max-w-2xl flex-wrap items-center justify-center gap-4'>
+          {ranks.map(rank => (
+            <RankCard key={rank.id} rank={rank} />
+          ))}
+        </div>
         <br />
         <button className='rounded-full border border-blueish-grey-600/50 bg-blueish-grey-600/50 px-6 py-2 text-neutral-200 transition-colors duration-200 hover:text-neutral-100'>
           Submit Guess
@@ -80,13 +112,23 @@ export default Game;
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   const slug = params?.slug as string;
 
-  if (!slug) {
-    return { notFound: true };
-  }
-
   const game = await prisma.game.findUnique({
     where: {
       slug: slug,
+    },
+    select: {
+      id: true,
+      name: true,
+      slug: true,
+      isEnabled: true,
+      currentClipId: true,
+      ranks: {
+        select: {
+          id: true,
+          name: true,
+          imagePath: true,
+        },
+      },
     },
   });
 
