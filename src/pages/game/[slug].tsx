@@ -40,7 +40,7 @@ const GameWrapper: FC<GameProps> = ({ game, children }) => {
 const Game: FC<GameProps> = ({ game }) => {
   const currentClip = game.currentClipId;
 
-  if (currentClip) {
+  if (!currentClip) {
     return (
       <>
         <GameWrapper game={game}>
