@@ -51,6 +51,8 @@ export default function Home({
 export async function getStaticProps() {
   console.log('here in getStaticProps of index');
 
+  const { NEXTAUTH_URL } = process.env;
+
   const games = await prisma.game.findMany({
     where: {
       isEnabled: true,
@@ -60,15 +62,17 @@ export async function getStaticProps() {
   const gamesWithThumbnailBlur: GameWithThumbnailBlur[] = await Promise.all(
     games.map(async (game: Game) => {
       const { base64, img } = await getPlaiceholder(game.thumbnailPath);
-
       return { ...game, imageProps: { ...img, blurDataURL: base64 } };
     })
   );
+
   console.log('second promise starting');
 
   await Promise.all(
     games.map(async (game: Game) => {
-      const { base64, img } = await getPlaiceholder(game.thumbnailPath);
+      const { base64, img } = await getPlaiceholder(
+        `${NEXTAUTH_URL}/${game.thumbnailPath}`
+      );
 
       return { ...game, imageProps: { ...img, blurDataURL: base64 } };
     })
