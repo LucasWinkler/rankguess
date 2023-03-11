@@ -49,7 +49,11 @@ export default function Home({
 }
 
 export async function getStaticProps() {
-  const { NEXTAUTH_URL } = process.env;
+  const { NEXT_PUBLIC_VERCEL_URL, NODE_ENV } = process.env;
+  const CURRENT_URL =
+    NODE_ENV === 'development'
+      ? 'http://localhost:3000'
+      : NEXT_PUBLIC_VERCEL_URL;
 
   const games = await prisma.game.findMany({
     where: {
@@ -57,10 +61,16 @@ export async function getStaticProps() {
     },
   });
 
+  if (!games) {
+    return {
+      props: {},
+    };
+  }
+
   const gamesWithThumbnailBlur: GameWithThumbnailBlur[] = await Promise.all(
     games.map(async (game: Game) => {
       const { base64, img } = await getPlaiceholder(
-        `${NEXTAUTH_URL}${game.thumbnailPath}`
+        `${CURRENT_URL}${game.thumbnailPath}`
       );
       return { ...game, imageProps: { ...img, blurDataURL: base64 } };
     })
