@@ -1,6 +1,9 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import prisma from '@/lib/prismadb';
 
+// This is API route is used to revalidate the home page and each
+// game page. It is ran via a cron job at 12:00 AM ETC every day.
+// It will also grab a new currentClip for each game that is enabled.
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
@@ -23,10 +26,6 @@ export default async function handler(
     // Fetch all games that are enabled. Sort all accepted
     // clips for each game by acceptedDate and grab the
     // oldest one that hasn't been featured yet.
-
-    console.log('---- TODO: Grabbing the current clip for each game ----');
-
-    // After the currentClip is grabbed for each game revalidate each of their pages
 
     const urls = games.map(game => `/game/${game.slug}`);
     urls.unshift('/');
