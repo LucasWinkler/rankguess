@@ -49,6 +49,8 @@ export default function Home({
 }
 
 export async function getStaticProps() {
+  console.log('here in getStaticProps of index');
+
   const games = await prisma.game.findMany({
     where: {
       isEnabled: true,
@@ -62,6 +64,19 @@ export async function getStaticProps() {
       return { ...game, imageProps: { ...img, blurDataURL: base64 } };
     })
   );
+  console.log('second promise starting');
+
+  await Promise.all(
+    games.map(async (game: Game) => {
+      const { base64, img } = await getPlaiceholder(game.thumbnailPath);
+
+      return { ...game, imageProps: { ...img, blurDataURL: base64 } };
+    })
+  )
+    .then(values => console.log('Home:', values))
+    .catch(error => console.log('Home error:', error));
+
+  console.log('returning props');
 
   return {
     props: {

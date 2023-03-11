@@ -36,10 +36,7 @@ export default async function handler(
     // After the currentClip is grabbed for each game revalidate each of their pages
 
     const urls = games.map(game => `/game/${game.slug}`);
-    console.log('URLS before unshift: ', urls);
-
-    // urls.unshift('/');
-    console.log('URLS after unshift: ', urls);
+    urls.unshift('/');
 
     console.log('---- Revalidating the home page and each game page ----');
 
