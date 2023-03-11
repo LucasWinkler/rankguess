@@ -1,6 +1,7 @@
 import Container from '@/components/Container';
 import GameCard, { GameWithThumbnailBlur } from '@/components/GameCard';
 import prisma from '@/lib/prismadb';
+import { getAbsoluteUrl } from '@/util/vercel';
 import { Game } from '@prisma/client';
 import { log } from 'console';
 import { NextSeo } from 'next-seo';
@@ -50,12 +51,8 @@ export default function Home({
 
 export async function getStaticProps() {
   const { NEXT_PUBLIC_VERCEL_URL, NODE_ENV } = process.env;
-  const CURRENT_URL =
-    NODE_ENV === 'development'
-      ? 'http://localhost:3000'
-      : `https://${NEXT_PUBLIC_VERCEL_URL}`;
 
-  console.log(CURRENT_URL, NEXT_PUBLIC_VERCEL_URL, NODE_ENV);
+  console.log('get url: ', getAbsoluteUrl());
 
   const games = await prisma.game.findMany({
     where: {
@@ -71,9 +68,7 @@ export async function getStaticProps() {
 
   const gamesWithThumbnailBlur: GameWithThumbnailBlur[] = await Promise.all(
     games.map(async (game: Game) => {
-      const { base64, img } = await getPlaiceholder(
-        `${CURRENT_URL}${game.thumbnailPath}`
-      );
+      const { base64, img } = await getPlaiceholder(`${game.thumbnailPath}`);
       return { ...game, imageProps: { ...img, blurDataURL: base64 } };
     })
   );
