@@ -15,6 +15,7 @@ const nextConfig = {
   images: {
     deviceSizes: [420, 768, 1024, 1280, 1536],
     imageSizes: [25, 33, 50, 100],
+    domains: ['localhost'],
   },
 };
 
