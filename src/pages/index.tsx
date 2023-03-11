@@ -53,7 +53,7 @@ export async function getStaticProps() {
   const CURRENT_URL =
     NODE_ENV === 'development'
       ? 'http://localhost:3000'
-      : NEXT_PUBLIC_VERCEL_URL;
+      : `https://${NEXT_PUBLIC_VERCEL_URL}`;
 
   console.log(CURRENT_URL, NEXT_PUBLIC_VERCEL_URL, NODE_ENV);
 
