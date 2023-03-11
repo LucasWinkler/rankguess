@@ -6,7 +6,6 @@ import Container from '@/components/Container';
 import { GetStaticProps } from 'next';
 import YouTube from 'react-youtube';
 import Image from 'next/image';
-import Countdown from 'react-countdown';
 
 const gameInclude = Prisma.validator<Prisma.GameInclude>()({
   ranks: true,
