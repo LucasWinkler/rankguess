@@ -20,7 +20,7 @@ export default function App({
   pageProps: { session, ...pageProps },
 }: AppProps) {
   const shouldDisableIndex =
-    process.env.NODE_ENV === 'development' ? true : false;
+    process.env.NODE_ENV !== 'production' ? true : false;
 
   return (
     <SessionProvider session={session}>
