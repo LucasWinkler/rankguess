@@ -1,20 +1,26 @@
 import Container from '@/components/Container';
-import GameCard, { GameInfoProps } from '@/components/GameCard';
+import GameCard, { GameWithThumbnailBlur } from '@/components/GameCard';
 import prisma from '@/lib/prismadb';
-import { NextSeo } from 'next-seo';
 import { Game } from '@prisma/client';
+import { log } from 'console';
+import { NextSeo } from 'next-seo';
+import { getPlaiceholder } from 'plaiceholder';
 
-const renderTempGrid = (amount: number, gameProps?: GameInfoProps) => {
+const renderTempGrid = (amount: number) => {
   const items = [];
 
   for (let i = 0; i < amount; i++) {
-    items.push(<GameCard key={i} gameProps={gameProps} />);
+    items.push(<GameCard key={i} />);
   }
 
   return items;
 };
 
-export default function Home({ games }: { games: Game[] }) {
+export default function Home({
+  gamesWithThumbnailBlur,
+}: {
+  gamesWithThumbnailBlur: GameWithThumbnailBlur[];
+}) {
   return (
     <>
       <NextSeo
@@ -31,15 +37,8 @@ export default function Home({ games }: { games: Game[] }) {
           <div className='background-grid pointer-events-none absolute inset-0 select-none opacity-[7.5%]'></div>
           <h1 className='page-heading-1 relative'>Choose a game</h1>
           <div className='grid-games relative mt-12 lg:mt-16'>
-            {games?.map(game => (
-              <GameCard
-                key={game.id}
-                gameProps={{
-                  name: game.shortName || game.name,
-                  thumbnailPath: game.thumbnailPath,
-                  slug: game.slug,
-                }}
-              />
+            {gamesWithThumbnailBlur?.map(game => (
+              <GameCard key={game.id} game={game} />
             ))}
             {renderTempGrid(3)}
           </div>
@@ -56,9 +55,17 @@ export async function getStaticProps() {
     },
   });
 
+  const gamesWithThumbnailBlur: GameWithThumbnailBlur[] = await Promise.all(
+    games.map(async (game: Game) => {
+      const { base64, img } = await getPlaiceholder(game.thumbnailPath);
+
+      return { ...game, imageProps: { ...img, blurDataURL: base64 } };
+    })
+  );
+
   return {
     props: {
-      games,
+      gamesWithThumbnailBlur,
     },
     revalidate: 30 * 60,
   };

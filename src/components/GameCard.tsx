@@ -1,4 +1,4 @@
-import type { FC, PropsWithChildren } from 'react';
+import type { FC } from 'react';
 import Image from 'next/image';
 import clsx from 'clsx';
 import resolveConfig from 'tailwindcss/resolveConfig';
@@ -6,74 +6,71 @@ import { content, theme } from 'tailwind.config.js';
 import Link from 'next/link';
 import { Game } from '@prisma/client';
 
-const fullConfig = resolveConfig({
-  content,
-  theme,
-});
-
-const screens = fullConfig.theme?.screens as { [key: string]: string };
-
-export interface GameInfoProps {
-  name: string;
-  thumbnailPath: string;
-  slug: string;
+export interface GameWithThumbnailBlur extends Game {
+  imageProps: {
+    blurDataURL: string;
+    src: string;
+    width: number;
+    height: number;
+    type?: string | undefined;
+  };
 }
 
-export interface GameCardProps {
-  gameProps?: GameInfoProps;
+interface GameCardProps {
+  game?: GameWithThumbnailBlur;
 }
 
-const GameCardChildren: FC<GameCardProps> = ({ gameProps }) => {
-  const thumbnail = gameProps?.thumbnailPath || '';
-  const gameName = gameProps?.name || 'Unable to retrieve game title';
+const GameCard: FC<GameCardProps> = ({ game }) => {
+  const fullConfig = resolveConfig({
+    content,
+    theme,
+  });
+  const screens = fullConfig.theme?.screens as { [key: string]: string };
+
+  const cardClasses =
+    'group relative mx-auto flex min-h-[10rem] w-full max-w-[18rem] items-center justify-center overflow-hidden rounded-xl border border-blueish-grey-600/80 p-8 text-center  xs:max-w-[22rem] sm:min-h-[23.5rem] sm:max-w-[18rem]';
+
+  const cardTextClasses =
+    'z-[3] text-xl font-bold uppercase tracking-[0.25em] text-neutral-100';
+
+  if (!game) {
+    return (
+      <div
+        className={clsx(
+          cardClasses,
+          'bg-blueish-grey-600 bg-opacity-[25%] backdrop-blur-[1px]'
+        )}>
+        <span className={clsx(cardTextClasses)}>Coming Soon</span>
+      </div>
+    );
+  }
 
   return (
-    <>
+    <Link className={cardClasses} href={`/game/${game.slug}`}>
       <span
         className={clsx(
-          'z-[3] text-xl font-bold uppercase tracking-[0.25em] text-neutral-100',
-          gameProps &&
-            'transition-transform duration-[700ms] ease-in-out will-change-transform group-hover:scale-[1.25] group-focus:scale-[1.25]'
+          cardTextClasses,
+          'transition-transform duration-[700ms] ease-in-out will-change-transform group-hover:scale-[1.25] group-focus:scale-[1.25]'
         )}>
-        {gameProps ? gameName : 'Coming Soon'}
+        {game.shortName || game.name}
       </span>
-      {gameProps && (
-        <Image
-          className='z-[1] object-cover blur-[1px] brightness-[50%] transition-[blur_scale] duration-[500ms] ease-in-out will-change-transform group-hover:scale-[1.10] group-hover:blur-0 group-hover:brightness-[60%] group-focus:scale-[1.10] group-focus:blur-0 group-focus:brightness-[60%]'
-          src={thumbnail}
-          alt={gameName + ' thumbnail'}
-          fill
-          priority
-          sizes={`
+      <Image
+        className='absolute z-[1] h-full object-cover object-center blur-[1px] brightness-[50%] transition-[blur_scale] duration-[500ms] ease-in-out will-change-transform group-hover:scale-[1.10] group-hover:blur-0 group-hover:brightness-[60%] group-focus:scale-[1.10] group-focus:blur-0 group-focus:brightness-[60%]'
+        {...game.imageProps}
+        alt={(game.shortName || game.name) + ' thumbnail'}
+        priority
+        sizes={`
               (min-width: ${screens.xs}) 50vw,
               (min-width: ${screens.sm}) 50vw,
               (min-width: ${screens.md}) 33vw,
               (min-width: ${screens.lg}) 25vw,
               100vw
             `}
-          quality={65}
-        />
-      )}
-    </>
+        quality={60}
+        placeholder='blur'
+      />
+    </Link>
   );
 };
 
-const GameCard: FC<GameCardProps> = ({ gameProps }) => {
-  const gameCardClasses =
-    'group relative mx-auto flex min-h-[10rem] w-full max-w-[18rem] items-center justify-center overflow-hidden rounded-xl border border-blueish-grey-600/80 bg-blueish-grey-600 bg-opacity-[25%] p-8 text-center backdrop-blur-[1px] xs:max-w-[22rem] sm:min-h-[23.5rem] sm:max-w-[18rem]';
-
-  if (gameProps) {
-    return (
-      <Link href={`/game/${gameProps.slug}`} className={gameCardClasses}>
-        <GameCardChildren gameProps={gameProps} />
-      </Link>
-    );
-  }
-
-  return (
-    <div className={gameCardClasses}>
-      <GameCardChildren gameProps={gameProps} />
-    </div>
-  );
-};
 export default GameCard;

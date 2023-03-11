@@ -6,6 +6,8 @@ if (!process.env.GOOGLE_CLIENT_ID)
 if (!process.env.GOOGLE_CLIENT_SECRET)
   throw new Error('Please set GOOGLE_CLIENT_SECRET');
 
+const { withPlaiceholder } = require('@plaiceholder/next');
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
@@ -16,4 +18,4 @@ const nextConfig = {
   },
 };
 
-module.exports = nextConfig;
+module.exports = withPlaiceholder(nextConfig);
