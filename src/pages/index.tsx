@@ -61,24 +61,12 @@ export async function getStaticProps() {
 
   const gamesWithThumbnailBlur: GameWithThumbnailBlur[] = await Promise.all(
     games.map(async (game: Game) => {
-      const { base64, img } = await getPlaiceholder(game.thumbnailPath);
-      return { ...game, imageProps: { ...img, blurDataURL: base64 } };
-    })
-  );
-
-  console.log('second promise starting');
-
-  await Promise.all(
-    games.map(async (game: Game) => {
       const { base64, img } = await getPlaiceholder(
         `${NEXTAUTH_URL}/${game.thumbnailPath}`
       );
-
       return { ...game, imageProps: { ...img, blurDataURL: base64 } };
     })
-  )
-    .then(values => console.log('Home:', values))
-    .catch(error => console.log('Home error:', error));
+  );
 
   console.log('returning props');
 
