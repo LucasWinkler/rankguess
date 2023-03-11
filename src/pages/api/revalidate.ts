@@ -38,7 +38,7 @@ export default async function handler(
     const urls = games.map(game => `/game/${game.slug}`);
     console.log('URLS before unshift: ', urls);
 
-    urls.unshift('/');
+    // urls.unshift('/');
     console.log('URLS after unshift: ', urls);
 
     console.log('---- Revalidating the home page and each game page ----');
