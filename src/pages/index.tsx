@@ -67,6 +67,5 @@ export async function getStaticProps() {
     props: {
       gamesWithThumbnailBlur,
     },
-    revalidate: 30 * 60,
   };
 }
