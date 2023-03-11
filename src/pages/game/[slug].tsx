@@ -36,7 +36,7 @@ const Timer = () => {
 
   useEffect(() => {
     const getTimeLeft = () => {
-      const estOffset = 5;
+      const estOffset = -4;
       const timeOffset = process.env.NODE_ENV === 'production' ? estOffset : 0;
 
       const currentDate = new Date();
