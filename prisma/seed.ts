@@ -4,10 +4,6 @@ import ranks from '../src/data/ranks';
 const prisma = new PrismaClient();
 
 async function main() {
-  console.log('Start seeding ...');
-
-  console.log(ranks);
-
   const valorant = await prisma.game.upsert({
     where: { name: 'Valorant' },
     update: {},
@@ -73,10 +69,6 @@ async function main() {
       },
     },
   });
-
-  console.log('Games created:', valorant, apex, csgo, overwatch, lol);
-
-  console.log('Seeding finished.');
 }
 main()
   .then(async () => {
