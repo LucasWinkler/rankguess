@@ -49,8 +49,6 @@ export default function Home({
 }
 
 export async function getStaticProps() {
-  console.log('here in getStaticProps of index');
-
   const { NEXTAUTH_URL } = process.env;
 
   const games = await prisma.game.findMany({
@@ -67,8 +65,6 @@ export async function getStaticProps() {
       return { ...game, imageProps: { ...img, blurDataURL: base64 } };
     })
   );
-
-  console.log('returning props');
 
   return {
     props: {
