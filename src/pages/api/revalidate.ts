@@ -38,7 +38,7 @@ export default async function handler(
     await Promise.all([
       await res.revalidate('/'),
       games.map(async game => {
-        await res.revalidate(game.slug);
+        await res.revalidate(`/game/${game.slug}`);
       }),
     ]);
 
