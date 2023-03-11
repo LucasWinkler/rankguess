@@ -12,8 +12,8 @@ export default async function handler(
   }
 
   console.log('---- Attempting to revalidate ----');
-
   try {
+    console.log('---- Fetching all games ----');
     const games = await prisma.game.findMany({
       where: {
         isEnabled: true,
@@ -23,10 +23,15 @@ export default async function handler(
       },
     });
 
+    console.log(games);
+    console.log('---- Fetched all games ----');
+
     // TODO: Set a new currentClip for all active games
     // Fetch all games that are enabled. Sort all accepted
     // clips for each game by acceptedDate and grab the
     // oldest one that hasn't been featured yet.
+
+    console.log('---- TODO: Grabbing the current clip for each game ----');
 
     // After the currentClip is grabbed for each game revalidate each of their pages
 
