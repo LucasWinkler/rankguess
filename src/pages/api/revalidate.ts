@@ -35,12 +35,21 @@ export default async function handler(
 
     // After the currentClip is grabbed for each game revalidate each of their pages
 
-    await Promise.all([
-      await res.revalidate('/'),
-      games.map(async game => {
-        await res.revalidate(`/game/${game.slug}`);
-      }),
-    ]);
+    const urls = games.map(game => `/game/${game.slug}`);
+    console.log('URLS before unshift: ', urls);
+
+    urls.unshift('/');
+    console.log('URLS after unshift: ', urls);
+
+    console.log('---- Revalidating the home page and each game page ----');
+
+    await Promise.all(
+      urls.map(async url => {
+        console.log(`---- Revalidating ${url} ----`);
+        await res.revalidate(url);
+        console.log(`---- Revalidated ${url} ----`);
+      })
+    );
 
     console.log('---- Revalidated the home page and each game page ----');
 
