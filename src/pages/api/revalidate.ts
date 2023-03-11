@@ -11,7 +11,7 @@ export default async function handler(
     return res.status(401).json({ message: 'Invalid token' });
   }
 
-  console.log('---- Attempting to revalidate ----');
+  console.log('---- Start attempting to revalidate ----');
   try {
     console.log('---- Fetching all games ----');
     const games = await prisma.game.findMany({
@@ -45,13 +45,23 @@ export default async function handler(
 
     await Promise.all(
       urls.map(async url => {
-        console.log(`---- Revalidating ${url} ----`);
         await res.revalidate(url);
-        console.log(`---- Revalidated ${url} ----`);
       })
-    );
+    )
+      .then(values =>
+        console.log(
+          '---- Revalidated the home page and each game page ---- Values:',
+          values
+        )
+      )
+      .catch(error =>
+        console.log(
+          '---- Error revalidating the home page and each game page ---- Error:',
+          error
+        )
+      );
 
-    console.log('---- Revalidated the home page and each game page ----');
+    console.log('---- End of revaldiate ----');
 
     return res.json({ revalidated: true });
   } catch (error) {
