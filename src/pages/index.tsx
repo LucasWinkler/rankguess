@@ -49,7 +49,7 @@ export default function Home({
 }
 
 export async function getStaticProps() {
-  const { NEXTAUTH_URL } = process.env;
+  const { NEXTAUTH_URL, NEXT_PUBLIC_VERCEL_URL } = process.env;
 
   const games = await prisma.game.findMany({
     where: {
@@ -62,6 +62,8 @@ export async function getStaticProps() {
       props: {},
     };
   }
+
+  console.log('vercel url', NEXT_PUBLIC_VERCEL_URL);
 
   const gamesWithThumbnailBlur: GameWithThumbnailBlur[] = await Promise.all(
     games.map(async (game: Game) => {
