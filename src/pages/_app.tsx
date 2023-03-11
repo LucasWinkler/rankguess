@@ -17,16 +17,10 @@ export default function App({
   Component,
   pageProps: { session, ...pageProps },
 }: AppProps) {
-  const { NEXT_PUBLIC_VERCEL_ENV } = process.env;
-  const { NODE_ENV } = process.env;
-  const isProduction =
-    NEXT_PUBLIC_VERCEL_ENV === 'production' || NODE_ENV === 'production';
-
   return (
     <SessionProvider session={session}>
       <div className={`${poppins.variable} min-h-screen font-sans`}>
         <DefaultSeo
-          dangerouslySetAllPagesToNoIndex={!isProduction}
           additionalLinkTags={[
             {
               rel: 'icon',
