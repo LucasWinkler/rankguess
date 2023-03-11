@@ -1,4 +1,3 @@
-if (!process.env.NEXT_URL) throw new Error('Please set NEXT_URL');
 if (!process.env.NEXTAUTH_URL) throw new Error('Please set NEXTAUTH_URL');
 if (!process.env.NEXTAUTH_SECRET) throw new Error('Please set NEXTAUTH_SECRET');
 if (!process.env.DATABASE_URL) throw new Error('Please set DATABASE_URL');
