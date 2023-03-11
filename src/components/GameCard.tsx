@@ -50,7 +50,7 @@ const GameCard: FC<GameCardProps> = ({ game }) => {
       <span
         className={clsx(
           cardTextClasses,
-          'transition-transform duration-[700ms] ease-in-out will-change-transform group-hover:scale-[1.25] group-focus:scale-[1.25]'
+          'transition-transform duration-[715ms] ease-in-out will-change-transform group-hover:scale-[1.10] group-focus:scale-[1.10] sm:group-hover:scale-[1.20] sm:group-focus:scale-[1.20]'
         )}>
         {game.shortName || game.name}
       </span>
