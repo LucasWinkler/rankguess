@@ -55,6 +55,8 @@ export async function getStaticProps() {
       ? 'http://localhost:3000'
       : NEXT_PUBLIC_VERCEL_URL;
 
+  console.log(CURRENT_URL, NEXT_PUBLIC_VERCEL_URL, NODE_ENV);
+
   const games = await prisma.game.findMany({
     where: {
       isEnabled: true,
