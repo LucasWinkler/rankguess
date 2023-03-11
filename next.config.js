@@ -15,11 +15,19 @@ const nextConfig = {
   images: {
     deviceSizes: [420, 768, 1024, 1280, 1536],
     imageSizes: [25, 33, 50, 100],
-    domains: [
-      'localhost',
-      'www.rankguess.com',
-      'dev.rankguess.com',
-      'rankguess.com',
+    remotePatterns: [
+      {
+        protocol: 'http',
+        hostname: 'localhost',
+        port: '3000',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: '**.rankguess.com',
+        port: '',
+        pathname: '/images/**',
+      },
     ],
   },
 };
