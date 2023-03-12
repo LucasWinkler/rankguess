@@ -48,7 +48,7 @@ const GameWrapper: FC<GameProps> = ({ game, children }) => {
 
 const RankCard: FC<{ rank: Rank }> = ({ rank }) => {
   return (
-    <>
+    <div className='flex flex-col items-center justify-center'>
       <button
         type='button'
         className='relative h-16 w-16 overflow-hidden rounded-xl border border-blueish-grey-600/80 bg-blueish-grey-600/25 backdrop-blur-[1px]'>
@@ -61,7 +61,8 @@ const RankCard: FC<{ rank: Rank }> = ({ rank }) => {
           quality={65}
         />
       </button>
-    </>
+      <span className='mt-2 text-sm text-neutral-200'>{rank.name}</span>
+    </div>
   );
 };
 
