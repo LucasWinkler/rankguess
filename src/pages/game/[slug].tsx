@@ -49,16 +49,18 @@ const GameWrapper: FC<GameProps> = ({ game, children }) => {
 const RankCard: FC<{ rank: Rank }> = ({ rank }) => {
   return (
     <>
-      <div className='relative h-10 w-24'>
+      <button
+        type='button'
+        className='relative h-16 w-16 overflow-hidden rounded-xl border border-blueish-grey-600/80 bg-blueish-grey-600/25 backdrop-blur-[1px]'>
         <Image
-          className='h-full w-full object-contain'
+          className='flex h-full w-full object-contain p-2'
           src={rank.imagePath}
           alt={rank.name}
           fill
           priority
           quality={65}
         />
-      </div>
+      </button>
     </>
   );
 };
@@ -127,6 +129,9 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
           id: true,
           name: true,
           imagePath: true,
+        },
+        orderBy: {
+          order: 'asc',
         },
       },
     },

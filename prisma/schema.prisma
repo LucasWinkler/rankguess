@@ -104,6 +104,7 @@ model Rank {
   id        String @id @default(cuid())
   name      String
   imagePath String
+  order     Int    @default(0)
   game      Game   @relation(fields: [gameId], references: [id])
   gameId    String
 
