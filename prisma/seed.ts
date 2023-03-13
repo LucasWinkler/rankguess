@@ -14,6 +14,7 @@ async function main() {
       ranks: {
         create: ranks.valorant,
       },
+      isEnabled: true,
     },
   });
 
@@ -27,6 +28,7 @@ async function main() {
       ranks: {
         create: ranks.apexLegends,
       },
+      isEnabled: true,
     },
   });
 
@@ -41,6 +43,7 @@ async function main() {
       ranks: {
         create: ranks.csgo,
       },
+      isEnabled: true,
     },
   });
 
@@ -54,6 +57,7 @@ async function main() {
       ranks: {
         create: ranks.overwatch,
       },
+      isEnabled: true,
     },
   });
 
@@ -67,6 +71,7 @@ async function main() {
       ranks: {
         create: ranks.lol,
       },
+      isEnabled: true,
     },
   });
 }
