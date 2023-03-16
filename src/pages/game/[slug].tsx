@@ -70,6 +70,7 @@ const Game: FC<GameProps> = ({ game }) => {
   const currentClip = game.currentClipId;
   const env = process.env.NODE_ENV;
   const ranks = game.ranks;
+  const tempClipId = 'ZOmYYJAEBRU';
 
   // Temp until further development. Will check if theres a current clip and if so then render a screen telling the user that there isn't a game today.
   if (env === 'production') {
@@ -90,8 +91,13 @@ const Game: FC<GameProps> = ({ game }) => {
   return (
     <>
       <GameWrapper game={game}>
-        <div className='flex items-center justify-center'>
-          <YouTube videoId='Bc8ROqIh4uA' />
+        <div className='relative mx-auto aspect-video lg:max-w-4xl'>
+          <iframe
+            className=''
+            src={`https://www.youtube.com/embed/${tempClipId}`}
+            title={`${game.shortName} video`}
+            allowFullScreen
+          />
         </div>
         <br />
         <div className='my-4'>Health bar</div>
