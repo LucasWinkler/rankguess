@@ -4,7 +4,6 @@ import prisma from '@/lib/prismadb';
 import { NextSeo } from 'next-seo';
 import Container from '@/components/Container';
 import { GetStaticProps } from 'next';
-import YouTube from 'react-youtube';
 import Image from 'next/image';
 
 const gameInclude = Prisma.validator<Prisma.GameInclude>()({
