@@ -75,6 +75,8 @@ model Clip {
   playerId      String
   currentClip   CurrentClip?
 
+  // TODO: Possibly add a hasBeenFeatured bool to prevent clips from being featured multiple times although I could just go off the accepted date so clips older than the current featured clip are not featured again
+
   @@index([playerId])
   @@index([gameId])
   @@index([rankId])

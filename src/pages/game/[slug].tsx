@@ -8,6 +8,16 @@ import Image from 'next/image';
 
 const gameInclude = Prisma.validator<Prisma.GameInclude>()({
   ranks: true,
+  currentClip: {
+    include: {
+      clip: {
+        select: {
+          youtubeUrl: true,
+          rank: true,
+        },
+      },
+    },
+  },
 });
 
 type GameWithRanks = Prisma.GameGetPayload<{
@@ -66,13 +76,12 @@ const RankCard: FC<{ rank: Rank }> = ({ rank }) => {
 };
 
 const Game: FC<GameProps> = ({ game }) => {
-  const currentClip = game.currentClipId;
   const env = process.env.NODE_ENV;
+  const currentClip = game.currentClip;
   const ranks = game.ranks;
-  const tempClipId = 'ZOmYYJAEBRU';
 
   // Temp until further development. Will check if theres a current clip and if so then render a screen telling the user that there isn't a game today.
-  if (env === 'production') {
+  if (env === 'production' || !currentClip) {
     return (
       <>
         <GameWrapper game={game}>
@@ -92,8 +101,8 @@ const Game: FC<GameProps> = ({ game }) => {
       <GameWrapper game={game}>
         <div className='relative mx-auto aspect-video lg:max-w-4xl'>
           <iframe
-            className=''
-            src={`https://www.youtube.com/embed/${tempClipId}`}
+            className='absolute inset-0 h-full w-full'
+            src={`https://www.youtube.com/embed/${game.currentClip?.clip.youtubeUrl}`}
             title={`${game.shortName} video`}
             allowFullScreen
           />
@@ -124,20 +133,20 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     where: {
       slug: slug,
     },
-    select: {
-      id: true,
-      name: true,
-      slug: true,
-      isEnabled: true,
-      currentClipId: true,
+    include: {
       ranks: {
-        select: {
-          id: true,
-          name: true,
-          imagePath: true,
-        },
         orderBy: {
           order: 'asc',
+        },
+      },
+      currentClip: {
+        include: {
+          clip: {
+            select: {
+              youtubeUrl: true,
+              rank: true,
+            },
+          },
         },
       },
     },
@@ -146,6 +155,8 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   if (!game) {
     return { notFound: true };
   }
+
+  console.log(game);
 
   return {
     props: {
