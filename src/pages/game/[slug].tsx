@@ -156,8 +156,6 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     return { notFound: true };
   }
 
-  console.log(game);
-
   return {
     props: {
       game,
