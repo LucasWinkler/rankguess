@@ -1,9 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import prisma from '@/lib/prismadb';
 
-async function resetCurrentClip() {
-  console.log('Before reset');
-}
+async function resetCurrentClip() {}
 
 // This is API route is used to revalidate the home page and each
 // game page. It is ran via a cron job at 12:00 AM ETC every day.
@@ -31,22 +29,20 @@ export default async function handler(
     // clips for each game by acceptedDate and grab the
     // oldest one that hasn't been featured yet.
 
-    await resetCurrentClip().then(() => {
-      console.log('After reset. Now revalidate urls');
-    });
-
-    const urls = ['/', ...games.map(game => `/game/${game.slug}`)];
-
-    await Promise.all(
-      urls.map(async url => {
-        await res.revalidate(url);
+    await resetCurrentClip()
+      .then(async () => {
+        const urls = ['/', ...games.map(game => `/game/${game.slug}`)];
+        await Promise.all(
+          urls.map(async url => {
+            await res.revalidate(url);
+          })
+        ).catch(error =>
+          console.log('Error revalidating the home and game pages:', error)
+        );
       })
-    ).catch(error =>
-      console.log(
-        'Error revalidating the home page and each game pages:',
-        error
-      )
-    );
+      .catch(error =>
+        console.log('Error resetting currentClips for each game:', error)
+      );
 
     return res.json({ revalidated: true });
   } catch (error) {
