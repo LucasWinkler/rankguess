@@ -21,7 +21,7 @@ function generateSiteMap(games: Game[], host: string | null) {
        .map(({ slug }) => {
          return `
        <url>
-           <loc>https://${`${host}/games/${slug}`}</loc>
+           <loc>https://${`${host}/game/${slug}`}</loc>
        </url>
      `;
        })
