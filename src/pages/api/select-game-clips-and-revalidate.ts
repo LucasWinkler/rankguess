@@ -110,18 +110,13 @@ export default async function handler(
       },
     });
 
-    let gamesWithNewClips: GameWithAcceptedClipsAndCurrentClip[] = [];
-
     await Promise.all(
       games.map(async game => {
         const newCurrentClip = selectNewGameClip(game);
 
         Promise.resolve(newCurrentClip).then(currentClip => {
           if (currentClip?.currentClip) {
-            gamesWithNewClips.push({
-              ...game,
-              currentClip: currentClip.currentClip,
-            });
+            game.currentClip = currentClip.currentClip;
             console.log('New currentClip for game:', game.name, currentClip);
           }
         });
@@ -151,7 +146,7 @@ export default async function handler(
       );
 
     return res.json({
-      gamesWithNewClips,
+      games,
     });
   } catch (error) {
     return res.status(500).json({
