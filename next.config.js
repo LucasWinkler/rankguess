@@ -30,6 +30,11 @@ const nextConfig = {
       },
     ],
   },
+  publicRuntimeConfig: {
+    baseUrl: process.env.NEXT_PUBLIC_VERCEL_URL
+      ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
+      : '',
+  },
 };
 
 module.exports = withPlaiceholder(nextConfig);

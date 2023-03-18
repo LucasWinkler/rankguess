@@ -4,6 +4,7 @@ import prisma from '@/lib/prismadb';
 import { Game } from '@prisma/client';
 import { log } from 'console';
 import { NextSeo } from 'next-seo';
+import getConfig from 'next/config';
 import { getPlaiceholder } from 'plaiceholder';
 
 const renderTempGrid = (amount: number) => {
@@ -49,7 +50,8 @@ export default function Home({
 }
 
 export async function getStaticProps() {
-  const { NEXTAUTH_URL } = process.env;
+  const { publicRuntimeConfig } = getConfig();
+  const { baseUrl } = publicRuntimeConfig;
 
   const games = await prisma.game.findMany({
     where: {
@@ -66,8 +68,7 @@ export async function getStaticProps() {
   const gamesWithThumbnailBlur: GameWithThumbnailBlur[] = await Promise.all(
     games.map(async (game: Game) => {
       const { base64, img } = await getPlaiceholder(
-        // `${NEXTAUTH_URL}${game.thumbnailPath}`
-        `${game.thumbnailPath}`
+        `${baseUrl}${game.thumbnailPath}`
       );
       return { ...game, imageProps: { ...img, blurDataURL: base64 } };
     })
