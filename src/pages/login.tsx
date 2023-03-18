@@ -9,17 +9,18 @@ import { useRouter } from 'next/router';
 
 export default function Login() {
   const router = useRouter();
+  const description =
+    'Sign up or log in to RankGuess to save your stats and submit your own gameplay clips. Join the community now!';
 
   return (
     <>
       <NextSeo
-        title='Login'
-        description='Login to RankGuess to save your stats and submit your own clips!'
+        title='Log in to Save Stats & Submit Your Clips'
+        description={description}
         openGraph={{
           url: 'https://www.rankguess.com/login',
-          title: 'Login | RankGuess',
-          description:
-            'Login to RankGuess to save your stats and submit your own clips!',
+          title: 'Log in to Save Stats & Submit Your Clips | RankGuess',
+          description: description,
         }}
       />
 

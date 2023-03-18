@@ -2,7 +2,6 @@ import Container from '@/components/Container';
 import GameCard, { GameWithThumbnailBlur } from '@/components/GameCard';
 import prisma from '@/lib/prismadb';
 import { Game } from '@prisma/client';
-import { NextSeo } from 'next-seo';
 import { getPlaiceholder } from 'plaiceholder';
 
 const renderTempGrid = (amount: number) => {
@@ -22,14 +21,6 @@ export default function Home({
 }) {
   return (
     <>
-      <NextSeo
-        title='Choose Game'
-        openGraph={{
-          url: 'https://www.rankguess.com/submit',
-          title: 'Choose Game | RankGuess',
-        }}
-      />
-
       <main id='main-content' className='relative py-12 lg:pt-16 lg:pb-32'>
         <Container>
           <div className='pointer-events-none absolute left-0 right-0 bottom-0 -top-[15.5rem] h-full w-full select-none bg-heading-circle bg-top bg-no-repeat'></div>

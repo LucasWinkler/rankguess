@@ -26,21 +26,21 @@ type GameWithRanks = Prisma.GameGetPayload<{
   include: typeof gameInclude;
 }>;
 
-interface GameProps {
+type GameProps = {
   game: GameWithRanks;
   children?: React.ReactNode;
-}
+};
 
 const GameWrapper: FC<GameProps> = ({ game, children }) => {
   return (
     <>
       <NextSeo
-        title={game.name}
-        description={`Play guess the rank for ${game.name}!`}
+        title={`Guess the Rank in ${game.name}`}
+        description={`Guess the rank of user-submitted gameplay in ${game.name} daily with RankGuess. Test your knowledge and track your stats to see how you improve over time. Remember, the game resets at 12 am EST, so submit your guesses before then!`}
         openGraph={{
           url: `https://www.rankguess.com/game/${game.slug}`,
-          title: `${game.name} | Rank Guess`,
-          description: `Play Guess The Rank for ${game.name}!`,
+          title: `Guess the Rank in ${game.name}`,
+          description: `Guess the rank of user-submitted gameplay in ${game.name} daily with RankGuess. Test your knowledge and track your stats to see how you improve over time. Remember, the game resets at 12 am EST, so submit your guesses before then!`,
         }}
       />
 

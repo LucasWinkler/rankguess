@@ -7,16 +7,18 @@ import { authOptions } from './api/auth/[...nextauth]';
 import { NextSeo } from 'next-seo';
 
 export default function Logout() {
+  const description =
+    "Are you sure you want to log out of RankGuess? Don't worry, your stats and progress will be saved and waiting for you when you come back! Click 'Logout' to end your session.";
+
   return (
     <>
       <NextSeo
-        title='Logout'
-        description='Logout of your RankGuess account. Your stats will be right where you left them!'
+        title='Are you sure you want to log out?'
+        description={description}
         openGraph={{
           url: 'https://www.rankguess.com/logout',
-          title: 'Logout | RankGuess',
-          description:
-            'Logout of your RankGuess account. Your stats will be right where you left them!',
+          title: 'Are you sure you want to log out? | RankGuess',
+          description: description,
         }}
       />
 

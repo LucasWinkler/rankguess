@@ -4,16 +4,18 @@ import { Fragment } from 'react';
 import { NextSeo } from 'next-seo';
 
 export default function Changelog() {
+  const description =
+    'Stay up to date with the latest updates and changes for RankGuess. The daily game where you guess the rank of user submitted clips from Apex Legends, CSGO, League of Legends, and more!';
+
   return (
     <>
       <NextSeo
-        title='Changelog'
-        description='Keep up to date on changes for RankGuess. The daily game where you guess the rank of user submitted clips from Apex Legends, CSGO, League of Legends, and more!'
+        title="What's New in RankGuess? Stay Up to Date!"
+        description={description}
         openGraph={{
           url: 'https://www.rankguess.com/changelog',
-          title: 'Changelog | RankGuess',
-          description:
-            'Keep up to date on changes for RankGuess. The daily game where you guess the rank of user submitted clips from Apex Legends, CSGO, League of Legends, and more!',
+          title: "What's New in RankGuess? Stay Up to Date! | RankGuess",
+          description: description,
         }}
       />
 
