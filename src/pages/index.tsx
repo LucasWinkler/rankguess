@@ -2,10 +2,7 @@ import Container from '@/components/Container';
 import GameCard, { GameWithThumbnailBlur } from '@/components/GameCard';
 import prisma from '@/lib/prismadb';
 import { Game } from '@prisma/client';
-import { log } from 'console';
-import absoluteUrl from 'next-absolute-url';
 import { NextSeo } from 'next-seo';
-import getConfig from 'next/config';
 import { getPlaiceholder } from 'plaiceholder';
 
 const renderTempGrid = (amount: number) => {
