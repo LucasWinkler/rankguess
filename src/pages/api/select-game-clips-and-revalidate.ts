@@ -135,11 +135,7 @@ export default async function handler(
           urlsToRevalidate.map(async url => {
             await res.revalidate(url);
           })
-        )
-          .then(revalidatedUrls =>
-            console.log('Revalidated pages:', revalidatedUrls)
-          )
-          .catch(error => console.error('Error revalidating pages:', error));
+        ).catch(error => console.error('Error revalidating pages:', error));
       })
       .catch(error =>
         console.error(
