@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import prisma from '@/lib/prismadb';
-import { Prisma } from '@prisma/client';
+import { CurrentClip, Prisma } from '@prisma/client';
 
 const gameInclude = Prisma.validator<Prisma.GameInclude>()({
   clips: {
@@ -18,7 +18,9 @@ type GameWithAcceptedClipsAndCurrentClip = Prisma.GameGetPayload<{
 // This function is used to update a new currentClip for a game.
 // It will also update the clip to mark it as featured and
 // connect the currentClip to the clip.
-async function updateNewGameClip(game: GameWithAcceptedClipsAndCurrentClip) {
+async function updateNewGameClip(
+  game: GameWithAcceptedClipsAndCurrentClip
+): Promise<{ currentClip: CurrentClip } | null> {
   try {
     return prisma.$transaction(async transaction => {
       const newClip = game.clips[0];
@@ -69,11 +71,9 @@ async function updateNewGameClip(game: GameWithAcceptedClipsAndCurrentClip) {
       };
     });
   } catch (error) {
-    console.error(
-      'Error selecting clip for game:',
-      game?.name || 'Error reading game data',
-      error
-    );
+    console.error('Error selecting clip for game:', error);
+
+    return null;
   }
 }
 
@@ -113,46 +113,65 @@ export default async function handler(
       },
     });
 
-    await Promise.allSettled(
-      games.map(async game => {
-        const newCurrentClip = updateNewGameClip(game);
+    console.info('Attempting to update clips for each game');
 
-        Promise.resolve(newCurrentClip).then(currentClip => {
-          if (currentClip?.currentClip) {
-            game.currentClip = currentClip.currentClip;
-            console.log('New currentClip for game:', game.name, currentClip);
-          }
-        });
+    const updatedClipsForEachGame = await Promise.all(
+      games.map(async game => {
+        const newCurrentClip = await updateNewGameClip(game);
+
+        if (newCurrentClip?.currentClip) {
+          game.currentClip = newCurrentClip.currentClip;
+        }
+
+        return game;
+      })
+    );
+
+    const updatedGames = await Promise.allSettled(updatedClipsForEachGame)
+      .then(results =>
+        results
+          .filter(result => result.status === 'fulfilled')
+          .map(result => {
+            if ('value' in result) {
+              return result.value;
+            }
+            throw new Error(
+              'Expected updatedGames Promise to resolve with value, but Promise was rejected'
+            );
+          })
+      )
+      .catch(error => {
+        throw new Error('Error selecting new clips for each game:', error);
+      });
+
+    console.info('Updated games with new currentClips:', updatedGames);
+
+    const urlsToRevalidate = [
+      '/',
+      ...updatedGames.map(game => `/game/${game.slug}`),
+    ];
+
+    await Promise.allSettled(
+      urlsToRevalidate.map(async url => {
+        await res.revalidate(url);
+        console.info('Attempting to revalidate URL:', url);
       })
     )
-      .then(async () => {
-        const urlsToRevalidate = [
-          '/',
-          ...games.map(game => `/game/${game.slug}`),
-        ];
-
-        await Promise.allSettled(
-          urlsToRevalidate.map(async url => {
-            await res.revalidate(url);
-          })
-        ).catch(error => console.error('Error revalidating pages:', error));
-      })
       .then(() => {
-        console.log('Revalidated URLs');
+        console.info('New clips are selected and pages have been revalidated');
       })
-      .catch(error =>
-        console.error(
-          'Error while selecting new clips for each game or while revalidating pages:',
-          error
-        )
-      );
+      .catch(error => {
+        throw new Error('Error revalidating pages:', error);
+      });
 
     return res.json({
-      games,
+      revalidated: true,
+      games: updatedGames,
     });
   } catch (error) {
+    console.error('Error selecting new clips or revalidating pages:', error);
     return res.status(500).json({
-      message: 'Error revalidating pages or selecting new daily clips',
+      message: 'Error selecting new daily clips or revalidating pages',
     });
   }
 }
