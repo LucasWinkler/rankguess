@@ -33,7 +33,6 @@ module.exports = {
         'navigation-height': 'var(--navigation-height)',
       },
       backgroundImage: {
-        'heading-circle': 'url("/images/heading-circle.png")',
         'grid-tile': 'url("/images/grid-tile.svg")',
       },
     },
