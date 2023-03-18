@@ -137,6 +137,9 @@ export default async function handler(
           })
         ).catch(error => console.error('Error revalidating pages:', error));
       })
+      .then(() => {
+        console.log('Revalidated URLs');
+      })
       .catch(error =>
         console.error(
           'Error while selecting new clips for each game or while revalidating pages:',
