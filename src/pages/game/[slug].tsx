@@ -6,6 +6,7 @@ import Container from '@/components/Container';
 import { GetStaticProps } from 'next';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
+import Loading from '@/components/Loading';
 
 const gameInclude = Prisma.validator<Prisma.GameInclude>()({
   ranks: true,
@@ -80,7 +81,13 @@ const Game: FC<GameProps> = ({ game }) => {
   const router = useRouter();
 
   if (router.isFallback) {
-    return <div>Loading...</div>;
+    return (
+      <>
+        <div>
+          <Loading />
+        </div>
+      </>
+    );
   }
 
   const ranks = game.ranks;

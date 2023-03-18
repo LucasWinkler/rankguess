@@ -6,7 +6,8 @@ module.exports = {
   content: ['./src/**/*.{js,ts,jsx,tsx}'],
   theme: {
     colors: {
-      black: '#000000',
+      transparent: 'transparent',
+      current: 'currentColor',
       'blue-300': '#5476f2',
       'blue-400': '#2B55EE',
       'blueish-grey-500': '#425B99',
@@ -18,6 +19,7 @@ module.exports = {
       'neutral-200': '#D4DDF2',
       'neutral-300': '#C0CDEC',
       'neutral-400': '#C6CFE6',
+      'neutral-900': '#000000',
     },
     extend: {
       fontFamily: {

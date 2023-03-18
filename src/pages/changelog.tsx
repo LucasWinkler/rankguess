@@ -48,7 +48,7 @@ export default function Changelog() {
                 </article>
               ))}
             </div>
-          </section>{' '}
+          </section>
         </Container>
       </main>
     </>
