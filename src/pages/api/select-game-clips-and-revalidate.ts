@@ -128,15 +128,15 @@ export default async function handler(
           ...games.map(game => `/game/${game.slug}`),
         ];
 
-        await Promise.all(
+        await Promise.allSettled(
           urlsToRevalidate.map(async url => {
             await res.revalidate(url);
           })
         )
-          .then(() => console.log('Revalidated pages:', urlsToRevalidate))
-          .catch(error =>
-            console.error('Error revalidating pages:', urlsToRevalidate, error)
-          );
+          .then(revalidatedUrls =>
+            console.log('Revalidated pages:', revalidatedUrls)
+          )
+          .catch(error => console.error('Error revalidating pages:', error));
       })
       .catch(error =>
         console.error(
