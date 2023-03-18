@@ -61,21 +61,20 @@ model User {
 // Once accepted the video will be uploaded via the youtube api, and the
 // youtube url will be stored.
 model Clip {
-  id            String       @id @default(cuid())
-  videoFile     String
-  rank          Rank         @relation(fields: [rankId], references: [id])
-  rankId        String
-  youtubeUrl    String?
-  submittedDate DateTime     @default(now())
-  acceptedDate  DateTime?
-  isAccepted    Boolean      @default(false)
-  game          Game         @relation(fields: [gameId], references: [id])
-  gameId        String
-  player        User         @relation(fields: [playerId], references: [id])
-  playerId      String
-  currentClip   CurrentClip?
-
-  // TODO: Possibly add a hasBeenFeatured bool to prevent clips from being featured multiple times although I could just go off the accepted date so clips older than the current featured clip are not featured again
+  id              String       @id @default(cuid())
+  videoFile       String
+  rank            Rank         @relation(fields: [rankId], references: [id])
+  rankId          String
+  youtubeUrl      String?
+  submittedDate   DateTime     @default(now())
+  acceptedDate    DateTime?
+  isAccepted      Boolean      @default(false)
+  hasBeenFeatured Boolean      @default(false)
+  game            Game         @relation(fields: [gameId], references: [id])
+  gameId          String
+  player          User         @relation(fields: [playerId], references: [id])
+  playerId        String
+  currentClip     CurrentClip?
 
   @@index([playerId])
   @@index([gameId])
@@ -90,7 +89,6 @@ model Game {
   thumbnailPath String
   isEnabled     Boolean      @default(false)
   currentClip   CurrentClip?
-  currentClipId String?
 
   ranks Rank[]
   stats Stats[]
@@ -98,7 +96,6 @@ model Game {
 }
 
 model CurrentClip {
-  id     String @id @default(cuid())
   game   Game   @relation(fields: [gameId], references: [id])
   gameId String @unique
   clip   Clip   @relation(fields: [clipId], references: [id])
