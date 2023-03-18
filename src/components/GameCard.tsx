@@ -62,9 +62,9 @@ const GameCard: FC<GameCardProps> = ({ game }) => {
         sizes={`
           (min-width: ${screens.lg}) 25vw,
           (min-width: ${screens.md}) 33vw,
-          (min-width: ${screens.sm}) 50vw,
-          (min-width: ${screens.xs}) 50vw,
-          90vw
+          (min-width: ${screens.sm}) 40vw,
+          (min-width: ${screens.xs}) 40vw,
+          80vw
         `}
         quality={60}
         placeholder='blur'
