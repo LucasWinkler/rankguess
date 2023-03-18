@@ -50,8 +50,11 @@ export default function Home({
 }
 
 export async function getStaticProps() {
-  const { publicRuntimeConfig } = getConfig();
-  const { baseUrl } = publicRuntimeConfig;
+  const baseUrl =
+    process.env.VERCEL_ENV === 'production' ||
+    process.env.VERCEL_ENV === 'preview'
+      ? process.env.NEXTAUTH_URL
+      : '';
 
   const games = await prisma.game.findMany({
     where: {
