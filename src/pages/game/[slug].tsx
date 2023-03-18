@@ -1,10 +1,11 @@
-import { FC, PropsWithChildren, useEffect, useState } from 'react';
+import { FC } from 'react';
 import { Prisma, Rank } from '@prisma/client';
 import prisma from '@/lib/prismadb';
 import { NextSeo } from 'next-seo';
 import Container from '@/components/Container';
 import { GetStaticProps } from 'next';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 
 const gameInclude = Prisma.validator<Prisma.GameInclude>()({
   ranks: true,
@@ -76,20 +77,22 @@ const RankCard: FC<{ rank: Rank }> = ({ rank }) => {
 };
 
 const Game: FC<GameProps> = ({ game }) => {
-  const env = process.env.NODE_ENV;
-  const currentClip = game.currentClip;
+  const router = useRouter();
+
+  if (router.isFallback) {
+    return <div>Loading...</div>;
+  }
+
   const ranks = game.ranks;
 
-  // Temp until further development. Will check if theres a current clip and if so then render a screen telling the user that there isn't a game today.
-  if (env === 'production' || !currentClip) {
+  if (!game.currentClip) {
     return (
       <>
         <GameWrapper game={game}>
-          <h3 className='h-full pt-8 pb-2 text-center text-4xl'>
-            Work In Progress
-          </h3>
+          <h3 className='pt-8 pb-2 text-center text-4xl'>Work In Progress</h3>
           <p className='pb-8 text-lg text-neutral-200'>
-            The game is currently being developed
+            If youre seeing this page, it means the game is still in development
+            or there isn&apos;t a clip for today!
           </p>
         </GameWrapper>
       </>
@@ -131,7 +134,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 
   const game = await prisma.game.findUnique({
     where: {
-      slug: slug,
+      slug,
     },
     include: {
       ranks: {
@@ -152,7 +155,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     },
   });
 
-  if (!game) {
+  if (!game || !game.isEnabled) {
     return { notFound: true };
   }
 
@@ -178,6 +181,6 @@ export const getStaticPaths = async () => {
 
   return {
     paths,
-    fallback: false,
+    fallback: true,
   };
 };

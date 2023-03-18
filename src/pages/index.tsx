@@ -66,7 +66,8 @@ export async function getStaticProps() {
   const gamesWithThumbnailBlur: GameWithThumbnailBlur[] = await Promise.all(
     games.map(async (game: Game) => {
       const { base64, img } = await getPlaiceholder(
-        `${NEXTAUTH_URL}${game.thumbnailPath}`
+        // `${NEXTAUTH_URL}${game.thumbnailPath}`
+        `${game.thumbnailPath}`
       );
       return { ...game, imageProps: { ...img, blurDataURL: base64 } };
     })
