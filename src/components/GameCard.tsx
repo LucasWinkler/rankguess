@@ -60,12 +60,19 @@ const GameCard: FC<GameCardProps> = ({ game }) => {
         alt={(game.shortName || game.name) + ' thumbnail'}
         priority
         sizes={`
-          (min-width: ${screens.lg}) 25vw,
+          (min-width: ${screens.xs}) 50vw,
+          (min-width: ${screens.sm}) 50vw,
           (min-width: ${screens.md}) 33vw,
-          (min-width: ${screens.sm}) 40vw,
-          (min-width: ${screens.xs}) 40vw,
-          80vw
+          (min-width: ${screens.lg}) 25vw,
+          100vw
         `}
+        // sizes={`
+        //         (min-width: ${screens.lg}) 25vw,
+        //         (min-width: ${screens.md}) 33vw,
+        //         (min-width: ${screens.sm}) 40vw,
+        //         (min-width: ${screens.xs}) 40vw,
+        //         80vw
+        //       `}
         quality={60}
         placeholder='blur'
       />
