@@ -125,7 +125,7 @@ export default async function handler(
         });
       })
     )
-      .then(async values => {
+      .then(async () => {
         const urlsToRevalidate = [
           '/',
           ...games.map(game => `/game/${game.slug}`),
