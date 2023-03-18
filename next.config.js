@@ -1,3 +1,5 @@
+if (process.env.NODE_ENV === 'development' && !process.env.DEV_URL)
+  throw new Error('Please set DEV_URL');
 if (!process.env.NEXTAUTH_URL) throw new Error('Please set NEXTAUTH_URL');
 if (!process.env.NEXTAUTH_SECRET) throw new Error('Please set NEXTAUTH_SECRET');
 if (!process.env.DATABASE_URL) throw new Error('Please set DATABASE_URL');
