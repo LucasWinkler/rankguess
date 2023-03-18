@@ -15,7 +15,10 @@ type GameWithAcceptedClipsAndCurrentClip = Prisma.GameGetPayload<{
   include: typeof gameInclude;
 }>;
 
-async function selectNewGameClip(game: GameWithAcceptedClipsAndCurrentClip) {
+// This function is used to update a new currentClip for a game.
+// It will also update the clip to mark it as featured and
+// connect the currentClip to the clip.
+async function updateNewGameClip(game: GameWithAcceptedClipsAndCurrentClip) {
   try {
     return prisma.$transaction(async transaction => {
       const newClip = game.clips[0];
@@ -110,9 +113,9 @@ export default async function handler(
       },
     });
 
-    await Promise.all(
+    await Promise.allSettled(
       games.map(async game => {
-        const newCurrentClip = selectNewGameClip(game);
+        const newCurrentClip = updateNewGameClip(game);
 
         Promise.resolve(newCurrentClip).then(currentClip => {
           if (currentClip?.currentClip) {
