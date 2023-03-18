@@ -5,6 +5,8 @@ import { SessionProvider } from 'next-auth/react';
 import Header from '@/components/Header';
 import { DefaultSeo } from 'next-seo';
 import SEO from 'next-seo.config';
+import { Suspense } from 'react';
+import Loading from '@/components/Loading';
 
 const poppins = Poppins({
   weight: ['300', '400', '500', '600', '700'],
@@ -36,7 +38,9 @@ export default function App({
           {...SEO}
         />
         <Header />
-        <Component {...pageProps} />
+        <Suspense fallback={<Loading />}>
+          <Component {...pageProps} />
+        </Suspense>
       </div>
     </SessionProvider>
   );
