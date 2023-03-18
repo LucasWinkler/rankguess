@@ -4,7 +4,7 @@ import prisma from '@/lib/prismadb';
 import { Game } from '@prisma/client';
 import { getPlaiceholder } from 'plaiceholder';
 
-const renderTempGrid = (amount: number) => {
+const comingSoonCards = (amount: number) => {
   const items = [];
 
   for (let i = 0; i < amount; i++) {
@@ -19,6 +19,8 @@ export default function Home({
 }: {
   gamesWithThumbnailBlur: GameWithThumbnailBlur[];
 }) {
+  const countOfComingSoonCards = 8 - gamesWithThumbnailBlur.length;
+
   return (
     <>
       <main id='main-content' className='relative py-12 lg:pt-16 lg:pb-32'>
@@ -30,7 +32,7 @@ export default function Home({
             {gamesWithThumbnailBlur?.map(game => (
               <GameCard key={game.id} game={game} />
             ))}
-            {renderTempGrid(3)}
+            {comingSoonCards(countOfComingSoonCards)}
           </div>
         </Container>
       </main>

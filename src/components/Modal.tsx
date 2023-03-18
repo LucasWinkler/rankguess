@@ -1,25 +1,18 @@
-import clsx from 'clsx';
-import {
-  Dispatch,
-  FC,
-  PropsWithChildren,
-  SetStateAction,
-  useEffect,
-} from 'react';
+import { FC, PropsWithChildren, useEffect } from 'react';
 import Container from './Container';
 import Close from './icons/Close';
 
-interface ModalProps {
+type ModalProps = {
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
   canClickOverlayToClose?: boolean;
-}
+};
 
-interface ModalHeaderProps {
+type ModalHeaderProps = {
   onClose?: () => void;
   setIsOpen: (isOpen: boolean) => void;
   hasCloseButton?: boolean;
-}
+};
 
 export const ModalHeader: FC<PropsWithChildren<ModalHeaderProps>> = ({
   children,
@@ -119,7 +112,7 @@ export const Modal: FC<PropsWithChildren<ModalProps>> = ({
     <div
       onClick={handleClickOutside}
       className='fixed inset-0 z-[15] h-full w-full'>
-      <div className='fixed inset-0 h-full w-full bg-black opacity-50'></div>
+      <div className='bg-black fixed inset-0 h-full w-full opacity-50'></div>
       <div className='fixed inset-0 flex h-full w-full items-center justify-center'>
         <Container>
           <div

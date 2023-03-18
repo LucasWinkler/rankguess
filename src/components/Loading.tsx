@@ -1,9 +1,7 @@
 import type { FC } from 'react';
 import Container from './Container';
 
-interface LoadingProps {}
-
-const Loading: FC<LoadingProps> = ({}) => {
+const Loading: FC = () => {
   return (
     <main
       id='main-content'

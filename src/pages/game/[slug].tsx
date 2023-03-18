@@ -32,15 +32,17 @@ type GameProps = {
 };
 
 const GameWrapper: FC<GameProps> = ({ game, children }) => {
+  const description = `Guess the rank of user-submitted gameplay in ${game.name} daily with RankGuess. Test your knowledge and track your stats to see how you improve over time. Remember, the game resets at 12 am EST, so submit your guesses before then!`;
+
   return (
     <>
       <NextSeo
         title={`Guess the Rank in ${game.name}`}
-        description={`Guess the rank of user-submitted gameplay in ${game.name} daily with RankGuess. Test your knowledge and track your stats to see how you improve over time. Remember, the game resets at 12 am EST, so submit your guesses before then!`}
+        description={description}
         openGraph={{
           url: `https://www.rankguess.com/game/${game.slug}`,
           title: `Guess the Rank in ${game.name}`,
-          description: `Guess the rank of user-submitted gameplay in ${game.name} daily with RankGuess. Test your knowledge and track your stats to see how you improve over time. Remember, the game resets at 12 am EST, so submit your guesses before then!`,
+          description: description,
         }}
       />
 

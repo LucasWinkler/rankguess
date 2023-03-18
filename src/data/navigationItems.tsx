@@ -3,14 +3,14 @@ import FourCircles from '@/components/icons/FourCircles';
 import Submit from '@/components/icons/Submit';
 import Changelog from '@/components/icons/Changelog';
 
-interface NavigationItemProps {
+type NavigationItem = {
   name: string;
   href: string;
   icon?: ReactElement;
   className?: string;
-}
+};
 
-const navigationItems: NavigationItemProps[] = [
+const navigationItems: NavigationItem[] = [
   {
     name: 'Choose Game',
     href: '/',

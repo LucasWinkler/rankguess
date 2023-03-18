@@ -1,11 +1,11 @@
-interface ChangelogProps {
+type ChangelogProps = {
   version: string;
   date: string;
   changes: {
     title: string;
     change: string[];
   }[];
-}
+};
 
 const changelog: ChangelogProps[] = [
   {

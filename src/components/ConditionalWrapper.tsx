@@ -1,9 +1,9 @@
 import { FC, PropsWithChildren } from 'react';
 
-interface ConditionalWrapperProps {
+type ConditionalWrapperProps = {
   condition: boolean;
   wrapper: Function;
-}
+};
 
 const ConditionalWrapper: FC<PropsWithChildren<ConditionalWrapperProps>> = ({
   condition,

@@ -1,7 +1,7 @@
 import type { FC } from 'react';
 import Link from 'next/link';
 
-const SkipNavigation: FC = ({}) => {
+const SkipNavigation: FC = () => {
   return (
     <Link
       href='#main-content'

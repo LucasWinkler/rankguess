@@ -1,3 +1,3 @@
-export interface IconProps {
+export type IconProps = {
   className?: string;
-}
+};

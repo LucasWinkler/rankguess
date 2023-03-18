@@ -6,7 +6,7 @@ import { content, theme } from 'tailwind.config.js';
 import Link from 'next/link';
 import { Game } from '@prisma/client';
 
-export interface GameWithThumbnailBlur extends Game {
+export type GameWithThumbnailBlur = Game & {
   imageProps: {
     blurDataURL: string;
     src: string;
@@ -14,11 +14,11 @@ export interface GameWithThumbnailBlur extends Game {
     height: number;
     type?: string | undefined;
   };
-}
+};
 
-interface GameCardProps {
+type GameCardProps = {
   game?: GameWithThumbnailBlur;
-}
+};
 
 const GameCard: FC<GameCardProps> = ({ game }) => {
   const fullConfig = resolveConfig({
