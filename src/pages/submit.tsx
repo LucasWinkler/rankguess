@@ -3,6 +3,8 @@ import { GetServerSidePropsContext } from 'next';
 import { getServerSession } from 'next-auth';
 import { authOptions } from './api/auth/[...nextauth]';
 import { NextSeo } from 'next-seo';
+import BackgroundGrid from '@/components/BackgroundGrid';
+import HeadingCircle from '@/components/HeadingCircle';
 
 export default function Submit() {
   const description =
@@ -22,8 +24,12 @@ export default function Submit() {
 
       <main id='main-content' className='relative py-12 lg:pt-16 lg:pb-32'>
         <Container>
-          <h1>Submit your own clips</h1>
-          <p>Eventually...</p>
+          <HeadingCircle />
+          <BackgroundGrid />
+          <div className='relative'>
+            <h1 className='page-heading-1'>Submit A Clip</h1>
+            <p className='mt-4 text-center'>WORK IN PROGRESS</p>
+          </div>
         </Container>
       </main>
     </>

@@ -7,6 +7,8 @@ import { GetStaticProps } from 'next';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import Loading from '@/components/Loading';
+import HeadingCircle from '@/components/HeadingCircle';
+import BackgroundGrid from '@/components/BackgroundGrid';
 
 const gameInclude = Prisma.validator<Prisma.GameInclude>()({
   ranks: true,
@@ -48,11 +50,13 @@ const GameWrapper: FC<GameProps> = ({ game, children }) => {
 
       <main id='main-content' className='relative py-12 lg:pt-16 lg:pb-32'>
         <Container>
-          <div className='pointer-events-none absolute left-0 right-0 bottom-0 -top-[15.5rem] h-full w-full select-none bg-heading-circle bg-top bg-no-repeat'></div>
-          <div className='background-grid pointer-events-none absolute inset-0 select-none opacity-[7.5%]'></div>
-          <h1 className='page-heading-1 relative'>{game.name}</h1>
-          <h2 className='page-heading-2 relative lg:mt-2'>Resets in: 0h 0m</h2>
-          <div className='relative mt-12 text-center lg:mt-16'>{children}</div>
+          <HeadingCircle />
+          <BackgroundGrid />
+          <div className='relative'>
+            <h1 className='page-heading-1'>{game.name}</h1>
+            <h2 className='page-heading-2 lg:mt-2'>Resets in: 0h 0m</h2>
+            <div className='mt-12 text-center lg:mt-16'>{children}</div>
+          </div>
         </Container>
       </main>
     </>

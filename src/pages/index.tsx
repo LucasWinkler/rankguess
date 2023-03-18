@@ -1,5 +1,7 @@
+import BackgroundGrid from '@/components/BackgroundGrid';
 import Container from '@/components/Container';
 import GameCard, { GameWithThumbnailBlur } from '@/components/GameCard';
+import HeadingCircle from '@/components/HeadingCircle';
 import prisma from '@/lib/prismadb';
 import { Game } from '@prisma/client';
 import { getPlaiceholder } from 'plaiceholder';
@@ -25,14 +27,16 @@ export default function Home({
     <>
       <main id='main-content' className='relative py-12 lg:pt-16 lg:pb-32'>
         <Container>
-          <div className='pointer-events-none absolute left-0 right-0 bottom-0 -top-[15.5rem] h-full w-full select-none bg-heading-circle bg-top bg-no-repeat'></div>
-          <div className='background-grid pointer-events-none absolute inset-0 select-none opacity-[7.5%]'></div>
-          <h1 className='page-heading-1 relative'>Choose a game</h1>
-          <div className='grid-games relative mt-12 lg:mt-16'>
-            {gamesWithThumbnailBlur?.map(game => (
-              <GameCard key={game.id} game={game} />
-            ))}
-            {comingSoonCards(countOfComingSoonCards)}
+          <HeadingCircle />
+          <BackgroundGrid />
+          <div className='relative'>
+            <h1 className='page-heading-1'>Choose a game</h1>
+            <div className='grid-games mt-12 lg:mt-16'>
+              {gamesWithThumbnailBlur?.map(game => (
+                <GameCard key={game.id} game={game} />
+              ))}
+              {comingSoonCards(countOfComingSoonCards)}
+            </div>
           </div>
         </Container>
       </main>

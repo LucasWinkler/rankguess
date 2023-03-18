@@ -28,7 +28,7 @@ const GameCard: FC<GameCardProps> = ({ game }) => {
   const screens = fullConfig.theme?.screens as { [key: string]: string };
 
   const cardClasses =
-    'group relative mx-auto flex min-h-[10rem] w-full max-w-[18rem] items-center justify-center overflow-hidden rounded-xl border border-blueish-grey-600/80 p-8 text-center  xs:max-w-[22rem] sm:min-h-[23.5rem] sm:max-w-[18rem]';
+    'group relative mx-auto flex min-h-[10rem] w-full max-w-[18rem] items-center justify-center overflow-hidden rounded-xl border border-blueish-grey-600/80 p-8 text-center xs:max-w-[22rem] sm:min-h-[23.5rem] sm:max-w-[18rem]';
 
   const cardTextClasses =
     'z-[3] text-xl font-bold uppercase tracking-[0.25em] text-neutral-100';
