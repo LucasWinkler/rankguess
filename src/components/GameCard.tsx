@@ -68,6 +68,9 @@ const GameCard: FC<GameCardProps> = ({ game }) => {
         `}
         quality={60}
         placeholder='blur'
+        loader={({ src }) =>
+          `${src}?cache=${Math.random()}&cacheDuration=86400`
+        }
       />
     </Link>
   );
