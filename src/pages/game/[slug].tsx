@@ -93,7 +93,6 @@ const RankCard: FC<RankCardProps> = ({ rank, selectedRank, onClick }) => {
             fill
             priority
             quality={65}
-            loader={({ src }) => `${src}?cacheDuration=86400`}
           />
         </div>
         <span className='mt-2 text-sm text-neutral-200'>{rank.name}</span>
