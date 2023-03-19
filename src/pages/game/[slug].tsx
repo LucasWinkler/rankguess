@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import { Prisma, Rank } from '@prisma/client';
 import prisma from '@/lib/prismadb';
 import { NextSeo } from 'next-seo';
@@ -9,6 +9,7 @@ import { useRouter } from 'next/router';
 import Loading from '@/components/Loading';
 import HeadingCircle from '@/components/HeadingCircle';
 import BackgroundGrid from '@/components/BackgroundGrid';
+import clsx from 'clsx';
 
 const gameInclude = Prisma.validator<Prisma.GameInclude>()({
   ranks: true,
@@ -63,27 +64,45 @@ const GameWrapper: FC<GameProps> = ({ game, children }) => {
   );
 };
 
-const RankCard: FC<{ rank: Rank }> = ({ rank }) => {
+type RankCardProps = {
+  rank: Rank;
+  selectedRank: Rank | undefined;
+  onClick: () => void;
+};
+
+const RankCard: FC<RankCardProps> = ({ rank, selectedRank, onClick }) => {
   return (
-    <div className='flex flex-col items-center justify-center'>
+    <div
+      className={clsx(
+        'flex flex-col transition-all duration-200 ease-in-out',
+        selectedRank?.id === rank.id && 'scale-[1.15]'
+      )}>
       <button
+        onClick={onClick}
         type='button'
-        className='relative h-16 w-16 overflow-hidden rounded-xl border border-blueish-grey-600/80 bg-blueish-grey-600/25 backdrop-blur-[1px]'>
-        <Image
-          className='flex h-full w-full object-contain p-2'
-          src={rank.imagePath}
-          alt={rank.name}
-          fill
-          priority
-          quality={65}
-        />
+        className={clsx('flex flex-col items-center justify-center')}>
+        <div
+          className={clsx(
+            'relative h-16 w-16 overflow-hidden rounded-xl border border-blueish-grey-600/80 bg-blueish-grey-600/25 backdrop-blur-[1px] transition-all duration-100 ease-in-out',
+            selectedRank?.id === rank.id && 'border-2'
+          )}>
+          <Image
+            className='flex h-full w-full object-contain p-2'
+            src={rank.imagePath}
+            alt={rank.name}
+            fill
+            priority
+            quality={65}
+          />
+        </div>
+        <span className='mt-2 text-sm text-neutral-200'>{rank.name}</span>
       </button>
-      <span className='mt-2 text-sm text-neutral-200'>{rank.name}</span>
     </div>
   );
 };
 
 const Game: FC<GameProps> = ({ game }) => {
+  const [selectedRank, setSelectedRank] = useState<Rank>();
   const router = useRouter();
 
   if (router.isFallback) {
@@ -126,9 +145,14 @@ const Game: FC<GameProps> = ({ game }) => {
         <br />
         <div className='my-4'>Health bar</div>
         <br />
-        <div className='mx-auto flex max-w-2xl flex-wrap items-center justify-center gap-4'>
+        <div className='mx-auto flex max-w-2xl flex-wrap items-start justify-center gap-5'>
           {ranks.map(rank => (
-            <RankCard key={rank.id} rank={rank} />
+            <RankCard
+              selectedRank={selectedRank}
+              onClick={() => setSelectedRank(rank)}
+              key={rank.id}
+              rank={rank}
+            />
           ))}
         </div>
         <br />
