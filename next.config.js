@@ -14,7 +14,7 @@ const nextConfig = {
   swcMinify: true,
   images: {
     deviceSizes: [420, 768, 1024, 1280, 1536],
-    imageSizes: [25, 33, 50, 100],
+    imageSizes: [25, 33, 40, 50, 90, 100],
     remotePatterns: [
       {
         protocol: 'http',
