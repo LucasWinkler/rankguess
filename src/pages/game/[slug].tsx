@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { FC, FormEvent, useState } from 'react';
 import { Prisma, Rank } from '@prisma/client';
 import prisma from '@/lib/prismadb';
 import { NextSeo } from 'next-seo';
@@ -131,6 +131,11 @@ const Game: FC<GameProps> = ({ game }) => {
     );
   }
 
+  const handleSubmit = (e: FormEvent) => {
+    e.preventDefault();
+    console.log(selectedRank);
+  };
+
   return (
     <>
       <GameWrapper game={game}>
@@ -145,20 +150,22 @@ const Game: FC<GameProps> = ({ game }) => {
         <br />
         <div className='my-4'>Health bar</div>
         <br />
-        <div className='mx-auto flex max-w-2xl flex-wrap items-start justify-center gap-5'>
-          {ranks.map(rank => (
-            <RankCard
-              selectedRank={selectedRank}
-              onClick={() => setSelectedRank(rank)}
-              key={rank.id}
-              rank={rank}
-            />
-          ))}
-        </div>
-        <br />
-        <button className='rounded-full border border-blueish-grey-600/50 bg-blueish-grey-600/50 px-6 py-2 text-neutral-200 transition-colors duration-200 hover:text-neutral-100'>
-          Submit Guess
-        </button>
+        <form onSubmit={handleSubmit}>
+          <div className='mx-auto flex max-w-2xl flex-wrap items-start justify-center gap-5'>
+            {ranks.map(rank => (
+              <RankCard
+                selectedRank={selectedRank}
+                onClick={() => setSelectedRank(rank)}
+                key={rank.id}
+                rank={rank}
+              />
+            ))}
+          </div>
+          <br />
+          <button className='rounded-full border border-blueish-grey-600/50 bg-blueish-grey-600/50 px-6 py-2 text-neutral-200 transition-colors duration-200 hover:text-neutral-100'>
+            Submit Guess
+          </button>
+        </form>
       </GameWrapper>
     </>
   );

@@ -55,6 +55,7 @@ model User {
   sessions      Session[]
   clips         Clip[]
   stats         Stats[]
+  // guesses       Guess[]
 }
 
 // User submitted clips that must be accepted before being shown on the site
@@ -129,3 +130,56 @@ model Stats {
   @@index([userId])
   @@index([gameId])
 }
+
+// model Guess {
+//   id        String   @id @default(cuid())
+//   user      User     @relation(fields: [userId], references: [id])
+//   userId    String
+//   isCorrect Boolean  @default(false)
+//   guessedAt DateTime @default(now())
+
+//   @@index([userId])
+// }
+
+// Potential rework for the clip table. Not entirely sure if I want to keep it
+// how it is now. I like the way it is now because it has less redundant data 
+// and it's easier to query. But I also like the idea of having a separate 
+// table for organization.
+
+// model FeaturedClip {
+//   game           Game         @relation(fields: [gameId], references: [id])
+//   gameId         String       @unique
+//   acceptedClip   AcceptedClip @relation(fields: [acceptedClipId], references: [id])
+//   acceptedClipId String       @unique
+// }
+
+// model AcceptedClip {
+//   id              String        @id @default(cuid())
+//   youtubeId       String        @unique
+//   submittedClip   SubmittedClip @relation(fields: [submittedClipId], references: [id])
+//   submittedClipId String        @unique
+//   game            Game          @relation(fields: [gameId], references: [id])
+//   gameId          String
+//   featuredClip    FeaturedClip?
+//   acceptedAt      DateTime      @default(now())
+
+//   @@index([submittedClipId])
+//   @@index([gameId])
+// }
+
+// model SubmittedClip {
+//   id           String        @id @default(cuid())
+//   videoFile    String
+//   rank         Rank          @relation(fields: [rankId], references: [id])
+//   rankId       String
+//   game         Game          @relation(fields: [gameId], references: [id])
+//   gameId       String
+//   player       User          @relation(fields: [playerId], references: [id])
+//   playerId     String
+//   submittedAt    DateTime      @default(now())
+//   acceptedClip AcceptedClip?
+
+//   @@index([playerId])
+//   @@index([gameId])
+//   @@index([rankId])
+// }
