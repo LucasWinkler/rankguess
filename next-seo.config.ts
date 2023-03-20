@@ -4,7 +4,7 @@ const config: DefaultSeoProps = {
   title: 'Play Guess the Rank for Your Favorite Games',
   titleTemplate: '%s | RankGuess',
   description:
-    'Welcome to RankGuess, the ultimate rank guessing game where you can test your knowledge of user-submitted gameplay in CS:GO, Overwatch, League of Legends, Apex Legends and more. Track your stats to see how you improve over time. Join the fun now!',
+    'RankGuess is a rank guessing game where you can test your knowledge of user-submitted gameplay in CS:GO, Overwatch, League of Legends, Apex Legends and more.',
   openGraph: {
     type: 'website',
     locale: 'en_IE',
@@ -12,7 +12,7 @@ const config: DefaultSeoProps = {
     siteName: 'RankGuess',
     title: 'Play Guess the Rank for Your Favorite Games',
     description:
-      'Welcome to RankGuess, the ultimate rank guessing game where you can test your knowledge of user-submitted gameplay in CS:GO, Overwatch, League of Legends, Apex Legends and more. Track your stats to see how you improve over time. Join the fun now!',
+      'RankGuess is a rank guessing game where you can test your knowledge of user-submitted gameplay in CS:GO, Overwatch, League of Legends, Apex Legends and more.',
     images: [
       {
         url: 'https://www.rankguess.com/og.png',
