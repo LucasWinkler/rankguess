@@ -225,6 +225,7 @@ const Header: FC = () => {
                         className='text-blue-300 underline underline-offset-2 transition-colors duration-150 hover:no-underline'
                         onClick={() => {
                           setIsMobileMenuOpen(false);
+                          setIsInformationModalOpen(false);
                         }}
                         href='/login'>
                         Login
