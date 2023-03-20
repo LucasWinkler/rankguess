@@ -112,7 +112,7 @@ export const Modal: FC<PropsWithChildren<ModalProps>> = ({
     <div
       onClick={handleClickOutside}
       className='fixed inset-0 z-[15] h-full w-full'>
-      <div className='bg-black fixed inset-0 h-full w-full opacity-50'></div>
+      <div className='fixed inset-0 h-full w-full bg-neutral-900 opacity-50'></div>
       <div className='fixed inset-0 flex h-full w-full items-center justify-center'>
         <Container>
           <div
