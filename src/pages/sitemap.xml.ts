@@ -30,7 +30,7 @@ function generateSiteMap(games: Game[], host: string | null) {
  `;
 }
 
-export default function SiteMap() {}
+const SiteMap = () => {};
 
 export const getServerSideProps: GetServerSideProps = async ({ res, req }) => {
   const games = await prisma.game.findMany();
@@ -47,3 +47,5 @@ export const getServerSideProps: GetServerSideProps = async ({ res, req }) => {
     props: {},
   };
 };
+
+export default SiteMap;

@@ -6,6 +6,10 @@ import prisma from '@/lib/prismadb';
 import { Game } from '@prisma/client';
 import { getPlaiceholder } from 'plaiceholder';
 
+type HomeProps = {
+  gamesWithThumbnailBlur: GameWithThumbnailBlur[];
+};
+
 const comingSoonCards = (amount: number) => {
   const items = [];
 
@@ -16,11 +20,7 @@ const comingSoonCards = (amount: number) => {
   return items;
 };
 
-export default function Home({
-  gamesWithThumbnailBlur,
-}: {
-  gamesWithThumbnailBlur: GameWithThumbnailBlur[];
-}) {
+const Home = ({ gamesWithThumbnailBlur }: HomeProps) => {
   const countOfComingSoonCards = 8 - gamesWithThumbnailBlur.length;
 
   return (
@@ -42,7 +42,7 @@ export default function Home({
       </main>
     </>
   );
-}
+};
 
 export async function getStaticProps(context: any) {
   const { NEXTAUTH_URL } = process.env;
@@ -74,3 +74,5 @@ export async function getStaticProps(context: any) {
     },
   };
 }
+
+export default Home;

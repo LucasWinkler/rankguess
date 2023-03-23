@@ -5,7 +5,7 @@ import { NextSeo } from 'next-seo';
 import Link from 'next/link';
 import type { FC } from 'react';
 
-const Custom404: FC = ({}) => {
+const Custom404: FC = () => {
   const description =
     "Sorry, the page you were looking for isn't here. Please check the URL and try again. In the meantime, why not play a round of Guess the Rank for your favorite games with RankGuess? Join the fun now!";
 
@@ -42,4 +42,5 @@ const Custom404: FC = ({}) => {
     </>
   );
 };
+
 export default Custom404;

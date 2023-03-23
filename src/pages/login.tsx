@@ -9,7 +9,7 @@ import { useRouter } from 'next/router';
 import HeadingCircle from '@/components/common/HeadingCircle';
 import BackgroundGrid from '@/components/common/BackgroundGrid';
 
-export default function Login() {
+const Login = () => {
   const router = useRouter();
   const description =
     'Sign up or log in to RankGuess to save your stats and submit your own gameplay clips. Join the community now!';
@@ -55,7 +55,7 @@ export default function Login() {
       </main>
     </>
   );
-}
+};
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   const session = await getServerSession(context.req, context.res, authOptions);
@@ -73,3 +73,5 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     props: {},
   };
 }
+
+export default Login;

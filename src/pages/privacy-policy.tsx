@@ -3,7 +3,7 @@ import { NextSeo } from 'next-seo';
 import HeadingCircle from '@/components/common/HeadingCircle';
 import BackgroundGrid from '@/components/common/BackgroundGrid';
 
-export default function PrivacyPolicy() {
+const PrivacyPolicy = () => {
   return (
     <>
       <NextSeo
@@ -31,4 +31,6 @@ export default function PrivacyPolicy() {
       </main>
     </>
   );
-}
+};
+
+export default PrivacyPolicy;

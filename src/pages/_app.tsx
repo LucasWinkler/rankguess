@@ -16,10 +16,7 @@ const poppins = Poppins({
   display: 'swap',
 });
 
-export default function App({
-  Component,
-  pageProps: { session, ...pageProps },
-}: AppProps) {
+const App = ({ Component, pageProps: { session, ...pageProps } }: AppProps) => {
   return (
     <SessionProvider session={session}>
       <div className={`${poppins.variable} min-h-screen font-sans`}>
@@ -46,4 +43,6 @@ export default function App({
       </div>
     </SessionProvider>
   );
-}
+};
+
+export default App;

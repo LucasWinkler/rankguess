@@ -5,7 +5,7 @@ import { NextSeo } from 'next-seo';
 import HeadingCircle from '@/components/common/HeadingCircle';
 import BackgroundGrid from '@/components/common/BackgroundGrid';
 
-export default function Changelog() {
+const Changelog = () => {
   const description =
     'Stay up to date with the latest updates and changes for RankGuess. The daily game where you guess the rank of user submitted clips from Apex Legends, CSGO, League of Legends, and more!';
 
@@ -59,4 +59,6 @@ export default function Changelog() {
       </main>
     </>
   );
-}
+};
+
+export default Changelog;

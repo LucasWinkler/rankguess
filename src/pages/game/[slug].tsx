@@ -1,5 +1,5 @@
 import { FC, FormEvent, useState } from 'react';
-import { Prisma, Rank } from '@prisma/client';
+import { Rank } from '@prisma/client';
 import prisma from '@/lib/prismadb';
 import { GetStaticProps } from 'next';
 import { useRouter } from 'next/router';
@@ -29,96 +29,91 @@ const Game: FC<GameProps> = ({ game }) => {
 
   const ranks = game.ranks;
 
-  // The display and content will change later
-  if (!game.currentClip) {
-    return (
-      <>
-        <GameWrapper game={game}>
-          <div className='mx-auto max-w-2xl text-center text-lg text-neutral-200'>
-            <h3 className='pt-8 text-2xl text-neutral-100'>Work In Progress</h3>
-            <p className='pt-8'>
-              If youre seeing this page, it means the game is still in
-              development! This page will be eventually let you know that the
-              game currently does not have a clip today. It will also suggest
-              you to submit your own clips to help.
-            </p>
-            <div className='mx-auto max-w-xl pt-14'>
-              <h4 className='text-2xl text-neutral-100'>How you can help</h4>
-              <p className='pt-4'>
-                User submissions will be the last feature available on the
-                website. If you want to help get the game up and running sooner
-                please send your own clips to{' '}
-                <span>bliitzzedits@gmail.com</span>
-              </p>
-              <ul className='pt-4'>
-                <li>
-                  <span className='font-bold'>Clip length:</span> 0:20 - 2:00
-                </li>
-                <li>
-                  <span className='font-bold'>Clip quality:</span> 720p or
-                  higher
-                </li>
-                <li>
-                  <span className='font-bold'>Clip format:</span> Any for now
-                </li>
-                <li>
-                  <span className='font-bold'>Clip size:</span> Any for now
-                </li>
-                <li>No background music</li>
-                <li>You must blur/cover any rank indicators</li>
-              </ul>
-              <p className='pt-4'>
-                You don&apos;t need to follow the rules 100%. Once the game is
-                up and running the rules will be a bit more strict.
-              </p>
-            </div>
-          </div>
-        </GameWrapper>
-      </>
-    );
-  }
-
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     console.log(selectedRank);
   };
 
+  if (game.currentClip) {
+    return (
+      <>
+        <GameWrapper game={game}>
+          <div className='relative mx-auto aspect-video lg:max-w-4xl'>
+            <iframe
+              className='absolute inset-0 h-full w-full'
+              src={`https://www.youtube.com/embed/${game.currentClip?.clip.youtubeUrl}`}
+              title={`${game.shortName} video`}
+              allowFullScreen
+            />
+          </div>
+          <br />
+          <div className='my-4'>Health bar</div>
+          <br />
+          <form onSubmit={handleSubmit}>
+            <div className='mx-auto flex max-w-2xl flex-wrap items-start justify-center gap-5'>
+              {ranks.map(rank => (
+                <RankCard
+                  selectedRank={selectedRank}
+                  onClick={() => setSelectedRank(rank)}
+                  key={rank.id}
+                  rank={rank}
+                />
+              ))}
+            </div>
+            <br />
+            <button className='rounded-full border border-blueish-grey-600/50 bg-blueish-grey-600/50 px-6 py-2 text-neutral-200 transition-colors duration-200 hover:text-neutral-100'>
+              Submit Guess
+            </button>
+          </form>
+        </GameWrapper>
+      </>
+    );
+  }
+
   return (
     <>
       <GameWrapper game={game}>
-        <div className='relative mx-auto aspect-video lg:max-w-4xl'>
-          <iframe
-            className='absolute inset-0 h-full w-full'
-            src={`https://www.youtube.com/embed/${game.currentClip?.clip.youtubeUrl}`}
-            title={`${game.shortName} video`}
-            allowFullScreen
-          />
-        </div>
-        <br />
-        <div className='my-4'>Health bar</div>
-        <br />
-        <form onSubmit={handleSubmit}>
-          <div className='mx-auto flex max-w-2xl flex-wrap items-start justify-center gap-5'>
-            {ranks.map(rank => (
-              <RankCard
-                selectedRank={selectedRank}
-                onClick={() => setSelectedRank(rank)}
-                key={rank.id}
-                rank={rank}
-              />
-            ))}
+        <div className='mx-auto max-w-2xl text-center text-lg text-neutral-200'>
+          <h3 className='pt-8 text-2xl text-neutral-100'>Work In Progress</h3>
+          <p className='pt-8'>
+            If youre seeing this page, it means the game is still in
+            development! This page will be eventually let you know that the game
+            currently does not have a clip today. It will also suggest you to
+            submit your own clips to help.
+          </p>
+          <div className='mx-auto max-w-xl pt-14'>
+            <h4 className='text-2xl text-neutral-100'>How you can help</h4>
+            <p className='pt-4'>
+              User submissions will be the last feature available on the
+              website. If you want to help get the game up and running sooner
+              please send your own clips to <span>bliitzzedits@gmail.com</span>
+            </p>
+            <ul className='pt-4'>
+              <li>
+                <span className='font-bold'>Clip length:</span> 0:20 - 2:00
+              </li>
+              <li>
+                <span className='font-bold'>Clip quality:</span> 720p or higher
+              </li>
+              <li>
+                <span className='font-bold'>Clip format:</span> Any for now
+              </li>
+              <li>
+                <span className='font-bold'>Clip size:</span> Any for now
+              </li>
+              <li>No background music</li>
+              <li>You must blur/cover any rank indicators</li>
+            </ul>
+            <p className='pt-4'>
+              You don&apos;t need to follow the rules 100%. Once the game is up
+              and running the rules will be a bit more strict.
+            </p>
           </div>
-          <br />
-          <button className='rounded-full border border-blueish-grey-600/50 bg-blueish-grey-600/50 px-6 py-2 text-neutral-200 transition-colors duration-200 hover:text-neutral-100'>
-            Submit Guess
-          </button>
-        </form>
+        </div>
       </GameWrapper>
     </>
   );
 };
-
-export default Game;
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   const slug = params?.slug as string;
@@ -175,3 +170,5 @@ export const getStaticPaths = async () => {
     fallback: true,
   };
 };
+
+export default Game;

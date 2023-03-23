@@ -8,7 +8,7 @@ import { NextSeo } from 'next-seo';
 import BackgroundGrid from '@/components/common/BackgroundGrid';
 import HeadingCircle from '@/components/common/HeadingCircle';
 
-export default function Logout() {
+const Logout = () => {
   const description =
     "Are you sure you want to log out of RankGuess? Don't worry, your stats and progress will be saved and waiting for you when you come back! Click 'Logout' to end your session.";
 
@@ -48,7 +48,7 @@ export default function Logout() {
       </main>
     </>
   );
-}
+};
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   const session = await getServerSession(context.req, context.res, authOptions);
@@ -66,3 +66,5 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     props: {},
   };
 }
+
+export default Logout;

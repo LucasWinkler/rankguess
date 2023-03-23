@@ -6,7 +6,7 @@ import { NextSeo } from 'next-seo';
 import BackgroundGrid from '@/components/common/BackgroundGrid';
 import HeadingCircle from '@/components/common/HeadingCircle';
 
-export default function Submit() {
+const Submit = () => {
   const description =
     'Share your best gameplay moments with the RankGuess community! Submit your own clips from your favorite games, including CS:GO, Overwatch, League of Legends, and more. See if you can challenge others to guess the rank of your gameplay. Join the fun and submit your clips now!';
 
@@ -34,7 +34,7 @@ export default function Submit() {
       </main>
     </>
   );
-}
+};
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   const session = await getServerSession(context.req, context.res, authOptions);
@@ -54,3 +54,5 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     },
   };
 }
+
+export default Submit;
