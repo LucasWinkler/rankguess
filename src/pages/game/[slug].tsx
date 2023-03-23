@@ -29,8 +29,7 @@ const Game: FC<GameProps> = ({ game }) => {
 
   const ranks = game.ranks;
 
-  // The display and content will change later to let the user know there isn't a game today.
-  // It will most likely also suggest the user to submit their own clips to help.
+  // The display and content will change later
   if (!game.currentClip) {
     return (
       <>
@@ -53,7 +52,7 @@ const Game: FC<GameProps> = ({ game }) => {
               </p>
               <ul className='pt-4'>
                 <li>
-                  <span className='font-bold'>Clip length:</span> 0:30 - 2:00
+                  <span className='font-bold'>Clip length:</span> 0:20 - 2:00
                 </li>
                 <li>
                   <span className='font-bold'>Clip quality:</span> 720p or
@@ -69,8 +68,8 @@ const Game: FC<GameProps> = ({ game }) => {
                 <li>You must blur/cover any rank indicators</li>
               </ul>
               <p className='pt-4'>
-                Once the game is up and running the rules will be a bit more
-                strict.
+                You don&apos;t need to follow the rules 100%. Once the game is
+                up and running the rules will be a bit more strict.
               </p>
             </div>
           </div>
