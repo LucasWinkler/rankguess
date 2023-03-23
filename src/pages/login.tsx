@@ -1,5 +1,5 @@
 import Container from '@/components/common/Container';
-import LoginIcon from '@/components/icons/Login';
+import LoginIcon from '@/components/common/icons/Login';
 import { GetServerSidePropsContext } from 'next';
 import { getServerSession } from 'next-auth';
 import { signIn } from 'next-auth/react';

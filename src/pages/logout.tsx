@@ -1,5 +1,5 @@
 import Container from '@/components/common/Container';
-import LogoutIcon from '@/components/icons/Logout';
+import LogoutIcon from '@/components/common/icons/Logout';
 import { GetServerSidePropsContext } from 'next';
 import { getServerSession } from 'next-auth';
 import { signOut } from 'next-auth/react';

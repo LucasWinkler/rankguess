@@ -1,7 +1,7 @@
 import { ReactElement } from 'react';
-import FourCircles from '@/components/icons/FourCircles';
-import Submit from '@/components/icons/Submit';
-import Changelog from '@/components/icons/Changelog';
+import FourCircles from '@/components/common/icons/FourCircles';
+import Submit from '@/components/common/icons/Submit';
+import Changelog from '@/components/common/icons/Changelog';
 
 type NavigationItem = {
   name: string;
