@@ -1,6 +1,6 @@
 import type { FC } from 'react';
 import Image from 'next/image';
-import headingCircle from '../../public/images/heading-circle.webp';
+import headingCircle from 'public/images/heading-circle.webp';
 
 const HeadingCircle: FC = () => {
   return (

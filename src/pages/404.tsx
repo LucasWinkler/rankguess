@@ -1,6 +1,6 @@
-import BackgroundGrid from '@/components/BackgroundGrid';
-import Container from '@/components/Container';
-import HeadingCircle from '@/components/HeadingCircle';
+import BackgroundGrid from '@/components/common/BackgroundGrid';
+import Container from '@/components/common/Container';
+import HeadingCircle from '@/components/common/HeadingCircle';
 import { NextSeo } from 'next-seo';
 import Link from 'next/link';
 import type { FC } from 'react';

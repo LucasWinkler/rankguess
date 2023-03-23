@@ -2,11 +2,11 @@ import '@/styles/globals.css';
 import type { AppProps } from 'next/app';
 import { Poppins } from '@next/font/google';
 import { SessionProvider } from 'next-auth/react';
-import Header from '@/components/Header';
+import Header from '@/components/common/Header';
 import { DefaultSeo } from 'next-seo';
 import SEO from 'next-seo.config';
 import { Suspense } from 'react';
-import Loading from '@/components/Loading';
+import Loading from '@/components/common/Loading';
 import { Analytics } from '@vercel/analytics/react';
 
 const poppins = Poppins({

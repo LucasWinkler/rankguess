@@ -1,7 +1,7 @@
-import Container from '@/components/Container';
+import Container from '@/components/common/Container';
 import { NextSeo } from 'next-seo';
-import HeadingCircle from '@/components/HeadingCircle';
-import BackgroundGrid from '@/components/BackgroundGrid';
+import HeadingCircle from '@/components/common/HeadingCircle';
+import BackgroundGrid from '@/components/common/BackgroundGrid';
 
 export default function PrivacyPolicy() {
   return (

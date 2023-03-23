@@ -1,4 +1,4 @@
-import Container from '@/components/Container';
+import Container from '@/components/common/Container';
 import LoginIcon from '@/components/icons/Login';
 import { GetServerSidePropsContext } from 'next';
 import { getServerSession } from 'next-auth';
@@ -6,8 +6,8 @@ import { signIn } from 'next-auth/react';
 import { authOptions } from './api/auth/[...nextauth]';
 import { NextSeo } from 'next-seo';
 import { useRouter } from 'next/router';
-import HeadingCircle from '@/components/HeadingCircle';
-import BackgroundGrid from '@/components/BackgroundGrid';
+import HeadingCircle from '@/components/common/HeadingCircle';
+import BackgroundGrid from '@/components/common/BackgroundGrid';
 
 export default function Login() {
   const router = useRouter();

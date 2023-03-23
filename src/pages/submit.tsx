@@ -1,10 +1,10 @@
-import Container from '@/components/Container';
+import Container from '@/components/common/Container';
 import { GetServerSidePropsContext } from 'next';
 import { getServerSession } from 'next-auth';
 import { authOptions } from './api/auth/[...nextauth]';
 import { NextSeo } from 'next-seo';
-import BackgroundGrid from '@/components/BackgroundGrid';
-import HeadingCircle from '@/components/HeadingCircle';
+import BackgroundGrid from '@/components/common/BackgroundGrid';
+import HeadingCircle from '@/components/common/HeadingCircle';
 
 export default function Submit() {
   const description =

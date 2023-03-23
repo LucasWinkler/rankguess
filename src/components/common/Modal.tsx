@@ -1,6 +1,6 @@
 import { FC, PropsWithChildren, useEffect } from 'react';
 import Container from './Container';
-import Close from './icons/Close';
+import Close from '../icons/Close';
 
 type ModalProps = {
   isOpen: boolean;

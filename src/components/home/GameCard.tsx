@@ -46,7 +46,7 @@ const GameCard: FC<GameCardProps> = ({ game }) => {
   }
 
   return (
-    <Link className={cardClasses} href={`/game/${game.slug}`}>
+    <Link draggable={false} className={cardClasses} href={`/game/${game.slug}`}>
       <span
         className={clsx(
           cardTextClasses,
@@ -55,6 +55,7 @@ const GameCard: FC<GameCardProps> = ({ game }) => {
         {game.shortName || game.name}
       </span>
       <Image
+        draggable={false}
         className='absolute z-[1] h-full w-full object-cover object-center blur-[1px] brightness-[50%] transition-[blur_scale] duration-[500ms] ease-in-out will-change-transform group-hover:scale-[1.10] group-hover:blur-0 group-hover:brightness-[60%] group-focus:scale-[1.10] group-focus:blur-0 group-focus:brightness-[60%]'
         {...game.imageProps}
         alt={(game.shortName || game.name) + ' thumbnail'}

@@ -1,7 +1,7 @@
-import BackgroundGrid from '@/components/BackgroundGrid';
-import Container from '@/components/Container';
-import GameCard, { GameWithThumbnailBlur } from '@/components/GameCard';
-import HeadingCircle from '@/components/HeadingCircle';
+import BackgroundGrid from '@/components/common/BackgroundGrid';
+import Container from '@/components/common/Container';
+import GameCard, { GameWithThumbnailBlur } from '@/components/home/GameCard';
+import HeadingCircle from '@/components/common/HeadingCircle';
 import prisma from '@/lib/prismadb';
 import { Game } from '@prisma/client';
 import { getPlaiceholder } from 'plaiceholder';
