@@ -35,6 +35,19 @@ module.exports = {
       backgroundImage: {
         'grid-tile': 'url("/images/grid-tile.svg")',
       },
+      keyframes: {
+        shake: {
+          '0%': { transform: 'translateX(0)' },
+          '25%': { transform: 'translateX(0.5rem)' },
+          '50%': { transform: 'translateX(-0.5rem)' },
+          '75%': { transform: 'translateX(0.5rem)' },
+          '100%': { transform: 'translateX(0)' },
+        },
+      },
+      animation: {
+        shake: 'shake 0.25s ease-in-out forwards',
+        'reduced-shake': 'shake 0.5s ease-in-out forwards',
+      },
     },
   },
   plugins: [],

@@ -46,35 +46,46 @@ model VerificationToken {
 }
 
 model User {
-  id            String    @id @default(cuid())
+  id            String         @id @default(cuid())
   name          String?
-  email         String?   @unique
+  email         String?        @unique
   emailVerified DateTime?
   image         String?
   accounts      Account[]
   sessions      Session[]
   clips         Clip[]
   stats         Stats[]
-  // guesses       Guess[]
+  userGameSaves UserGameSave[]
 }
 
-// User submitted clips that must be accepted before being shown on the site
-// Once accepted the video will be uploaded via the youtube api, and the
-// youtube url will be stored.
+model Game {
+  id            String         @id @default(cuid())
+  name          String         @unique
+  shortName     String?        @unique
+  slug          String         @unique
+  thumbnailPath String
+  isEnabled     Boolean        @default(false)
+  currentClip   CurrentClip?
+  ranks         Rank[]
+  stats         Stats[]
+  clips         Clip[]
+  userGameSaves UserGameSave[]
+}
+
 model Clip {
   id              String       @id @default(cuid())
   videoFile       String
-  rank            Rank         @relation(fields: [rankId], references: [id])
-  rankId          String
   youtubeUrl      String?
   submittedDate   DateTime     @default(now())
   acceptedDate    DateTime?
   isAccepted      Boolean      @default(false)
   hasBeenFeatured Boolean      @default(false)
-  game            Game         @relation(fields: [gameId], references: [id])
+  rankId          String
   gameId          String
-  player          User         @relation(fields: [playerId], references: [id])
   playerId        String
+  rank            Rank         @relation(fields: [rankId], references: [id])
+  game            Game         @relation(fields: [gameId], references: [id])
+  player          User         @relation(fields: [playerId], references: [id])
   currentClip     CurrentClip?
 
   @@index([playerId])
@@ -82,104 +93,49 @@ model Clip {
   @@index([rankId])
 }
 
-model Game {
-  id            String       @id @default(cuid())
-  name          String       @unique
-  shortName     String?      @unique
-  slug          String       @unique
-  thumbnailPath String
-  isEnabled     Boolean      @default(false)
-  currentClip   CurrentClip?
-
-  ranks Rank[]
-  stats Stats[]
-  clips Clip[]
-}
-
 model CurrentClip {
-  game   Game   @relation(fields: [gameId], references: [id])
   gameId String @unique
-  clip   Clip   @relation(fields: [clipId], references: [id])
   clipId String @unique
+  game   Game   @relation(fields: [gameId], references: [id])
+  clip   Clip   @relation(fields: [clipId], references: [id])
 }
 
 model Rank {
   id        String @id @default(cuid())
   name      String
   imagePath String
+  gameId    String
   order     Int    @default(0)
   game      Game   @relation(fields: [gameId], references: [id])
-  gameId    String
-
-  clips Clip[]
+  clips     Clip[]
 
   @@index([gameId])
 }
 
 model Stats {
-  id            String @id @default(cuid())
-  gamesPlayed   Int    @default(0)
-  gamesWon      Int    @default(0)
-  streak        Int    @default(0)
-  longestStreak Int    @default(0)
-  game          Game   @relation(fields: [gameId], references: [id])
-  gameId        String
-  user          User   @relation(fields: [userId], references: [id])
-  userId        String
+  id               String @id @default(cuid())
+  gamesPlayed      Int    @default(0)
+  gamesWon         Int    @default(0)
+  winStreak        Int    @default(0)
+  longestWinStreak Int    @default(0)
+  gameId           String
+  userId           String
+  game             Game   @relation(fields: [gameId], references: [id])
+  user             User   @relation(fields: [userId], references: [id])
 
   @@index([userId])
   @@index([gameId])
 }
 
-// model Guess {
-//   id        String   @id @default(cuid())
-//   user      User     @relation(fields: [userId], references: [id])
-//   userId    String
-//   isCorrect Boolean  @default(false)
-//   guessedAt DateTime @default(now())
+model UserGameSave {
+  id         String @id @default(cuid())
+  userId     String
+  gameId     String
+  clipId     String
+  guessCount Int    @default(0)
+  user       User   @relation(fields: [userId], references: [id])
+  game       Game   @relation(fields: [gameId], references: [id])
 
-//   @@index([userId])
-// }
-
-// Potential rework for the clip table. Not entirely sure if I want to keep it
-// how it is now. I like the way it is now because it has less redundant data 
-// and it's easier to query. But I also like the idea of having a separate 
-// table for organization.
-
-// model FeaturedClip {
-//   game           Game         @relation(fields: [gameId], references: [id])
-//   gameId         String       @unique
-//   acceptedClip   AcceptedClip @relation(fields: [acceptedClipId], references: [id])
-//   acceptedClipId String       @unique
-// }
-
-// model AcceptedClip {
-//   id              String        @id @default(cuid())
-//   youtubeId       String        @unique
-//   submittedClip   SubmittedClip @relation(fields: [submittedClipId], references: [id])
-//   submittedClipId String        @unique
-//   game            Game          @relation(fields: [gameId], references: [id])
-//   gameId          String
-//   featuredClip    FeaturedClip?
-//   acceptedAt      DateTime      @default(now())
-
-//   @@index([submittedClipId])
-//   @@index([gameId])
-// }
-
-// model SubmittedClip {
-//   id           String        @id @default(cuid())
-//   videoFile    String
-//   rank         Rank          @relation(fields: [rankId], references: [id])
-//   rankId       String
-//   game         Game          @relation(fields: [gameId], references: [id])
-//   gameId       String
-//   player       User          @relation(fields: [playerId], references: [id])
-//   playerId     String
-//   submittedAt    DateTime      @default(now())
-//   acceptedClip AcceptedClip?
-
-//   @@index([playerId])
-//   @@index([gameId])
-//   @@index([rankId])
-// }
+  @@index([userId])
+  @@index([gameId])
+}

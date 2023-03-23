@@ -1,4 +1,4 @@
-import { FC, FormEvent, useState } from 'react';
+import { FC, FormEvent, useEffect, useState } from 'react';
 import { Rank } from '@prisma/client';
 import prisma from '@/lib/prismadb';
 import { GetStaticProps } from 'next';
@@ -7,6 +7,24 @@ import Loading from '@/components/common/Loading';
 import { GameWrapper } from '../../components/game/GameWrapper';
 import { RankCard } from '../../components/game/RankCard';
 import { GameWithRanks } from '@/types/game';
+import { useSession } from 'next-auth/react';
+import { Modal } from '@/components/common/Modal';
+import clsx from 'clsx';
+
+const MAX_GUESS_COUNT = 3;
+const LOCAL_STORAGE_GAME_STATES_KEY = 'rankguess-game-state';
+const LOCAL_STORAGE_STATS_KEY = 'rankguess-stats';
+
+// Experimenting with what data to store in local storage
+// Going to keep track of the current clip for each game
+// If the current clip from the database is different than
+// the one in local storage then we know to reset the guesses
+// since it's a new day.
+type GameState = {
+  gameId: string;
+  clipId: string;
+  guesses: number;
+};
 
 type GameProps = {
   game: GameWithRanks;
@@ -15,7 +33,57 @@ type GameProps = {
 
 const Game: FC<GameProps> = ({ game }) => {
   const [selectedRank, setSelectedRank] = useState<Rank>();
+  const [userGameState, setUserGameState] = useState<GameState[]>([]);
+  const [guessCount, setGuessCount] = useState<number>(0);
+  const { data: session, status } = useSession();
+
   const router = useRouter();
+  const isGameOver = guessCount >= MAX_GUESS_COUNT;
+  const guessesLeft = MAX_GUESS_COUNT - guessCount;
+
+  useEffect(() => {
+    if (userGameState.length === 0) {
+      return;
+    }
+
+    localStorage.setItem(
+      LOCAL_STORAGE_GAME_STATES_KEY,
+      JSON.stringify(userGameState)
+    );
+  }, [userGameState]);
+
+  useEffect(() => {
+    if (status === 'loading') {
+      return;
+    }
+
+    if (status === 'authenticated') {
+      // TODO: do a query to get the user's game state from the database
+      // setUserGameState(); setGuessCount();
+      console.log('TODO: is logged in so query for game state');
+      return;
+    }
+
+    console.log('not authed so use local storage');
+
+    const localGameStates = localStorage.getItem(LOCAL_STORAGE_GAME_STATES_KEY);
+    console.log('localGameStates: ', localGameStates);
+
+    if (localGameStates) {
+      const parsedGameStates: GameState[] = JSON.parse(localGameStates);
+      console.log('parsedGameStates: ', parsedGameStates);
+
+      parsedGameStates.map(gameState => {
+        console.log('gameState: ', gameState);
+
+        if (gameState.gameId === game.id) {
+          setGuessCount(gameState.guesses);
+        }
+      });
+
+      setUserGameState(parsedGameStates);
+    }
+  }, [status, game.id]);
 
   if (router.isFallback) {
     return (
@@ -31,7 +99,32 @@ const Game: FC<GameProps> = ({ game }) => {
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    console.log(selectedRank);
+
+    if (isGameOver || !game.currentClip) {
+      return;
+    }
+
+    const newGuessCount = guessCount + 1;
+    setGuessCount(newGuessCount);
+
+    setUserGameState([
+      {
+        gameId: game.id,
+        clipId: game.currentClip.clipId,
+        guesses: newGuessCount,
+      },
+    ]);
+
+    setSelectedRank(undefined);
+  };
+
+  const handleSelectRank = (rank: Rank) => {
+    if (isGameOver) {
+      setSelectedRank(undefined);
+      return;
+    }
+
+    setSelectedRank(rank);
   };
 
   if (game.currentClip) {
@@ -46,24 +139,44 @@ const Game: FC<GameProps> = ({ game }) => {
               allowFullScreen
             />
           </div>
-          <br />
-          <div className='my-4'>Health bar</div>
-          <br />
+          <div
+            className={clsx(
+              'my-10',
+              isGameOver &&
+                'animate-shake opacity-[65%] grayscale-[35%] motion-reduce:animate-reduced-shake'
+            )}>
+            {/* Will be replaced by an actual health bar */}
+            Health bar ({guessesLeft}/{MAX_GUESS_COUNT})
+          </div>
           <form onSubmit={handleSubmit}>
-            <div className='mx-auto flex max-w-2xl flex-wrap items-start justify-center gap-5'>
-              {ranks.map(rank => (
-                <RankCard
-                  selectedRank={selectedRank}
-                  onClick={() => setSelectedRank(rank)}
-                  key={rank.id}
-                  rank={rank}
-                />
-              ))}
-            </div>
-            <br />
-            <button className='rounded-full border border-blueish-grey-600/50 bg-blueish-grey-600/50 px-6 py-2 text-neutral-200 transition-colors duration-200 hover:text-neutral-100'>
-              Submit Guess
-            </button>
+            <fieldset
+              disabled={isGameOver}
+              className={clsx(
+                'transition-all duration-150 ease-in-out',
+                isGameOver &&
+                  'animate-shake opacity-[65%] grayscale-[35%] motion-reduce:animate-reduced-shake'
+              )}>
+              <div className='mx-auto flex max-w-2xl flex-wrap items-start justify-center gap-5'>
+                {ranks.map(rank => (
+                  <RankCard
+                    isDisabled={isGameOver}
+                    selectedRank={selectedRank}
+                    onClick={() => handleSelectRank(rank)}
+                    key={rank.id}
+                    rank={rank}
+                  />
+                ))}
+              </div>
+              <button
+                className={clsx(
+                  'mt-6 rounded-full border border-blueish-grey-600/50 bg-blueish-grey-600/50 px-6 py-2 text-neutral-200',
+                  isGameOver
+                    ? 'cursor-not-allowed'
+                    : 'transition-colors duration-200 hover:text-neutral-100'
+                )}>
+                Submit Guess
+              </button>
+            </fieldset>
           </form>
         </GameWrapper>
       </>

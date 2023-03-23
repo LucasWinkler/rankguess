@@ -7,27 +7,32 @@ type RankCardProps = {
   rank: Rank;
   selectedRank: Rank | undefined;
   onClick: () => void;
+  isDisabled: boolean;
 };
 
 export const RankCard: FC<RankCardProps> = ({
   rank,
   selectedRank,
   onClick,
+  isDisabled,
 }) => {
   return (
     <div
       className={clsx(
         'flex flex-col transition-all duration-200 ease-in-out',
-        selectedRank?.id === rank.id && 'scale-[1.15]'
+        selectedRank?.id === rank.id && !isDisabled && 'scale-[1.15]'
       )}>
       <button
         onClick={onClick}
         type='button'
-        className={clsx('flex flex-col items-center justify-center')}>
+        className={clsx(
+          'flex flex-col items-center justify-center',
+          isDisabled && 'cursor-not-allowed'
+        )}>
         <div
           className={clsx(
             'relative h-16 w-16 overflow-hidden rounded-xl border border-blueish-grey-600/80 bg-blueish-grey-600/25 backdrop-blur-[1px] transition-all duration-100 ease-in-out',
-            selectedRank?.id === rank.id && 'border-2'
+            selectedRank?.id === rank.id && !isDisabled && 'border-2'
           )}>
           <Image
             className='flex h-full w-full object-contain p-2'
