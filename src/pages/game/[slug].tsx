@@ -199,7 +199,7 @@ const Game: FC<GameProps> = ({ game }) => {
             <p className='pt-4'>
               User submissions will be the last feature available on the
               website. If you want to help get the game up and running sooner
-              please send your own clips to <span>bliitzzedits@gmail.com</span>
+              please send your own clips to <span>rankguess@gmail.com</span>
             </p>
             <ul className='pt-4'>
               <li>
