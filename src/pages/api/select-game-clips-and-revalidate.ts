@@ -21,12 +21,14 @@ type GameWithAcceptedClipsAndCurrentClip = Prisma.GameGetPayload<{
 async function updateNewGameClip(
   game: GameWithAcceptedClipsAndCurrentClip
 ): Promise<{ currentClip: CurrentClip } | null> {
+  const isDev = process.env.NODE_ENV === 'development';
+
   try {
     return prisma.$transaction(async transaction => {
       const newClip = game.clips[0];
 
       if (!newClip) {
-        console.log('No new clips to select for game:', game.name);
+        isDev && console.info('No new clips to select for game:', game.name);
 
         if (game.currentClip) {
           await transaction.currentClip
@@ -35,8 +37,10 @@ async function updateNewGameClip(
                 gameId: game.id,
               },
             })
-            .then(() =>
-              console.log('Deleted currentClip for game:', game.name)
+            .then(
+              () =>
+                isDev &&
+                console.info('Deleted currentClip for game:', game.name)
             );
         }
 
@@ -71,7 +75,7 @@ async function updateNewGameClip(
       };
     });
   } catch (error) {
-    console.error('Error selecting clip for game:', error);
+    isDev && console.error('Error selecting clip for game:', error);
 
     return null;
   }
@@ -91,6 +95,8 @@ export default async function handler(
   ) {
     return res.status(401).json({ message: 'Invalid token' });
   }
+
+  const isDev = process.env.NODE_ENV === 'development';
 
   try {
     // Grab each game that is enabled, include all clips that are
@@ -117,7 +123,7 @@ export default async function handler(
       },
     });
 
-    console.info('Attempting to update clips for each game');
+    isDev && console.info('Attempting to update clips for each game');
 
     const updatedClipsForEachGame = await Promise.all(
       games.map(async game => {
@@ -148,7 +154,7 @@ export default async function handler(
         throw new Error('Error selecting new clips for each game:', error);
       });
 
-    console.info('Updated games with new currentClips:', updatedGames);
+    isDev && console.info('Updated games with new currentClips:', updatedGames);
 
     const urlsToRevalidate = [
       '/',
@@ -158,7 +164,7 @@ export default async function handler(
     await Promise.allSettled(
       urlsToRevalidate.map(async url => {
         await res.revalidate(url);
-        console.info('Attempting to revalidate URL:', url);
+        isDev && console.info('Attempting to revalidate URL:', url);
       })
     )
       .then(() => {
