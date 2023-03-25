@@ -79,12 +79,16 @@ async function updateNewGameClip(
 
 // This API route is used to grab a new currentClip for each game
 // and then revalidate the home page and each game page. It is ran
-// via a cron job at 12:00 AM ETC every day.
+// via a cron job at 12:00 AM ETC every day and hit a minute before to warm itup.
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  if (req.query.secret !== process.env.REVALIDATE_SECRET) {
+  if (req.query.secret === process.env.API_WARMUP_SECRET) {
+    return res.status(200).json({ message: 'Warmed up' });
+  } else if (
+    req.query.secret !== process.env.SELECT_GAME_CLIPS_AND_REVALIDATE_SECRET
+  ) {
     return res.status(401).json({ message: 'Invalid token' });
   }
 
