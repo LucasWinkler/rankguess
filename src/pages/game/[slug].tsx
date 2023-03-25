@@ -133,7 +133,7 @@ const Game: FC<GameProps> = ({ game }) => {
         <GameWrapper game={game}>
           <div className='relative mx-auto aspect-video lg:max-w-4xl'>
             <iframe
-              className='absolute inset-0 h-full w-full'
+              className='absolute inset-0 h-full w-full rounded-2xl border border-blueish-grey-600/80 bg-blueish-grey-600/25'
               src={`https://www.youtube.com/embed/${game.currentClip?.clip.youtubeUrl}?rel=0`}
               title={`${game.shortName} video`}
               allowFullScreen
