@@ -57,14 +57,13 @@ const Game: FC<GameProps> = ({ game }) => {
     if (status === 'authenticated' && session.user) {
       fetch('/api/user-game-save')
         .then(res => res.json())
-        .then(({ userGameSaves }) => {
+        .then(({ userGameSaves }: { userGameSaves: UserGameSave[] }) => {
           if (!userGameSaves) {
             throw new Error('No user game saves found');
           }
 
-          setUserGameSaves(userGameSaves);
-
           userGameSaves.find((gameSave: UserGameSave) => {
+            setUserGameSaves(userGameSaves);
             setGuessCount(gameSave.guessCount);
           });
         })
@@ -81,11 +80,11 @@ const Game: FC<GameProps> = ({ game }) => {
 
       parsedGameSaves.map(gameSave => {
         if (gameSave.gameId === game.id) {
+          setLocalGameSaves(parsedGameSaves);
           setGuessCount(gameSave.guessCount);
+          return;
         }
       });
-
-      setLocalGameSaves(parsedGameSaves);
     }
   }, [status, game, session?.user]);
 
@@ -124,34 +123,32 @@ const Game: FC<GameProps> = ({ game }) => {
         .then(data => {
           setUserGameSaves(data);
         });
+    } else {
+      setLocalGameSaves(prevLocalGameSave => {
+        const currentGameIndex = prevLocalGameSave.findIndex(
+          gameSave => gameSave.gameId === game.id
+        );
 
-      return;
-    }
+        if (currentGameIndex === -1 && game.currentClip) {
+          return [
+            ...prevLocalGameSave,
+            {
+              gameId: game.id,
+              clipId: game.currentClip.clipId,
+              guessCount: newGuessCount,
+            },
+          ];
+        } else {
+          const newGameSave = [...prevLocalGameSave];
 
-    setLocalGameSaves(prevLocalGameSave => {
-      const currentGameIndex = prevLocalGameSave.findIndex(
-        gameSave => gameSave.gameId === game.id
-      );
-
-      if (currentGameIndex === -1 && game.currentClip) {
-        return [
-          ...prevLocalGameSave,
-          {
-            gameId: game.id,
-            clipId: game.currentClip.clipId,
+          newGameSave[currentGameIndex] = {
+            ...newGameSave[currentGameIndex],
             guessCount: newGuessCount,
-          },
-        ];
-      } else {
-        const newGameSave = [...prevLocalGameSave];
-
-        newGameSave[currentGameIndex] = {
-          ...newGameSave[currentGameIndex],
-          guessCount: newGuessCount,
-        };
-        return newGameSave;
-      }
-    });
+          };
+          return newGameSave;
+        }
+      });
+    }
 
     setSelectedRank(undefined);
   };
