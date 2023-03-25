@@ -19,19 +19,21 @@ export const RankCard: FC<RankCardProps> = ({
   return (
     <div
       className={clsx(
-        'flex flex-col transition-all duration-200 ease-in-out',
-        selectedRank?.id === rank.id && !isDisabled && 'scale-[1.15]'
+        'relative mx-[0.5rem] mb-4 flex flex-col transition-all duration-300 ease-in-out',
+        selectedRank?.id === rank.id &&
+          !isDisabled &&
+          'mx-[1.0rem] scale-[1.20]'
       )}>
       <button
         onClick={onClick}
         type='button'
         className={clsx(
-          'flex flex-col items-center justify-center',
+          'flex max-w-[3.5rem] flex-col items-center justify-center',
           isDisabled && 'cursor-not-allowed'
         )}>
         <div
           className={clsx(
-            'relative h-16 w-16 overflow-hidden rounded-xl border border-blueish-grey-600/80 bg-blueish-grey-600/25 backdrop-blur-[1px] transition-all duration-100 ease-in-out',
+            'relative h-16 w-16 overflow-hidden rounded-xl border border-blueish-grey-600/80 bg-blueish-grey-600/25 backdrop-blur-[1px] transition-all duration-300 ease-in-out',
             selectedRank?.id === rank.id && !isDisabled && 'border-2'
           )}>
           <Image

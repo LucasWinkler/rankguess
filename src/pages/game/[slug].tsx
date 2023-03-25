@@ -42,7 +42,7 @@ const Game: FC<GameProps> = ({ game }) => {
   const guessesLeft = MAX_GUESS_COUNT - guessCount;
 
   useEffect(() => {
-    if (userGameState.length === 0) {
+    if (userGameState.length === 0 || !game.currentClip) {
       return;
     }
 
@@ -50,10 +50,10 @@ const Game: FC<GameProps> = ({ game }) => {
       LOCAL_STORAGE_GAME_STATES_KEY,
       JSON.stringify(userGameState)
     );
-  }, [userGameState]);
+  }, [userGameState, game.currentClip]);
 
   useEffect(() => {
-    if (status === 'loading') {
+    if (status === 'loading' || !game.currentClip) {
       return;
     }
 
@@ -83,7 +83,7 @@ const Game: FC<GameProps> = ({ game }) => {
 
       setUserGameState(parsedGameStates);
     }
-  }, [status, game.id]);
+  }, [status, game]);
 
   if (router.isFallback) {
     return (
@@ -134,7 +134,7 @@ const Game: FC<GameProps> = ({ game }) => {
           <div className='relative mx-auto aspect-video lg:max-w-4xl'>
             <iframe
               className='absolute inset-0 h-full w-full'
-              src={`https://www.youtube.com/embed/${game.currentClip?.clip.youtubeUrl}`}
+              src={`https://www.youtube.com/embed/${game.currentClip?.clip.youtubeUrl}?rel=0`}
               title={`${game.shortName} video`}
               allowFullScreen
             />
@@ -146,7 +146,7 @@ const Game: FC<GameProps> = ({ game }) => {
                 'animate-shake opacity-[65%] grayscale-[35%] motion-reduce:animate-reduced-shake'
             )}>
             {/* Will be replaced by an actual health bar */}
-            Health bar ({guessesLeft}/{MAX_GUESS_COUNT})
+            Temp health bar ({guessesLeft}/{MAX_GUESS_COUNT})
           </div>
           <form onSubmit={handleSubmit}>
             <fieldset
@@ -156,7 +156,7 @@ const Game: FC<GameProps> = ({ game }) => {
                 isGameOver &&
                   'animate-shake opacity-[65%] grayscale-[35%] motion-reduce:animate-reduced-shake'
               )}>
-              <div className='mx-auto flex max-w-2xl flex-wrap items-start justify-center gap-5'>
+              <div className='mx-auto flex max-w-2xl flex-wrap items-start justify-center'>
                 {ranks.map(rank => (
                   <RankCard
                     isDisabled={isGameOver}
