@@ -174,7 +174,7 @@ export default async function handler(
         throw new Error('Error revalidating pages:', error);
       });
 
-    return res.json({
+    return res.status(200).json({
       revalidated: true,
       games: updatedGames,
     });
