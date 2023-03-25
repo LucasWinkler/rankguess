@@ -10,7 +10,7 @@ type RankCardProps = {
   isDisabled: boolean;
 };
 
-export const RankCard: FC<RankCardProps> = ({
+const RankCard: FC<RankCardProps> = ({
   rank,
   selectedRank,
   onClick,
@@ -50,3 +50,5 @@ export const RankCard: FC<RankCardProps> = ({
     </div>
   );
 };
+
+export default RankCard;

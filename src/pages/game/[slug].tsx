@@ -1,29 +1,24 @@
-import { FC, FormEvent, useEffect, useState } from 'react';
-import { Rank } from '@prisma/client';
+import { FC, FormEvent, SetStateAction, useEffect, useState } from 'react';
+import { Rank, UserGameSave } from '@prisma/client';
 import prisma from '@/lib/prismadb';
 import { GetStaticProps } from 'next';
 import { useRouter } from 'next/router';
 import Loading from '@/components/common/Loading';
-import { GameWrapper } from '../../components/game/GameWrapper';
-import { RankCard } from '../../components/game/RankCard';
 import { GameWithRanks } from '@/types/game';
 import { useSession } from 'next-auth/react';
-import { Modal } from '@/components/common/Modal';
 import clsx from 'clsx';
+import { LOCAL_STORAGE_GAME_SAVES_KEY, MAX_GUESS_COUNT } from '@/constants';
+import TempHealthBar from '@/components/game/TempHealthBar';
+import RankSelection from '@/components/game/RankSelection';
+import ClipPlayer from '@/components/game/ClipPlayer';
+import NoClipToday from '@/components/game/NoClipToday';
+import GamePageWrapper from '@/components/game/GamePageWrapper';
+import clamp from '@/util/clamp';
 
-const MAX_GUESS_COUNT = 3;
-const LOCAL_STORAGE_GAME_STATES_KEY = 'rankguess-game-state';
-const LOCAL_STORAGE_STATS_KEY = 'rankguess-stats';
-
-// Experimenting with what data to store in local storage
-// Going to keep track of the current clip for each game
-// If the current clip from the database is different than
-// the one in local storage then we know to reset the guesses
-// since it's a new day.
-type GameState = {
+type LocalGameSave = {
   gameId: string;
   clipId: string;
-  guesses: number;
+  guessCount: number;
 };
 
 type GameProps = {
@@ -33,57 +28,66 @@ type GameProps = {
 
 const Game: FC<GameProps> = ({ game }) => {
   const [selectedRank, setSelectedRank] = useState<Rank>();
-  const [userGameState, setUserGameState] = useState<GameState[]>([]);
+  const [localGameSaves, setLocalGameSaves] = useState<LocalGameSave[]>([]);
+  const [userGameSaves, setUserGameSaves] = useState<UserGameSave[]>([]);
   const [guessCount, setGuessCount] = useState<number>(0);
   const { data: session, status } = useSession();
 
   const router = useRouter();
+  const ranks = game.ranks;
   const isGameOver = guessCount >= MAX_GUESS_COUNT;
   const guessesLeft = MAX_GUESS_COUNT - guessCount;
 
   useEffect(() => {
-    if (userGameState.length === 0 || !game.currentClip) {
+    if (localGameSaves.length === 0 || !game.currentClip || session?.user) {
       return;
     }
 
     localStorage.setItem(
-      LOCAL_STORAGE_GAME_STATES_KEY,
-      JSON.stringify(userGameState)
+      LOCAL_STORAGE_GAME_SAVES_KEY,
+      JSON.stringify(localGameSaves)
     );
-  }, [userGameState, game.currentClip]);
+  }, [localGameSaves, game.currentClip, session?.user]);
 
   useEffect(() => {
     if (status === 'loading' || !game.currentClip) {
       return;
     }
 
-    if (status === 'authenticated') {
-      // TODO: do a query to get the user's game state from the database
-      // setUserGameState(); setGuessCount();
-      console.log('TODO: is logged in so query for game state');
+    if (status === 'authenticated' && session.user) {
+      fetch('/api/user-game-save')
+        .then(res => res.json())
+        .then(({ userGameSaves }) => {
+          if (!userGameSaves) {
+            throw new Error('No user game saves found');
+          }
+
+          setUserGameSaves(userGameSaves);
+
+          userGameSaves.find((gameSave: UserGameSave) => {
+            setGuessCount(gameSave.guessCount);
+          });
+        })
+        .catch(error => {
+          console.log('Error while fetching user game saves:', error);
+        });
+
       return;
     }
 
-    console.log('not authed so use local storage');
+    const localGameSaves = localStorage.getItem(LOCAL_STORAGE_GAME_SAVES_KEY);
+    if (localGameSaves) {
+      const parsedGameSaves: LocalGameSave[] = JSON.parse(localGameSaves);
 
-    const localGameStates = localStorage.getItem(LOCAL_STORAGE_GAME_STATES_KEY);
-    console.log('localGameStates: ', localGameStates);
-
-    if (localGameStates) {
-      const parsedGameStates: GameState[] = JSON.parse(localGameStates);
-      console.log('parsedGameStates: ', parsedGameStates);
-
-      parsedGameStates.map(gameState => {
-        console.log('gameState: ', gameState);
-
-        if (gameState.gameId === game.id) {
-          setGuessCount(gameState.guesses);
+      parsedGameSaves.map(gameSave => {
+        if (gameSave.gameId === game.id) {
+          setGuessCount(gameSave.guessCount);
         }
       });
 
-      setUserGameState(parsedGameStates);
+      setLocalGameSaves(parsedGameSaves);
     }
-  }, [status, game]);
+  }, [status, game, session?.user]);
 
   if (router.isFallback) {
     return (
@@ -95,8 +99,6 @@ const Game: FC<GameProps> = ({ game }) => {
     );
   }
 
-  const ranks = game.ranks;
-
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
 
@@ -104,16 +106,52 @@ const Game: FC<GameProps> = ({ game }) => {
       return;
     }
 
-    const newGuessCount = guessCount + 1;
+    const newGuessCount = clamp(guessCount + 1, 0, MAX_GUESS_COUNT);
     setGuessCount(newGuessCount);
 
-    setUserGameState([
-      {
-        gameId: game.id,
-        clipId: game.currentClip.clipId,
-        guesses: newGuessCount,
-      },
-    ]);
+    if (session?.user) {
+      fetch('/api/user-game-save', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          userId: session.user.id,
+          gameId: game.id,
+          clipId: game.currentClip.clipId,
+          guessCount: newGuessCount,
+        }),
+      })
+        .then(res => res.json())
+        .then(data => {
+          setUserGameSaves(data);
+        });
+
+      return;
+    }
+
+    setLocalGameSaves(prevLocalGameSave => {
+      const currentGameIndex = prevLocalGameSave.findIndex(
+        gameSave => gameSave.gameId === game.id
+      );
+
+      if (currentGameIndex === -1 && game.currentClip) {
+        return [
+          ...prevLocalGameSave,
+          {
+            gameId: game.id,
+            clipId: game.currentClip.clipId,
+            guessCount: newGuessCount,
+          },
+        ];
+      } else {
+        const newGameSave = [...prevLocalGameSave];
+
+        newGameSave[currentGameIndex] = {
+          ...newGameSave[currentGameIndex],
+          guessCount: newGuessCount,
+        };
+        return newGameSave;
+      }
+    });
 
     setSelectedRank(undefined);
   };
@@ -130,24 +168,12 @@ const Game: FC<GameProps> = ({ game }) => {
   if (game.currentClip) {
     return (
       <>
-        <GameWrapper game={game}>
-          <div className='relative mx-auto aspect-video lg:max-w-4xl'>
-            <iframe
-              className='absolute inset-0 h-full w-full rounded-2xl border border-blueish-grey-600/80 bg-blueish-grey-600/25'
-              src={`https://www.youtube.com/embed/${game.currentClip?.clip.youtubeUrl}?rel=0`}
-              title={`${game.shortName} video`}
-              allowFullScreen
-            />
-          </div>
-          <div
-            className={clsx(
-              'my-10',
-              isGameOver &&
-                'animate-shake opacity-[65%] grayscale-[35%] motion-reduce:animate-reduced-shake'
-            )}>
-            {/* Will be replaced by an actual health bar */}
-            Temp health bar ({guessesLeft}/{MAX_GUESS_COUNT})
-          </div>
+        <GamePageWrapper game={game}>
+          <ClipPlayer
+            gameName={game.name}
+            youtubeVideoId={game.currentClip.clip.youtubeUrl}
+          />
+          <TempHealthBar guessesLeft={guessesLeft} isGameOver={isGameOver} />
           <form onSubmit={handleSubmit}>
             <fieldset
               disabled={isGameOver}
@@ -156,17 +182,12 @@ const Game: FC<GameProps> = ({ game }) => {
                 isGameOver &&
                   'animate-shake opacity-[65%] grayscale-[35%] motion-reduce:animate-reduced-shake'
               )}>
-              <div className='mx-auto flex max-w-2xl flex-wrap items-start justify-center'>
-                {ranks.map(rank => (
-                  <RankCard
-                    isDisabled={isGameOver}
-                    selectedRank={selectedRank}
-                    onClick={() => handleSelectRank(rank)}
-                    key={rank.id}
-                    rank={rank}
-                  />
-                ))}
-              </div>
+              <RankSelection
+                ranks={ranks}
+                selectedRank={selectedRank}
+                isDisabled={isGameOver}
+                onSelectRank={handleSelectRank}
+              />
               <button
                 className={clsx(
                   'mt-6 rounded-full border border-blueish-grey-600/50 bg-blueish-grey-600/50 px-6 py-2 text-neutral-200',
@@ -178,52 +199,16 @@ const Game: FC<GameProps> = ({ game }) => {
               </button>
             </fieldset>
           </form>
-        </GameWrapper>
+        </GamePageWrapper>
       </>
     );
   }
 
   return (
     <>
-      <GameWrapper game={game}>
-        <div className='mx-auto max-w-2xl text-center text-lg text-neutral-200'>
-          <h3 className='pt-8 text-2xl text-neutral-100'>Work In Progress</h3>
-          <p className='pt-8'>
-            If youre seeing this page, it means the game is still in
-            development! This page will be eventually let you know that the game
-            currently does not have a clip today. It will also suggest you to
-            submit your own clips to help.
-          </p>
-          <div className='mx-auto max-w-xl pt-14'>
-            <h4 className='text-2xl text-neutral-100'>How you can help</h4>
-            <p className='pt-4'>
-              User submissions will be the last feature available on the
-              website. If you want to help get the game up and running sooner
-              please send your own clips to <span>rankguess@gmail.com</span>
-            </p>
-            <ul className='pt-4'>
-              <li>
-                <span className='font-bold'>Clip length:</span> 0:20 - 2:00
-              </li>
-              <li>
-                <span className='font-bold'>Clip quality:</span> 720p or higher
-              </li>
-              <li>
-                <span className='font-bold'>Clip format:</span> Any for now
-              </li>
-              <li>
-                <span className='font-bold'>Clip size:</span> Any for now
-              </li>
-              <li>No background music</li>
-              <li>You must blur/cover any rank indicators</li>
-            </ul>
-            <p className='pt-4'>
-              You don&apos;t need to follow the rules 100%. Once the game is up
-              and running the rules will be a bit more strict.
-            </p>
-          </div>
-        </div>
-      </GameWrapper>
+      <GamePageWrapper game={game}>
+        <NoClipToday />
+      </GamePageWrapper>
     </>
   );
 };

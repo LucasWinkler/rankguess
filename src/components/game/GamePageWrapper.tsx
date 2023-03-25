@@ -5,12 +5,12 @@ import HeadingCircle from '@/components/common/HeadingCircle';
 import BackgroundGrid from '@/components/common/BackgroundGrid';
 import { GameWithRanks } from '@/types/game';
 
-type GameWrapperProps = {
+type GamePageWrapperProps = {
   game: GameWithRanks;
   children?: React.ReactNode;
 };
 
-export const GameWrapper: FC<GameWrapperProps> = ({ game, children }) => {
+const GamePageWrapper: FC<GamePageWrapperProps> = ({ game, children }) => {
   const description = `Guess the rank of user-submitted gameplay from ${game.name} daily with RankGuess. Test your knowledge and track your stats to see how you improve over time. Remember, the game resets at 12 am EST, so submit your guesses before then!`;
 
   return (
@@ -39,3 +39,5 @@ export const GameWrapper: FC<GameWrapperProps> = ({ game, children }) => {
     </>
   );
 };
+
+export default GamePageWrapper;

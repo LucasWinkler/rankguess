@@ -2,17 +2,27 @@ import Container from '@/components/common/Container';
 import LoginIcon from '@/components/common/icons/Login';
 import { GetServerSidePropsContext } from 'next';
 import { getServerSession } from 'next-auth';
-import { signIn } from 'next-auth/react';
+import { signIn, useSession } from 'next-auth/react';
 import { authOptions } from './api/auth/[...nextauth]';
 import { NextSeo } from 'next-seo';
 import { useRouter } from 'next/router';
 import HeadingCircle from '@/components/common/HeadingCircle';
 import BackgroundGrid from '@/components/common/BackgroundGrid';
+import { useEffect } from 'react';
 
 const Login = () => {
   const router = useRouter();
+  const { data: session, status } = useSession();
   const description =
     'Sign up or log in to RankGuess to save your stats and submit your own gameplay clips. Join the community now!';
+
+  useEffect(() => {
+    if (session) {
+      console.log(
+        'TODO: User authed so check local storage for game saves and store them in the db'
+      );
+    }
+  }, [session]);
 
   return (
     <>

@@ -1,6 +1,7 @@
 datasource db {
   provider     = "mysql"
   url          = env("DATABASE_URL")
+  directUrl    = env("DIRECT_URL")
   relationMode = "prisma"
 }
 
@@ -136,6 +137,7 @@ model UserGameSave {
   user       User   @relation(fields: [userId], references: [id])
   game       Game   @relation(fields: [gameId], references: [id])
 
+  @@unique([userId, gameId])
   @@index([userId])
   @@index([gameId])
 }
