@@ -89,7 +89,26 @@ export default async function handler(
   res: NextApiResponse
 ) {
   if (req.query.secret === process.env.API_WARMUP_SECRET) {
-    return res.status(200).json({ message: 'Warmed up' });
+    const games = await prisma.game.findMany({
+      where: {
+        isEnabled: true,
+      },
+      include: {
+        clips: {
+          where: {
+            isAccepted: true,
+            hasBeenFeatured: false,
+          },
+          orderBy: {
+            acceptedDate: 'asc',
+          },
+          take: 1,
+        },
+        currentClip: true,
+      },
+    });
+
+    return res.status(200).json({ message: 'Warmed up', games });
   } else if (
     req.query.secret !== process.env.SELECT_GAME_CLIPS_AND_REVALIDATE_SECRET
   ) {
@@ -173,7 +192,7 @@ export default async function handler(
       });
 
     return res.status(200).json({
-      revalidated: true,
+      revalidatedUrls: urlsToRevalidate,
       games: updatedGames,
     });
   } catch (error) {
