@@ -15,14 +15,14 @@ type GameWithAcceptedClipsAndCurrentClip = Prisma.GameGetPayload<{
   include: typeof gameInclude;
 }>;
 
+const isDev = process.env.NODE_ENV === 'development';
+
 // This function is used to update a new currentClip for a game.
 // It will also update the clip to mark it as featured and
 // connect the currentClip to the clip.
 async function updateNewGameClip(
   game: GameWithAcceptedClipsAndCurrentClip
 ): Promise<{ currentClip: CurrentClip } | null> {
-  const isDev = process.env.NODE_ENV === 'development';
-
   try {
     return prisma.$transaction(async transaction => {
       const newClip = game.clips[0];
@@ -88,17 +88,7 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const isDev = process.env.NODE_ENV === 'development';
-
   if (req.query.secret === process.env.API_WARMUP_SECRET) {
-    const games = await prisma.game.findMany({
-      where: {
-        isEnabled: true,
-      },
-    });
-
-    isDev && console.info('Warming up API and testing DB connection', games);
-
     return res.status(200).json({ message: 'Warmed up' });
   } else if (
     req.query.secret !== process.env.SELECT_GAME_CLIPS_AND_REVALIDATE_SECRET
