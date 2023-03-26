@@ -88,15 +88,23 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
+  const isDev = process.env.NODE_ENV === 'development';
+
   if (req.query.secret === process.env.API_WARMUP_SECRET) {
+    const games = await prisma.game.findMany({
+      where: {
+        isEnabled: true,
+      },
+    });
+
+    isDev && console.info('Warming up API and testing DB connection', games);
+
     return res.status(200).json({ message: 'Warmed up' });
   } else if (
     req.query.secret !== process.env.SELECT_GAME_CLIPS_AND_REVALIDATE_SECRET
   ) {
     return res.status(401).json({ message: 'Invalid token' });
   }
-
-  const isDev = process.env.NODE_ENV === 'development';
 
   try {
     // Grab each game that is enabled, include all clips that are
