@@ -128,19 +128,16 @@ export default async function handler(
       urlsToRevalidate.push(`/game/${game.slug}`);
     }
 
-    await Promise.all(
-      urlsToRevalidate.map(async url => {
-        await res.revalidate(url).catch(error => {
-          throw new Error(
-            `Error revalidating URL: '${url}' after selecting new daily clips: ${error}`
-          );
-        });
-      })
-    );
+    urlsToRevalidate.forEach(url => {
+      res.revalidate(url).catch(error => {
+        throw new Error(
+          `Error revalidating URL: '${url}' after selecting new daily clips: ${error}`
+        );
+      });
+    });
 
     return res.status(200).json({
-      message: 'Successfully selected new clips and revalidated pages',
-      revalidatedUrls: urlsToRevalidate,
+      message: 'Successfully selected new clips. Pages are being revalidated',
     });
   } catch (error) {
     console.error(
