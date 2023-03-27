@@ -129,8 +129,8 @@ export default async function handler(
     }
 
     await Promise.all(
-      urlsToRevalidate.map(url => {
-        res.revalidate(url).catch(error => {
+      urlsToRevalidate.map(async url => {
+        await res.revalidate(url).catch(error => {
           throw new Error(
             `Error revalidating URL: '${url}' after selecting new daily clips: ${error}`
           );
