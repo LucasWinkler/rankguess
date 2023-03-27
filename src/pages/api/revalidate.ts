@@ -1,10 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import prisma from '@/lib/prismadb';
 
-// This API route is used to grab a new currentClip for each game
-// and then revalidate the home page and each game page. It is ran
-// via a cron job at 12:00 am ETC every day and hit a minute before
-// to warm it up.
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
