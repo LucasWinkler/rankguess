@@ -1,7 +1,7 @@
 import { FC, FormEvent, SetStateAction, useEffect, useState } from 'react';
 import { Rank, UserGameSave } from '@prisma/client';
 import prisma from '@/lib/prismadb';
-import { GetStaticProps } from 'next';
+import { GetServerSideProps, GetStaticProps } from 'next';
 import { useRouter } from 'next/router';
 import Loading from '@/components/common/Loading';
 import { GameWithRanks } from '@/types/game';
@@ -210,7 +210,7 @@ const Game: FC<GameProps> = ({ game }) => {
   );
 };
 
-export const getStaticProps: GetStaticProps = async ({ params }) => {
+export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   const slug = params?.slug as string;
 
   const game = await prisma.game.findUnique({
@@ -244,25 +244,6 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     props: {
       game,
     },
-  };
-};
-
-export const getStaticPaths = async () => {
-  const games = await prisma.game.findMany({
-    where: {
-      isEnabled: true,
-    },
-  });
-
-  const paths = games.map(game => ({
-    params: {
-      slug: game.slug,
-    },
-  }));
-
-  return {
-    paths,
-    fallback: true,
   };
 };
 

@@ -2,9 +2,8 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import prisma from '@/lib/prismadb';
 
 // This API route is used to grab a new currentClip for each game
-// and then revalidate the home page and each game page. It is ran
-// via a cron job at 12:00 am ETC every day and hit a minute before
-// to warm it up.
+// It is ran via a cron job at 12:00 am ETC every day and hit a
+// minute before to warm it up.
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
@@ -17,9 +16,7 @@ export default async function handler(
     return res.status(200).json({ message: 'Warmed up' });
   }
 
-  if (
-    req.query.secret !== process.env.SELECT_GAME_CLIPS_AND_REVALIDATE_SECRET
-  ) {
+  if (req.query.secret !== process.env.SELECT_GAME_CLIPS_SECRET) {
     return res.status(401).json({ message: 'Invalid token' });
   }
 
@@ -50,7 +47,8 @@ export default async function handler(
 
     if (!games || games.length === 0) {
       return res.status(200).json({
-        message: 'No new clips to select for today as no games have been found',
+        message:
+          'No new clips to select for today as no valid games have been found',
       });
     }
 
@@ -122,33 +120,13 @@ export default async function handler(
       });
     }
 
-    const urlsToRevalidate = ['/'];
-
-    for (const game of games) {
-      urlsToRevalidate.push(`/game/${game.slug}`);
-    }
-
-    await Promise.all(
-      urlsToRevalidate.map(async url => {
-        await res.revalidate(url).catch(error => {
-          throw new Error(
-            `Error revalidating URL: '${url}' after selecting new daily clips: ${error}`
-          );
-        });
-      })
-    );
-
     return res.status(200).json({
-      message: 'Successfully selected new clips and revalidated pages',
-      revalidatedUrls: urlsToRevalidate,
+      message: 'Successfully selected new clips',
     });
   } catch (error) {
-    console.error(
-      'Error selecting new daily clips or revalidating pages:',
-      error
-    );
+    console.error('Error selecting new daily clips:', error);
     return res.status(500).json({
-      message: 'Error selecting new daily clips or revalidating pages',
+      message: 'Error selecting new daily clips',
     });
   }
 }
