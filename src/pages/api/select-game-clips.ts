@@ -106,9 +106,9 @@ export default async function handler(
                 );
               })
           );
-
-          return Promise.all(clipUpdatePromises);
         }
+
+        return Promise.all(clipUpdatePromises);
       })
       .catch(error => {
         throw new Error(`Error selecting new daily clips: ${error}`);
