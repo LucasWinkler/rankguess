@@ -1,202 +1,152 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import prisma from '@/lib/prismadb';
-import { CurrentClip, Prisma } from '@prisma/client';
-
-const gameInclude = Prisma.validator<Prisma.GameInclude>()({
-  clips: {
-    where: {
-      isAccepted: true,
-    },
-  },
-  currentClip: true,
-});
-
-type GameWithAcceptedClipsAndCurrentClip = Prisma.GameGetPayload<{
-  include: typeof gameInclude;
-}>;
-
-const isDev = process.env.NODE_ENV === 'development';
-
-// This function is used to update a new currentClip for a game.
-// It will also update the clip to mark it as featured and
-// connect the currentClip to the clip.
-async function updateNewGameClip(
-  game: GameWithAcceptedClipsAndCurrentClip
-): Promise<{ currentClip: CurrentClip } | null> {
-  try {
-    return prisma.$transaction(async transaction => {
-      const newClip = game.clips[0];
-
-      if (!newClip) {
-        isDev && console.info('No new clips to select for game:', game.name);
-
-        if (game.currentClip) {
-          await transaction.currentClip
-            .delete({
-              where: {
-                gameId: game.id,
-              },
-            })
-            .then(
-              () =>
-                isDev &&
-                console.info('Deleted currentClip for game:', game.name)
-            );
-        }
-
-        return null;
-      }
-
-      const newCurrentClip = await transaction.currentClip.upsert({
-        where: {
-          gameId: game.id,
-        },
-        update: {},
-        create: {
-          gameId: game.id,
-          clipId: newClip.id,
-        },
-      });
-
-      await transaction.clip.update({
-        where: { id: newClip.id },
-        data: {
-          hasBeenFeatured: true,
-          currentClip: {
-            connect: {
-              clipId: newCurrentClip.clipId,
-            },
-          },
-        },
-      });
-
-      return {
-        currentClip: newCurrentClip,
-      };
-    });
-  } catch (error) {
-    isDev && console.error('Error selecting clip for game:', error);
-
-    return null;
-  }
-}
 
 // This API route is used to grab a new currentClip for each game
 // and then revalidate the home page and each game page. It is ran
-// via a cron job at 12:00 AM ETC every day and hit a minute before to warm itup.
+// via a cron job at 12:00 am ETC every day and hit a minute before
+// to warm it up.
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  if (req.query.secret === process.env.API_WARMUP_SECRET) {
-    const games = await prisma.game.findMany({
-      where: {
-        isEnabled: true,
-      },
-      include: {
-        clips: {
-          where: {
-            isAccepted: true,
-            hasBeenFeatured: false,
-          },
-          orderBy: {
-            acceptedDate: 'asc',
-          },
-          take: 1,
-        },
-        currentClip: true,
-      },
-    });
+  if (req.method !== 'GET') {
+    return res.status(405).json({ message: 'Method not allowed' });
+  }
 
-    return res.status(200).json({ message: 'Warmed up', games });
-  } else if (
+  if (req.query.secret === process.env.API_WARMUP_SECRET) {
+    return res.status(200).json({ message: 'Warmed up' });
+  }
+
+  if (
     req.query.secret !== process.env.SELECT_GAME_CLIPS_AND_REVALIDATE_SECRET
   ) {
     return res.status(401).json({ message: 'Invalid token' });
   }
 
   try {
-    // Grab each game that is enabled, include all clips that are
-    // accepted + unfeatured and then sort them by acceptedDate.
-    // I'm using 'take' to ensure only one clip is returned.
-    // This way we can grab the oldest clip that hasn't been featured
-    // yet without having to do any additional sorting.
     const games = await prisma.game.findMany({
       where: {
         isEnabled: true,
       },
-      include: {
+      select: {
+        id: true,
+        slug: true,
+        currentClip: true,
         clips: {
           where: {
             isAccepted: true,
             hasBeenFeatured: false,
+          },
+          select: {
+            id: true,
           },
           orderBy: {
             acceptedDate: 'asc',
           },
           take: 1,
         },
-        currentClip: true,
       },
     });
 
-    isDev && console.info('Attempting to update clips for each game');
+    if (!games || games.length === 0) {
+      return res.status(200).json({
+        message: 'No new clips to select for today as no games have been found',
+      });
+    }
 
-    const updatedClipsForEachGame = await Promise.all(
-      games.map(async game => {
-        const newCurrentClip = await updateNewGameClip(game);
+    const clipUpdateResults = await prisma
+      .$transaction(async prismaTransaction => {
+        const clipUpdatePromises = [];
 
-        if (newCurrentClip?.currentClip) {
-          game.currentClip = newCurrentClip.currentClip;
+        for (const game of games) {
+          const newClip = game.clips[0];
+
+          if (!newClip) {
+            if (game.currentClip) {
+              await prismaTransaction.currentClip.delete({
+                where: {
+                  gameId: game.id,
+                },
+              });
+            }
+
+            continue;
+          }
+
+          clipUpdatePromises.push(
+            prismaTransaction.clip
+              .update({
+                where: {
+                  id: newClip.id,
+                },
+                data: {
+                  hasBeenFeatured: true,
+                },
+              })
+              .catch(error => {
+                throw new Error(
+                  `Error updating clip: '${newClip.id}' to hasBeenFeatured: true: ${error}`
+                );
+              }),
+
+            prismaTransaction.currentClip
+              .upsert({
+                where: {
+                  gameId: game.id,
+                },
+                update: {
+                  clipId: newClip.id,
+                },
+                create: {
+                  gameId: game.id,
+                  clipId: newClip.id,
+                },
+              })
+              .catch(error => {
+                throw new Error(
+                  `Error upserting current clip '${newClip.id}' for game: '${game.id}': ${error}`
+                );
+              })
+          );
+
+          return Promise.all(clipUpdatePromises);
         }
+      })
+      .catch(error => {
+        throw new Error(`Error selecting new daily clips: ${error}`);
+      });
 
-        return game;
+    if (!clipUpdateResults) {
+      return res.status(200).json({
+        message: 'No new clips to select for today',
+      });
+    }
+
+    const urlsToRevalidate = ['/'];
+
+    for (const game of games) {
+      urlsToRevalidate.push(`/game/${game.slug}`);
+    }
+
+    await Promise.all(
+      urlsToRevalidate.map(url => {
+        res.revalidate(url).catch(error => {
+          throw new Error(
+            `Error revalidating URL: '${url}' after selecting new daily clips: ${error}`
+          );
+        });
       })
     );
 
-    const updatedGames = await Promise.allSettled(updatedClipsForEachGame)
-      .then(results =>
-        results
-          .filter(result => result.status === 'fulfilled')
-          .map(result => {
-            if ('value' in result) {
-              return result.value;
-            }
-            throw new Error(
-              'Expected updatedGames Promise to resolve with value, but Promise was rejected'
-            );
-          })
-      )
-      .catch(error => {
-        throw new Error('Error selecting new clips for each game:', error);
-      });
-
-    isDev && console.info('Updated games with new currentClips:', updatedGames);
-
-    const urlsToRevalidate = [
-      '/',
-      ...updatedGames.map(game => `/game/${game.slug}`),
-    ];
-
-    await Promise.allSettled(
-      urlsToRevalidate.map(async url => {
-        await res.revalidate(url);
-        isDev && console.info('Attempting to revalidate URL:', url);
-      })
-    )
-      .then(() => {
-        console.info('New clips are selected and pages have been revalidated');
-      })
-      .catch(error => {
-        throw new Error('Error revalidating pages:', error);
-      });
-
     return res.status(200).json({
+      message: 'Successfully selected new clips and revalidated pages',
       revalidatedUrls: urlsToRevalidate,
-      games: updatedGames,
     });
   } catch (error) {
-    console.error('Error selecting new clips or revalidating pages:', error);
+    console.error(
+      'Error selecting new daily clips or revalidating pages:',
+      error
+    );
     return res.status(500).json({
       message: 'Error selecting new daily clips or revalidating pages',
     });
