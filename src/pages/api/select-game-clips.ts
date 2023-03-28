@@ -53,6 +53,8 @@ export default async function handler(
     }
 
     const todaysDate = new Date();
+    todaysDate.setUTCHours(todaysDate.getUTCHours() - 4);
+
     const newExpirationDate = new Date(
       Date.UTC(
         todaysDate.getUTCFullYear(),
