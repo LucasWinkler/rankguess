@@ -52,18 +52,19 @@ export default async function handler(
       });
     }
 
-    const now = new Date();
-    const expiresDate = new Date(
+    const todaysDate = new Date();
+    const newExpirationDate = new Date(
       Date.UTC(
-        now.getUTCFullYear(),
-        now.getUTCMonth(),
-        now.getUTCDate() + 1,
+        todaysDate.getUTCFullYear(),
+        todaysDate.getUTCMonth(),
+        todaysDate.getUTCDate() + 1,
         0,
         0
       )
     );
+    newExpirationDate.setUTCHours(newExpirationDate.getUTCHours() - 4);
 
-    console.log('expiresDate:', expiresDate);
+    console.log('expiresDate:', newExpirationDate);
 
     const clipUpdateResults = await prisma
       .$transaction(async prismaTransaction => {
@@ -107,11 +108,12 @@ export default async function handler(
                 },
                 update: {
                   clipId: newClip.id,
+                  expirationDate: newExpirationDate,
                 },
                 create: {
                   gameId: game.id,
                   clipId: newClip.id,
-                  expirationDate: expiresDate,
+                  expirationDate: newExpirationDate,
                 },
               })
               .catch(error => {

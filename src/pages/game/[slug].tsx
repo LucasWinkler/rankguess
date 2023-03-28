@@ -248,7 +248,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
     return { notFound: true };
   }
 
-  const game = await prisma.game.findUnique({
+  let game = await prisma.game.findUnique({
     where: {
       slug,
     },
@@ -274,6 +274,8 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   if (!game || !game.isEnabled) {
     return { notFound: true };
   }
+
+  game = JSON.parse(JSON.stringify(game));
 
   return {
     props: {
