@@ -111,7 +111,7 @@ export default async function handler(
                 create: {
                   gameId: game.id,
                   clipId: newClip.id,
-                  expiresDate: expiresDate,
+                  expirationDate: expiresDate,
                 },
               })
               .catch(error => {
