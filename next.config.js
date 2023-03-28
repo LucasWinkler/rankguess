@@ -1,7 +1,7 @@
 if (!process.env.NEXTAUTH_URL) throw new Error('Please set NEXTAUTH_URL');
 if (!process.env.NEXTAUTH_SECRET) throw new Error('Please set NEXTAUTH_SECRET');
-if (!process.env.SELECT_GAME_CLIPS_SECRET)
-  throw new Error('Please set SELECT_GAME_CLIPS_SECRET');
+if (!process.env.NEXT_PUBLIC_API_SECRET)
+  throw new Error('Please set NEXT_PUBLIC_API_SECRET');
 if (!process.env.API_WARMUP_SECRET)
   throw new Error('Please set API_WARMUP_SECRET');
 if (!process.env.DATABASE_URL) throw new Error('Please set DATABASE_URL');

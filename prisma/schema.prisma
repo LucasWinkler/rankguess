@@ -95,10 +95,12 @@ model Clip {
 }
 
 model CurrentClip {
-  gameId String @unique
-  clipId String @unique
-  game   Game   @relation(fields: [gameId], references: [id])
-  clip   Clip   @relation(fields: [clipId], references: [id])
+  gameId         String   @unique
+  clipId         String   @unique
+  featuredDate   DateTime @default(now())
+  expirationDate DateTime
+  game           Game     @relation(fields: [gameId], references: [id])
+  clip           Clip     @relation(fields: [clipId], references: [id])
 }
 
 model Rank {

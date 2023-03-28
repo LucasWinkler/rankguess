@@ -35,11 +35,25 @@ const Game: FC<GameProps> = ({ game }) => {
 
   const router = useRouter();
   const ranks = game.ranks;
+  const secret = process.env.NEXT_PUBLIC_API_SECRET;
   const isGameOver = guessCount >= MAX_GUESS_COUNT;
   const guessesLeft = MAX_GUESS_COUNT - guessCount;
   const shakeClasses =
     'animate-shake opacity-[65%] grayscale-[35%] motion-reduce:animate-reduced-shake';
   const disabledFormClasses = 'opacity-[65%] grayscale-[35%]';
+
+  // WIP
+  const handleRefreshData = async () => {
+    await fetch(`/api/game/${game.id}?secret=${secret}`)
+      .then(res => res.json())
+      .then(({ game: newGame }: { game: GameWithRanks }) => {
+        console.log('data:', newGame);
+      });
+
+    console.log('current game:', game);
+
+    router.replace(router.asPath);
+  };
 
   useEffect(() => {
     if (localGameSaves.length === 0 || !game.currentClip || session?.user) {
@@ -166,9 +180,20 @@ const Game: FC<GameProps> = ({ game }) => {
 
     setSelectedRank(rank);
   };
+
   if (game.currentClip) {
     return (
       <>
+        {process.env.NODE_ENV === 'development' && (
+          <button
+            onClick={handleRefreshData}
+            className={clsx(
+              'mt-6 rounded-full border border-blueish-grey-600/50 bg-blueish-grey-600/50 px-6 py-2 text-neutral-200'
+            )}>
+            TEST REFRESH DATA
+          </button>
+        )}
+
         <GamePageWrapper game={game}>
           <ClipPlayer
             gameName={game.name}

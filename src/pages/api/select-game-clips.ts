@@ -16,7 +16,7 @@ export default async function handler(
     return res.status(200).json({ message: 'Warmed up' });
   }
 
-  if (req.query.secret !== process.env.SELECT_GAME_CLIPS_SECRET) {
+  if (req.query.secret !== process.env.NEXT_PUBLIC_API_SECRET) {
     return res.status(401).json({ message: 'Invalid token' });
   }
 
@@ -51,6 +51,19 @@ export default async function handler(
           'No new clips to select for today as no valid games have been found',
       });
     }
+
+    const now = new Date();
+    const expiresDate = new Date(
+      Date.UTC(
+        now.getUTCFullYear(),
+        now.getUTCMonth(),
+        now.getUTCDate() + 1,
+        0,
+        0
+      )
+    );
+
+    console.log('expiresDate:', expiresDate);
 
     const clipUpdateResults = await prisma
       .$transaction(async prismaTransaction => {
@@ -98,6 +111,7 @@ export default async function handler(
                 create: {
                   gameId: game.id,
                   clipId: newClip.id,
+                  expiresDate: expiresDate,
                 },
               })
               .catch(error => {
