@@ -37,6 +37,9 @@ const Game: FC<GameProps> = ({ game }) => {
   const ranks = game.ranks;
   const isGameOver = guessCount >= MAX_GUESS_COUNT;
   const guessesLeft = MAX_GUESS_COUNT - guessCount;
+  const shakeClasses =
+    'animate-shake opacity-[65%] grayscale-[35%] motion-reduce:animate-reduced-shake';
+  const disabledFormClasses = 'opacity-[65%] grayscale-[35%]';
 
   useEffect(() => {
     if (localGameSaves.length === 0 || !game.currentClip || session?.user) {
@@ -59,32 +62,34 @@ const Game: FC<GameProps> = ({ game }) => {
         .then(res => res.json())
         .then(({ userGameSaves }: { userGameSaves: UserGameSave[] }) => {
           if (!userGameSaves) {
-            throw new Error('No user game saves found');
+            return;
           }
 
-          userGameSaves.find((gameSave: UserGameSave) => {
+          const userGameSave = userGameSaves.find(
+            (gameSave: UserGameSave) => gameSave.gameId === game.id
+          );
+
+          if (userGameSave) {
             setUserGameSaves(userGameSaves);
-            setGuessCount(gameSave.guessCount);
-          });
+            setGuessCount(userGameSave.guessCount);
+          }
         })
         .catch(error => {
-          console.log('Error while fetching user game saves:', error);
+          console.error('Error while fetching user game saves:', error);
         });
+    } else {
+      const localGameSaves = localStorage.getItem(LOCAL_STORAGE_GAME_SAVES_KEY);
+      if (localGameSaves) {
+        const parsedGameSaves: LocalGameSave[] = JSON.parse(localGameSaves);
 
-      return;
-    }
-
-    const localGameSaves = localStorage.getItem(LOCAL_STORAGE_GAME_SAVES_KEY);
-    if (localGameSaves) {
-      const parsedGameSaves: LocalGameSave[] = JSON.parse(localGameSaves);
-
-      parsedGameSaves.map(gameSave => {
-        if (gameSave.gameId === game.id) {
-          setLocalGameSaves(parsedGameSaves);
-          setGuessCount(gameSave.guessCount);
-          return;
-        }
-      });
+        parsedGameSaves.map(gameSave => {
+          if (gameSave.gameId === game.id) {
+            setLocalGameSaves(parsedGameSaves);
+            setGuessCount(gameSave.guessCount);
+            return;
+          }
+        });
+      }
     }
   }, [status, game, session?.user]);
 
@@ -161,7 +166,6 @@ const Game: FC<GameProps> = ({ game }) => {
 
     setSelectedRank(rank);
   };
-
   if (game.currentClip) {
     return (
       <>
@@ -170,14 +174,16 @@ const Game: FC<GameProps> = ({ game }) => {
             gameName={game.name}
             youtubeVideoId={game.currentClip.clip.youtubeUrl}
           />
-          <TempHealthBar guessesLeft={guessesLeft} isGameOver={isGameOver} />
+          <TempHealthBar
+            guessesLeft={guessesLeft}
+            className={clsx('my-10', isGameOver && disabledFormClasses)}
+          />
           <form onSubmit={handleSubmit}>
             <fieldset
               disabled={isGameOver}
               className={clsx(
                 'transition-all duration-150 ease-in-out',
-                isGameOver &&
-                  'animate-shake opacity-[65%] grayscale-[35%] motion-reduce:animate-reduced-shake'
+                isGameOver && disabledFormClasses
               )}>
               <RankSelection
                 ranks={ranks}
@@ -210,8 +216,12 @@ const Game: FC<GameProps> = ({ game }) => {
   );
 };
 
-export const getServerSideProps: GetServerSideProps = async ({ params }) => {
+export const getStaticProps: GetStaticProps = async ({ params }) => {
   const slug = params?.slug as string;
+
+  if (!slug) {
+    return { notFound: true };
+  }
 
   const game = await prisma.game.findUnique({
     where: {
@@ -244,6 +254,29 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
     props: {
       game,
     },
+    revalidate: 60,
+  };
+};
+
+export const getStaticPaths = async () => {
+  const games = await prisma.game.findMany({
+    where: {
+      isEnabled: true,
+    },
+    select: {
+      slug: true,
+    },
+  });
+
+  const paths = games.map(game => ({
+    params: {
+      slug: game.slug,
+    },
+  }));
+
+  return {
+    paths,
+    fallback: true,
   };
 };
 

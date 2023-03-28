@@ -4,17 +4,12 @@ import { FC } from 'react';
 
 type TempHealthBarProps = {
   guessesLeft: number;
-  isGameOver: boolean;
+  className?: string;
 };
 
-const TempHealthBar: FC<TempHealthBarProps> = ({ guessesLeft, isGameOver }) => {
+const TempHealthBar: FC<TempHealthBarProps> = ({ guessesLeft, className }) => {
   return (
-    <div
-      className={clsx(
-        'my-10',
-        isGameOver &&
-          'animate-shake opacity-[65%] grayscale-[35%] motion-reduce:animate-reduced-shake'
-      )}>
+    <div className={clsx(className)}>
       Temp health bar ({guessesLeft}/{MAX_GUESS_COUNT})
     </div>
   );

@@ -8,24 +8,25 @@ type RankSelectionProps = {
   selectedRank: Rank | undefined;
   isDisabled: boolean;
   onSelectRank: (rank: Rank) => void;
+  className?: string;
 };
 
 const RankSelection: FC<RankSelectionProps> = ({
   ranks,
   selectedRank,
-  isDisabled: isGameOver,
+  isDisabled,
   onSelectRank,
+  className,
 }) => {
   return (
     <div
       className={clsx(
         'mx-auto flex max-w-2xl flex-wrap items-start justify-center',
-        isGameOver &&
-          'animate-shake opacity-[65%] grayscale-[35%] motion-reduce:animate-reduced-shake'
+        className
       )}>
       {ranks.map(rank => (
         <RankCard
-          isDisabled={isGameOver}
+          isDisabled={isDisabled}
           selectedRank={selectedRank}
           onClick={() => onSelectRank(rank)}
           key={rank.id}
