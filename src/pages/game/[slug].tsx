@@ -216,7 +216,7 @@ const Game: FC<GameProps> = ({ game }) => {
   );
 };
 
-export const getStaticProps: GetStaticProps = async ({ params }) => {
+export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   const slug = params?.slug as string;
 
   if (!slug) {
@@ -254,29 +254,6 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     props: {
       game,
     },
-    revalidate: 60,
-  };
-};
-
-export const getStaticPaths = async () => {
-  const games = await prisma.game.findMany({
-    where: {
-      isEnabled: true,
-    },
-    select: {
-      slug: true,
-    },
-  });
-
-  const paths = games.map(game => ({
-    params: {
-      slug: game.slug,
-    },
-  }));
-
-  return {
-    paths,
-    fallback: true,
   };
 };
 
