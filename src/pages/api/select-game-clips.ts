@@ -52,22 +52,6 @@ export default async function handler(
       });
     }
 
-    const todaysDate = new Date();
-    todaysDate.setUTCHours(todaysDate.getUTCHours() - 4);
-
-    const newExpirationDate = new Date(
-      Date.UTC(
-        todaysDate.getUTCFullYear(),
-        todaysDate.getUTCMonth(),
-        todaysDate.getUTCDate() + 1,
-        0,
-        0
-      )
-    );
-    newExpirationDate.setUTCHours(newExpirationDate.getUTCHours() - 4);
-
-    console.log('expiresDate:', newExpirationDate);
-
     const clipUpdateResults = await prisma
       .$transaction(async prismaTransaction => {
         const clipUpdatePromises = [];
@@ -86,6 +70,9 @@ export default async function handler(
 
             continue;
           }
+
+          // this is temp until I can figure out how to get the expiration date to work
+          const tempDate = new Date();
 
           clipUpdatePromises.push(
             prismaTransaction.clip
@@ -110,12 +97,12 @@ export default async function handler(
                 },
                 update: {
                   clipId: newClip.id,
-                  expirationDate: newExpirationDate,
+                  expirationDate: tempDate,
                 },
                 create: {
                   gameId: game.id,
                   clipId: newClip.id,
-                  expirationDate: newExpirationDate,
+                  expirationDate: tempDate,
                 },
               })
               .catch(error => {
