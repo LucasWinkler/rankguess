@@ -139,6 +139,8 @@ const Game: FC<GameProps> = ({ game }) => {
         }
       }
     }
+
+    setSelectedRank(undefined);
   }, [status, game, session?.user]);
 
   if (router.isFallback) {
