@@ -19,6 +19,7 @@ type LocalGameSave = {
   gameId: string;
   clipId: string;
   guessCount: number;
+  didWin: boolean;
 };
 
 type GameProps = {
@@ -28,6 +29,7 @@ type GameProps = {
 
 const Game: FC<GameProps> = ({ game }) => {
   const [selectedRank, setSelectedRank] = useState<Rank>();
+  const [didWin, setdidWin] = useState<boolean>(false);
   const [localGameSaves, setLocalGameSaves] = useState<LocalGameSave[]>([]);
   const [userGameSaves, setUserGameSaves] = useState<UserGameSave[]>([]);
   const [guessCount, setGuessCount] = useState<number>(0);
@@ -35,25 +37,11 @@ const Game: FC<GameProps> = ({ game }) => {
 
   const router = useRouter();
   const ranks = game.ranks;
-  const secret = process.env.NEXT_PUBLIC_API_SECRET;
-  const isGameOver = guessCount >= MAX_GUESS_COUNT;
+  const isGameOver = didWin || guessCount >= MAX_GUESS_COUNT;
   const guessesLeft = MAX_GUESS_COUNT - guessCount;
   const shakeClasses =
     'animate-shake opacity-[65%] grayscale-[35%] motion-reduce:animate-reduced-shake';
   const disabledFormClasses = 'opacity-[65%] grayscale-[35%]';
-
-  // WIP
-  const handleRefreshData = async () => {
-    await fetch(`/api/game/${game.id}?secret=${secret}`)
-      .then(res => res.json())
-      .then(({ game: newGame }: { game: GameWithRanks }) => {
-        console.log('data:', newGame);
-      });
-
-    console.log('current game:', game);
-
-    router.replace(router.asPath);
-  };
 
   useEffect(() => {
     if (localGameSaves.length === 0 || !game.currentClip || session?.user) {
@@ -83,9 +71,33 @@ const Game: FC<GameProps> = ({ game }) => {
             (gameSave: UserGameSave) => gameSave.gameId === game.id
           );
 
-          if (userGameSave) {
-            setUserGameSaves(userGameSaves);
+          if (
+            userGameSave &&
+            userGameSave.clipId !== game.currentClip?.clipId
+          ) {
+            const newGameSaves = userGameSaves.map(gameSave => {
+              if (gameSave.gameId === game.id && game.currentClip) {
+                return {
+                  ...gameSave,
+                  clipId: game.currentClip.clipId,
+                  guessCount: 0,
+                  didWin: false,
+                };
+              }
+              return gameSave;
+            });
+
+            setGuessCount(0);
+            setUserGameSaves(newGameSaves);
+            setdidWin(false);
+          } else if (userGameSave) {
             setGuessCount(userGameSave.guessCount);
+            setUserGameSaves(userGameSaves);
+            setdidWin(userGameSave.didWin);
+          } else {
+            setGuessCount(0);
+            setUserGameSaves(userGameSaves);
+            setdidWin(false);
           }
         })
         .catch(error => {
@@ -93,16 +105,38 @@ const Game: FC<GameProps> = ({ game }) => {
         });
     } else {
       const localGameSaves = localStorage.getItem(LOCAL_STORAGE_GAME_SAVES_KEY);
+
       if (localGameSaves) {
         const parsedGameSaves: LocalGameSave[] = JSON.parse(localGameSaves);
+        const localGameSave = parsedGameSaves.find(
+          gameSave => gameSave.gameId === game.id
+        );
 
-        parsedGameSaves.map(gameSave => {
-          if (gameSave.gameId === game.id) {
-            setLocalGameSaves(parsedGameSaves);
-            setGuessCount(gameSave.guessCount);
-            return;
-          }
-        });
+        if (localGameSave && localGameSave.clipId !== game.currentClip.clipId) {
+          const newGameSaves = parsedGameSaves.map(gameSave => {
+            if (gameSave.gameId === game.id && game.currentClip) {
+              return {
+                ...gameSave,
+                clipId: game.currentClip.clipId,
+                guessCount: 0,
+                didWin: false,
+              };
+            }
+            return gameSave;
+          });
+
+          setGuessCount(0);
+          setLocalGameSaves(newGameSaves);
+          setdidWin(false);
+        } else if (localGameSave) {
+          setGuessCount(localGameSave.guessCount);
+          setLocalGameSaves(parsedGameSaves);
+          setdidWin(localGameSave.didWin);
+        } else {
+          setGuessCount(0);
+          setLocalGameSaves(parsedGameSaves);
+          setdidWin(false);
+        }
       }
     }
   }, [status, game, session?.user]);
@@ -120,12 +154,15 @@ const Game: FC<GameProps> = ({ game }) => {
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
 
-    if (isGameOver || !game.currentClip) {
+    if (isGameOver || !game.currentClip || !selectedRank) {
       return;
     }
 
     const newGuessCount = clamp(guessCount + 1, 0, MAX_GUESS_COUNT);
     setGuessCount(newGuessCount);
+
+    const newDidWin = selectedRank.id === game.currentClip.clip.rank.id;
+    setdidWin(newDidWin);
 
     if (session?.user) {
       fetch('/api/user-game-save', {
@@ -136,6 +173,7 @@ const Game: FC<GameProps> = ({ game }) => {
           gameId: game.id,
           clipId: game.currentClip.clipId,
           guessCount: newGuessCount,
+          didWin: newDidWin,
         }),
       })
         .then(res => res.json())
@@ -155,6 +193,7 @@ const Game: FC<GameProps> = ({ game }) => {
               gameId: game.id,
               clipId: game.currentClip.clipId,
               guessCount: newGuessCount,
+              didWin: newDidWin,
             },
           ];
         } else {
@@ -163,10 +202,15 @@ const Game: FC<GameProps> = ({ game }) => {
           newGameSave[currentGameIndex] = {
             ...newGameSave[currentGameIndex],
             guessCount: newGuessCount,
+            didWin: newDidWin,
           };
           return newGameSave;
         }
       });
+    }
+
+    if (selectedRank?.id === game.currentClip.clip.rank.id) {
+      setdidWin(true);
     }
 
     setSelectedRank(undefined);
@@ -184,16 +228,19 @@ const Game: FC<GameProps> = ({ game }) => {
   if (game.currentClip) {
     return (
       <>
-        {process.env.NODE_ENV === 'development' && (
-          <button
-            onClick={handleRefreshData}
-            className={clsx(
-              'mt-6 rounded-full border border-blueish-grey-600/50 bg-blueish-grey-600/50 px-6 py-2 text-neutral-200'
-            )}>
-            TEST REFRESH DATA
-          </button>
-        )}
-
+        {/* {isGameOver && ( */}
+        <div>
+          <span className='font-bold underline underline-offset-2'>
+            Temp Game Status
+          </span>
+          <div>Game Over: {isGameOver ? 'true' : 'false'}</div>
+          <div>Correct Rank: {game.currentClip.clip.rank.name}</div>
+          <div>Won: {didWin ? 'true' : 'false'}</div>
+          <div>
+            Guesses: {guessCount}/{MAX_GUESS_COUNT} ({guessesLeft} left)
+          </div>
+        </div>
+        {/* )} */}
         <GamePageWrapper game={game}>
           <ClipPlayer
             gameName={game.name}
@@ -276,6 +323,10 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   }
 
   game = JSON.parse(JSON.stringify(game));
+
+  if (!game) {
+    return { notFound: true };
+  }
 
   return {
     props: {

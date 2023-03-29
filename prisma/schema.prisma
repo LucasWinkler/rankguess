@@ -131,13 +131,14 @@ model Stats {
 }
 
 model UserGameSave {
-  id         String @id @default(cuid())
+  id         String  @id @default(cuid())
   userId     String
   gameId     String
   clipId     String
-  guessCount Int    @default(0)
-  user       User   @relation(fields: [userId], references: [id])
-  game       Game   @relation(fields: [gameId], references: [id])
+  guessCount Int     @default(0)
+  didWin     Boolean @default(false)
+  user       User    @relation(fields: [userId], references: [id])
+  game       Game    @relation(fields: [gameId], references: [id])
 
   @@unique([userId, gameId])
   @@index([userId])

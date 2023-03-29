@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import prisma from '@/lib/prismadb';
+import { getTodaysDateAndTomorrowsDate } from '@/util/date';
 
 // This API route is used to grab a new currentClip for each game
 // It is ran via a cron job at 12:00 am ETC every day and hit a
@@ -71,8 +72,8 @@ export default async function handler(
             continue;
           }
 
-          // this is temp until I can figure out how to get the expiration date to work
-          const tempDate = new Date();
+          const { todaysDateTimeString, tomorrowsDateTimeString } =
+            getTodaysDateAndTomorrowsDate();
 
           clipUpdatePromises.push(
             prismaTransaction.clip
@@ -97,12 +98,14 @@ export default async function handler(
                 },
                 update: {
                   clipId: newClip.id,
-                  expirationDate: tempDate,
+                  featuredDate: todaysDateTimeString,
+                  expirationDate: tomorrowsDateTimeString,
                 },
                 create: {
                   gameId: game.id,
                   clipId: newClip.id,
-                  expirationDate: tempDate,
+                  featuredDate: todaysDateTimeString,
+                  expirationDate: tomorrowsDateTimeString,
                 },
               })
               .catch(error => {
