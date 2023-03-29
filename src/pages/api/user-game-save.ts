@@ -31,7 +31,7 @@ export default async function handler(
       userGameSaves,
     });
   } else if (req.method === 'POST') {
-    const { userId, gameId, clipId, guessCount } = req.body;
+    const { userId, gameId, clipId, guessCount, didWin } = req.body;
 
     const userGameSave = await prisma.userGameSave
       .upsert({
@@ -44,12 +44,14 @@ export default async function handler(
         update: {
           clipId,
           guessCount,
+          didWin,
         },
         create: {
           userId,
           gameId,
           clipId,
           guessCount,
+          didWin,
         },
       })
       .catch(error => {

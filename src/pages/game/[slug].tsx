@@ -29,7 +29,7 @@ type GameProps = {
 
 const Game: FC<GameProps> = ({ game }) => {
   const [selectedRank, setSelectedRank] = useState<Rank>();
-  const [didWin, setdidWin] = useState<boolean>(false);
+  const [didWin, setDidWin] = useState<boolean>(false);
   const [localGameSaves, setLocalGameSaves] = useState<LocalGameSave[]>([]);
   const [userGameSaves, setUserGameSaves] = useState<UserGameSave[]>([]);
   const [guessCount, setGuessCount] = useState<number>(0);
@@ -89,15 +89,15 @@ const Game: FC<GameProps> = ({ game }) => {
 
             setGuessCount(0);
             setUserGameSaves(newGameSaves);
-            setdidWin(false);
+            setDidWin(false);
           } else if (userGameSave) {
             setGuessCount(userGameSave.guessCount);
             setUserGameSaves(userGameSaves);
-            setdidWin(userGameSave.didWin);
+            setDidWin(userGameSave.didWin);
           } else {
             setGuessCount(0);
             setUserGameSaves(userGameSaves);
-            setdidWin(false);
+            setDidWin(false);
           }
         })
         .catch(error => {
@@ -127,15 +127,15 @@ const Game: FC<GameProps> = ({ game }) => {
 
           setGuessCount(0);
           setLocalGameSaves(newGameSaves);
-          setdidWin(false);
+          setDidWin(false);
         } else if (localGameSave) {
           setGuessCount(localGameSave.guessCount);
           setLocalGameSaves(parsedGameSaves);
-          setdidWin(localGameSave.didWin);
+          setDidWin(localGameSave.didWin);
         } else {
           setGuessCount(0);
           setLocalGameSaves(parsedGameSaves);
-          setdidWin(false);
+          setDidWin(false);
         }
       }
     }
@@ -162,7 +162,7 @@ const Game: FC<GameProps> = ({ game }) => {
     setGuessCount(newGuessCount);
 
     const newDidWin = selectedRank.id === game.currentClip.clip.rank.id;
-    setdidWin(newDidWin);
+    setDidWin(newDidWin);
 
     if (session?.user) {
       fetch('/api/user-game-save', {
@@ -210,7 +210,7 @@ const Game: FC<GameProps> = ({ game }) => {
     }
 
     if (selectedRank?.id === game.currentClip.clip.rank.id) {
-      setdidWin(true);
+      setDidWin(true);
     }
 
     setSelectedRank(undefined);
