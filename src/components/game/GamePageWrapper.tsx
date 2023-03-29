@@ -16,8 +16,6 @@ const GamePageWrapper: FC<GamePageWrapperProps> = ({ game, children }) => {
   const secret = process.env.NEXT_PUBLIC_API_SECRET;
   const description = `Guess the rank of user-submitted gameplay from ${game.name} daily with RankGuess. Test your knowledge and track your stats to see how you improve over time. Remember, the game resets at 12 am EST, so submit your guesses before then!`;
 
-  // WIP
-  // When the timer runs out, try to refresh the data/page
   const handleRefreshData = async () => {
     await fetch(`/api/game/${game.id}?secret=${secret}`)
       .then(res => res.json())
@@ -39,13 +37,6 @@ const GamePageWrapper: FC<GamePageWrapperProps> = ({ game, children }) => {
         }, 5000);
       });
   };
-
-  // console.log('No new clip, retrying in 5 seconds...');
-
-  // setTimeout(() => {
-  //   console.log('Refreshing data...');
-  //   handleRefreshData();
-  // }, 5000);
 
   return (
     <>

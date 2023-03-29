@@ -230,19 +230,19 @@ const Game: FC<GameProps> = ({ game }) => {
   if (game.currentClip) {
     return (
       <>
-        {/* {isGameOver && ( */}
-        <div>
-          <span className='font-bold underline underline-offset-2'>
-            Temp Game Status
-          </span>
-          <div>Game Over: {isGameOver ? 'true' : 'false'}</div>
-          <div>Correct Rank: {game.currentClip.clip.rank.name}</div>
-          <div>Won: {didWin ? 'true' : 'false'}</div>
+        {process.env.NODE_ENV === 'development' && (
           <div>
-            Guesses: {guessCount}/{MAX_GUESS_COUNT} ({guessesLeft} left)
+            <span className='font-bold underline underline-offset-2'>
+              Temp Game Status
+            </span>
+            <div>Game Over: {isGameOver ? 'true' : 'false'}</div>
+            <div>Correct Rank: {game.currentClip.clip.rank.name}</div>
+            <div>Won: {didWin ? 'true' : 'false'}</div>
+            <div>
+              Guesses: {guessCount}/{MAX_GUESS_COUNT} ({guessesLeft} left)
+            </div>
           </div>
-        </div>
-        {/* )} */}
+        )}
         <GamePageWrapper game={game}>
           <ClipPlayer
             gameName={game.name}
