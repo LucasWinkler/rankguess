@@ -59,7 +59,7 @@ export async function getStaticProps(context: any) {
     };
   }
 
-  const gamesWithThumbnailBlur: GameWithThumbnailBlur[] = await Promise.all(
+  let gamesWithThumbnailBlur: GameWithThumbnailBlur[] = await Promise.all(
     games.map(async (game: Game) => {
       const { base64, img } = await getPlaiceholder(
         `${NEXTAUTH_URL}${game.thumbnailPath}`
@@ -67,6 +67,12 @@ export async function getStaticProps(context: any) {
       return { ...game, imageProps: { ...img, blurDataURL: base64 } };
     })
   );
+
+  gamesWithThumbnailBlur = JSON.parse(JSON.stringify(gamesWithThumbnailBlur));
+
+  if (!gamesWithThumbnailBlur) {
+    return { props: {} };
+  }
 
   return {
     props: {
