@@ -1,4 +1,5 @@
-import { FC, ReactNode } from 'react';
+import { FC, ReactNode, useState } from 'react';
+import LoadingSpinner from '../common/LoadingSpinner';
 
 type ClipPlayerProps = {
   gameName: string;
@@ -12,6 +13,8 @@ const Wrapper = ({ children }: { children: ReactNode }) => (
 );
 
 const ClipPlayer: FC<ClipPlayerProps> = ({ gameName, youtubeVideoId }) => {
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+
   if (!youtubeVideoId) {
     return (
       <Wrapper>
@@ -24,10 +27,20 @@ const ClipPlayer: FC<ClipPlayerProps> = ({ gameName, youtubeVideoId }) => {
     );
   }
 
+  const handleVideoLoaded = () => {
+    setIsLoading(false);
+  };
+
   return (
     <Wrapper>
+      {isLoading && (
+        <div className='flex h-full w-full items-center justify-center'>
+          <LoadingSpinner />
+        </div>
+      )}
       <iframe
-        className='absolute inset-0 h-full w-full'
+        onLoad={handleVideoLoaded}
+        className='absolute inset-0 aspect-video h-full w-full'
         src={`https://www.youtube.com/embed/${youtubeVideoId}?rel=0`}
         title={`Today's clip for ${gameName}`}
         allowFullScreen
