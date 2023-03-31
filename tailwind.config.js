@@ -10,6 +10,7 @@ module.exports = {
       current: 'currentColor',
       'blue-300': '#5476f2',
       'blue-400': '#2B55EE',
+      'green-400': '#4CC759',
       'blueish-grey-500': '#425B99',
       'blueish-grey-600': '#202C4A',
       'blueish-grey-700': '#111B36',

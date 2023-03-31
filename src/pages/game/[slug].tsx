@@ -1,19 +1,20 @@
-import { FC, FormEvent, SetStateAction, useEffect, useState } from 'react';
+import { FC, FormEvent, useEffect, useState } from 'react';
 import { Rank, UserGameSave } from '@prisma/client';
 import prisma from '@/lib/prismadb';
-import { GetServerSideProps, GetStaticProps } from 'next';
+import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
 import Loading from '@/components/common/Loading';
 import { GameWithRanks } from '@/types/game';
 import { useSession } from 'next-auth/react';
 import clsx from 'clsx';
 import { LOCAL_STORAGE_GAME_SAVES_KEY, MAX_GUESS_COUNT } from '@/constants';
-import TempHealthBar from '@/components/game/TempHealthBar';
 import RankSelection from '@/components/game/RankSelection';
 import ClipPlayer from '@/components/game/ClipPlayer';
 import NoClipToday from '@/components/game/NoClipToday';
 import GamePageWrapper from '@/components/game/GamePageWrapper';
 import clamp from '@/util/clamp';
+import Heart from '@/components/common/icons/Heart';
+import HealthBar from '@/components/game/HealthBar';
 
 type LocalGameSave = {
   gameId: string;
@@ -160,11 +161,15 @@ const Game: FC<GameProps> = ({ game }) => {
       return;
     }
 
-    const newGuessCount = clamp(guessCount + 1, 0, MAX_GUESS_COUNT);
-    setGuessCount(newGuessCount);
-
     const newDidWin = selectedRank.id === game.currentClip.clip.rank.id;
     setDidWin(newDidWin);
+
+    const newGuessCount = clamp(
+      newDidWin ? guessCount : guessCount + 1,
+      0,
+      MAX_GUESS_COUNT
+    );
+    setGuessCount(newGuessCount);
 
     if (session?.user) {
       fetch('/api/user-game-save', {
@@ -248,7 +253,7 @@ const Game: FC<GameProps> = ({ game }) => {
             gameName={game.name}
             youtubeVideoId={game.currentClip.clip.youtubeUrl}
           />
-          <TempHealthBar
+          <HealthBar
             guessesLeft={guessesLeft}
             className={clsx('my-10', isGameOver && disabledFormClasses)}
           />
