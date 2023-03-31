@@ -13,7 +13,6 @@ import ClipPlayer from '@/components/game/ClipPlayer';
 import NoClipToday from '@/components/game/NoClipToday';
 import GamePageWrapper from '@/components/game/GamePageWrapper';
 import clamp from '@/util/clamp';
-import Heart from '@/components/common/icons/Heart';
 import HealthBar from '@/components/game/HealthBar';
 
 type LocalGameSave = {
