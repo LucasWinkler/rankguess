@@ -1,10 +1,11 @@
-import { FC } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { NextSeo } from 'next-seo';
 import Container from '@/components/common/Container';
 import HeadingCircle from '@/components/common/HeadingCircle';
 import BackgroundGrid from '@/components/common/BackgroundGrid';
 import { GameWithRanks } from '@/types/game';
 import { useRouter } from 'next/router';
+import { getTodaysDateAndTomorrowsDate } from '@/util/date';
 
 type GamePageWrapperProps = {
   game: GameWithRanks;
@@ -12,9 +13,41 @@ type GamePageWrapperProps = {
 };
 
 const GamePageWrapper: FC<GamePageWrapperProps> = ({ game, children }) => {
+  const [countdown, setCountdown] = useState('LOADING...');
+
   const router = useRouter();
   const secret = process.env.NEXT_PUBLIC_API_SECRET;
   const description = `Guess the rank of user-submitted gameplay from ${game.name} daily with RankGuess. Test your knowledge and track your stats to see how you improve over time. Remember, the game resets at 12 am EST, so submit your guesses before then!`;
+
+  const convertUtcToEst = (dateString: string) => {
+    const utcDate = new Date(dateString);
+
+    return utcDate.toLocaleString('en-US', {
+      timeZone: 'America/New_York',
+    });
+  };
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const { tomorrowsDateTimeString } = getTodaysDateAndTomorrowsDate();
+      const estTime = convertUtcToEst(tomorrowsDateTimeString);
+      const estDate = new Date(estTime);
+      const currentTime = new Date();
+      const diffInMs = estDate.getTime() - currentTime.getTime();
+
+      if (diffInMs <= 0) {
+        setCountdown('LOADING NEW CLIP...');
+      } else {
+        const hours = Math.floor(diffInMs / (1000 * 60 * 60));
+        const minutes = Math.floor((diffInMs / (1000 * 60)) % 60);
+        setCountdown(`RESETS IN: ${hours}h ${minutes}m`);
+      }
+    }, 1000);
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, [game.currentClip]);
 
   const handleRefreshData = async () => {
     await fetch(`/api/game/${game.id}?secret=${secret}`)
@@ -56,7 +89,7 @@ const GamePageWrapper: FC<GamePageWrapperProps> = ({ game, children }) => {
           <BackgroundGrid />
           <div className='relative'>
             <h1 className='page-heading-1'>{game.name}</h1>
-            <h2 className='page-heading-2 lg:mt-2'>Resets in: 0h 0m</h2>
+            <h2 className='page-heading-2 lg:mt-2'>{countdown}</h2>
             {process.env.NODE_ENV === 'development' && (
               <button
                 onClick={handleRefreshData}
