@@ -9,16 +9,16 @@ function generateSiteMap(games: GameWithSlug[], host: string | null) {
   return `<?xml version="1.0" encoding="UTF-8"?>
    <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
      <url>
-       <loc>https://www.rankguess.com/</loc>
+       <loc>https://${host}/</loc>
      </url>
      <url>
-       <loc>https://www.rankguess.com/login</loc>
+       <loc>https://${host}/login</loc>
      </url>
      <url>
-       <loc>https://www.rankguess.com/logout</loc>
+       <loc>https://${host}/logout</loc>
      </url>
      <url>
-       <loc>https://www.rankguess.com/changelog</loc>
+       <loc>https://${host}/changelog</loc>
      </url>
      ${games
        .map(({ slug }) => {
