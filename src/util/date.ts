@@ -16,12 +16,7 @@ export const getTodaysDateAndTomorrowsDate = () => {
 
   const tomorrowsDateTime = new Date(todaysDateTime.getTime());
   tomorrowsDateTime.setDate(tomorrowsDateTime.getDate() + 1);
-
-  if (timezoneOffset === 300) {
-    tomorrowsDateTime.setUTCHours(5, 0, 0, 0);
-  } else if (timezoneOffset === 240) {
-    tomorrowsDateTime.setUTCHours(4, 0, 0, 0);
-  }
+  tomorrowsDateTime.setUTCHours(timezoneOffset / 60, 0, 0, 0);
 
   const todaysDateTimeString = todaysDateTime.toISOString();
   const tomorrowsDateTimeString = tomorrowsDateTime.toISOString();

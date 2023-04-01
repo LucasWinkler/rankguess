@@ -6,6 +6,7 @@ import BackgroundGrid from '@/components/common/BackgroundGrid';
 import { GameWithRanks } from '@/types/game';
 import { useRouter } from 'next/router';
 import { getTodaysDateAndTomorrowsDate } from '@/util/date';
+import { log } from 'console';
 
 type GamePageWrapperProps = {
   game: GameWithRanks;
@@ -47,7 +48,7 @@ const GamePageWrapper: FC<GamePageWrapperProps> = ({ game, children }) => {
     return () => {
       clearInterval(interval);
     };
-  }, [game.currentClip]);
+  }, [game]);
 
   const handleRefreshData = async () => {
     await fetch(`/api/game/${game.id}?secret=${secret}`)
