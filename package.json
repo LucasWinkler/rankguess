@@ -32,8 +32,6 @@
     "dayjs": "^1.11.7",
     "eslint": "8.34.0",
     "eslint-config-next": "13.1.6",
-    "moment-duration-format": "^2.3.2",
-    "moment-timezone": "^0.5.43",
     "next": "13.1.6",
     "next-auth": "^4.20.1",
     "next-seo": "^5.15.0",

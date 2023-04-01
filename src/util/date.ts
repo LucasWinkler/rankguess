@@ -7,11 +7,9 @@ export const getTodaysDateAndTomorrowsDate = () => {
   dayjs.extend(utc);
   dayjs.extend(timezone);
 
-  dayjs.tz.setDefault('UTC');
-
-  const now = dayjs();
-  const nextDay = now.clone().tz('America/Toronto').add(1, 'day');
-  const expirationTime = nextDay.startOf('day').tz('America/Toronto');
+  const now = dayjs().tz('America/Toronto');
+  const nextDay = now.clone().add(1, 'day');
+  const expirationTime = nextDay.startOf('day');
   const todaysDateTimeString = now.toISOString();
   const tomorrowsDateTimeString = expirationTime.toISOString();
 

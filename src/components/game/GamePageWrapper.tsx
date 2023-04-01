@@ -30,12 +30,12 @@ const GamePageWrapper: FC<GamePageWrapperProps> = ({
   dayjs.extend(timezone);
   dayjs.extend(utc);
   dayjs.extend(duration);
+  dayjs.tz.setDefault('UTC');
 
   useEffect(() => {
     const interval = setInterval(() => {
-      const expiration = dayjs.tz(clipExpirationDate, dayjs.tz.guess());
+      const expiration = dayjs.tz(clipExpirationDate).tz('America/Toronto');
       const duration = dayjs.duration(expiration.diff(dayjs()));
-      console.log(clipExpirationDate);
 
       if (duration.asMilliseconds() <= 0) {
         setCountdown('LOADING NEW CLIP...');
