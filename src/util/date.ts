@@ -1,34 +1,13 @@
+const moment = require('moment-timezone');
+
 export const getTodaysDateAndTomorrowsDate = () => {
-  const now = new Date();
-  const timezoneOffset = now.getTimezoneOffset();
+  moment.tz.setDefault('UTC');
 
-  const todaysDateTime = new Date(
-    Date.UTC(
-      now.getUTCFullYear(),
-      now.getUTCMonth(),
-      now.getUTCDate(),
-      now.getUTCHours(),
-      now.getUTCMinutes(),
-      now.getUTCSeconds(),
-      now.getUTCMilliseconds()
-    )
-  );
-
-  const tomorrowsDateTime = new Date(
-    Date.UTC(
-      now.getUTCFullYear(),
-      now.getUTCMonth(),
-      now.getUTCDate() + 1,
-      0,
-      0,
-      0,
-      0
-    ) +
-      timezoneOffset * 60 * 1000
-  );
-
-  const todaysDateTimeString = todaysDateTime.toISOString();
-  const tomorrowsDateTimeString = tomorrowsDateTime.toISOString();
+  const now = moment();
+  const nextDay = now.clone().tz('America/New_York').add(1, 'day');
+  const expirationTime = nextDay.startOf('day').tz('America/New_York');
+  const todaysDateTimeString = now.toISOString();
+  const tomorrowsDateTimeString = expirationTime.toISOString();
 
   return {
     todaysDateTimeString,

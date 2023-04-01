@@ -14,6 +14,7 @@ import NoClipToday from '@/components/game/NoClipToday';
 import GamePageWrapper from '@/components/game/GamePageWrapper';
 import clamp from '@/util/clamp';
 import HealthBar from '@/components/game/HealthBar';
+import { getTodaysDateAndTomorrowsDate } from '@/util/date';
 
 type LocalGameSave = {
   gameId: string;
@@ -24,10 +25,11 @@ type LocalGameSave = {
 
 type GameProps = {
   game: GameWithRanks;
+  clipExpirationDate: string;
   children?: React.ReactNode;
 };
 
-const Game: FC<GameProps> = ({ game }) => {
+const Game: FC<GameProps> = ({ game, clipExpirationDate }) => {
   const [selectedRank, setSelectedRank] = useState<Rank>();
   const [didWin, setDidWin] = useState<boolean>(false);
   const [localGameSaves, setLocalGameSaves] = useState<LocalGameSave[]>([]);
@@ -247,7 +249,7 @@ const Game: FC<GameProps> = ({ game }) => {
             </div>
           </div>
         )}
-        <GamePageWrapper game={game}>
+        <GamePageWrapper game={game} clipExpirationDate={clipExpirationDate}>
           <ClipPlayer
             gameName={game.name}
             youtubeVideoId={game.currentClip.clip.youtubeUrl}
@@ -287,7 +289,7 @@ const Game: FC<GameProps> = ({ game }) => {
 
   return (
     <>
-      <GamePageWrapper game={game}>
+      <GamePageWrapper game={game} clipExpirationDate={clipExpirationDate}>
         <NoClipToday />
       </GamePageWrapper>
     </>
@@ -330,6 +332,9 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
 
   game = JSON.parse(JSON.stringify(game));
 
+  const { tomorrowsDateTimeString: clipExpirationDate } =
+    getTodaysDateAndTomorrowsDate();
+
   if (!game) {
     return { notFound: true };
   }
@@ -337,6 +342,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   return {
     props: {
       game,
+      clipExpirationDate: clipExpirationDate,
     },
   };
 };

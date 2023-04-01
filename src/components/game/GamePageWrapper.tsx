@@ -5,50 +5,44 @@ import HeadingCircle from '@/components/common/HeadingCircle';
 import BackgroundGrid from '@/components/common/BackgroundGrid';
 import { GameWithRanks } from '@/types/game';
 import { useRouter } from 'next/router';
-import { getTodaysDateAndTomorrowsDate } from '@/util/date';
-import { log } from 'console';
+import moment from 'moment-timezone';
+import 'moment-duration-format';
 
 type GamePageWrapperProps = {
   game: GameWithRanks;
+  clipExpirationDate: string;
   children?: React.ReactNode;
 };
 
-const GamePageWrapper: FC<GamePageWrapperProps> = ({ game, children }) => {
+const GamePageWrapper: FC<GamePageWrapperProps> = ({
+  game,
+  clipExpirationDate,
+  children,
+}) => {
   const [countdown, setCountdown] = useState('LOADING...');
 
   const router = useRouter();
   const secret = process.env.NEXT_PUBLIC_API_SECRET;
   const description = `Guess the rank of user-submitted gameplay from ${game.name} daily with RankGuess. Test your knowledge and track your stats to see how you improve over time. Remember, the game resets at 12 am EST, so submit your guesses before then!`;
 
-  const convertUtcToEst = (dateString: string) => {
-    const utcDate = new Date(dateString);
-
-    return utcDate.toLocaleString('en-US', {
-      timeZone: 'America/New_York',
-    });
-  };
-
   useEffect(() => {
     const interval = setInterval(() => {
-      const { tomorrowsDateTimeString } = getTodaysDateAndTomorrowsDate();
-      const estTime = convertUtcToEst(tomorrowsDateTimeString);
-      const estDate = new Date(estTime);
-      const currentTime = new Date();
-      const diffInMs = estDate.getTime() - currentTime.getTime();
+      const expiration = moment.tz(clipExpirationDate, moment.tz.guess());
+      const duration = moment.duration(expiration.diff(moment()));
 
-      if (diffInMs <= 0) {
+      if (duration.asMilliseconds() <= 0) {
         setCountdown('LOADING NEW CLIP...');
       } else {
-        const hours = Math.floor(diffInMs / (1000 * 60 * 60));
-        const minutes = Math.floor((diffInMs / (1000 * 60)) % 60);
-        setCountdown(`RESETS IN: ${hours}h ${minutes}m`);
+        setCountdown(
+          moment.utc(duration.asMilliseconds()).format('[RESETS IN:] H[h] m[m]')
+        );
       }
     }, 1000);
 
     return () => {
       clearInterval(interval);
     };
-  }, [game]);
+  }, [clipExpirationDate]);
 
   const handleRefreshData = async () => {
     await fetch(`/api/game/${game.id}?secret=${secret}`)
