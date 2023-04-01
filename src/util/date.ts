@@ -14,9 +14,18 @@ export const getTodaysDateAndTomorrowsDate = () => {
     )
   );
 
-  const tomorrowsDateTime = new Date(todaysDateTime.getTime());
-  tomorrowsDateTime.setDate(tomorrowsDateTime.getDate() + 1);
-  tomorrowsDateTime.setUTCHours(timezoneOffset / 60, 0, 0, 0);
+  const tomorrowsDateTime = new Date(
+    Date.UTC(
+      now.getUTCFullYear(),
+      now.getUTCMonth(),
+      now.getUTCDate() + 1,
+      0,
+      0,
+      0,
+      0
+    ) +
+      timezoneOffset * 60 * 1000
+  );
 
   const todaysDateTimeString = todaysDateTime.toISOString();
   const tomorrowsDateTimeString = tomorrowsDateTime.toISOString();
