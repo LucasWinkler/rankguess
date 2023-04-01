@@ -1,11 +1,17 @@
-const moment = require('moment-timezone');
+import dayjs from 'dayjs';
+import 'dayjs/plugin/duration';
+import timezone from 'dayjs/plugin/timezone';
+import utc from 'dayjs/plugin/utc';
 
 export const getTodaysDateAndTomorrowsDate = () => {
-  moment.tz.setDefault('UTC');
+  dayjs.extend(utc);
+  dayjs.extend(timezone);
 
-  const now = moment();
-  const nextDay = now.clone().tz('America/New_York').add(1, 'day');
-  const expirationTime = nextDay.startOf('day').tz('America/New_York');
+  dayjs.tz.setDefault('UTC');
+
+  const now = dayjs();
+  const nextDay = now.clone().tz('America/Toronto').add(1, 'day');
+  const expirationTime = nextDay.startOf('day').tz('America/Toronto');
   const todaysDateTimeString = now.toISOString();
   const tomorrowsDateTimeString = expirationTime.toISOString();
 

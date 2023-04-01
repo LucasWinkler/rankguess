@@ -5,8 +5,10 @@ import HeadingCircle from '@/components/common/HeadingCircle';
 import BackgroundGrid from '@/components/common/BackgroundGrid';
 import { GameWithRanks } from '@/types/game';
 import { useRouter } from 'next/router';
-import moment from 'moment-timezone';
-import 'moment-duration-format';
+import dayjs from 'dayjs';
+import timezone from 'dayjs/plugin/timezone';
+import utc from 'dayjs/plugin/utc';
+import duration from 'dayjs/plugin/duration';
 
 type GamePageWrapperProps = {
   game: GameWithRanks;
@@ -25,16 +27,21 @@ const GamePageWrapper: FC<GamePageWrapperProps> = ({
   const secret = process.env.NEXT_PUBLIC_API_SECRET;
   const description = `Guess the rank of user-submitted gameplay from ${game.name} daily with RankGuess. Test your knowledge and track your stats to see how you improve over time. Remember, the game resets at 12 am EST, so submit your guesses before then!`;
 
+  dayjs.extend(timezone);
+  dayjs.extend(utc);
+  dayjs.extend(duration);
+
   useEffect(() => {
     const interval = setInterval(() => {
-      const expiration = moment.tz(clipExpirationDate, moment.tz.guess());
-      const duration = moment.duration(expiration.diff(moment()));
+      const expiration = dayjs.tz(clipExpirationDate, dayjs.tz.guess());
+      const duration = dayjs.duration(expiration.diff(dayjs()));
+      console.log(clipExpirationDate);
 
       if (duration.asMilliseconds() <= 0) {
         setCountdown('LOADING NEW CLIP...');
       } else {
         setCountdown(
-          moment.utc(duration.asMilliseconds()).format('[RESETS IN:] H[h] m[m]')
+          dayjs.utc(duration.asMilliseconds()).format('[RESETS IN:] H[h] m[m]')
         );
       }
     }, 1000);
