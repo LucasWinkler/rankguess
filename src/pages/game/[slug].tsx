@@ -1,4 +1,4 @@
-import { FC, FormEvent, useEffect, useState } from 'react';
+import { FC, FormEvent, useEffect, useRef, useState } from 'react';
 import { Rank, UserGameSave } from '@prisma/client';
 import prisma from '@/lib/prismadb';
 import { GetServerSideProps } from 'next';
@@ -11,10 +11,17 @@ import { LOCAL_STORAGE_GAME_SAVES_KEY, MAX_GUESS_COUNT } from '@/constants';
 import RankSelection from '@/components/game/RankSelection';
 import ClipPlayer from '@/components/game/ClipPlayer';
 import NoClipToday from '@/components/game/NoClipToday';
-import GamePageWrapper from '@/components/game/GamePageWrapper';
+import Wrapper from '@/components/game/Wrapper';
 import clamp from '@/util/clamp';
 import HealthBar from '@/components/game/HealthBar';
 import { getTodaysDateAndTomorrowsDate } from '@/util/date';
+import {
+  Modal,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+} from '@/components/common/Modal';
+import Link from 'next/link';
 
 type LocalGameSave = {
   gameId: string;
@@ -34,6 +41,8 @@ const Game: FC<GameProps> = ({ game, clipExpirationDate }) => {
   const [localGameSaves, setLocalGameSaves] = useState<LocalGameSave[]>([]);
   const [userGameSaves, setUserGameSaves] = useState<UserGameSave[]>([]);
   const [guessCount, setGuessCount] = useState<number>(0);
+  const [isGameOverModalOpen, setIsGameOverModalOpen] = useState(false);
+  const gameOverModalButtonRef = useRef<any>(null);
   const { data: session, status } = useSession();
 
   const router = useRouter();
@@ -144,6 +153,10 @@ const Game: FC<GameProps> = ({ game, clipExpirationDate }) => {
     setSelectedRank(undefined);
   }, [status, game, session?.user]);
 
+  useEffect(() => {
+    setIsGameOverModalOpen(isGameOver);
+  }, [isGameOver]);
+
   if (router.isFallback) {
     return (
       <>
@@ -248,7 +261,7 @@ const Game: FC<GameProps> = ({ game, clipExpirationDate }) => {
             </div>
           </div>
         )}
-        <GamePageWrapper game={game} clipExpirationDate={clipExpirationDate}>
+        <Wrapper game={game} clipExpirationDate={clipExpirationDate}>
           <ClipPlayer
             gameName={game.name}
             youtubeVideoId={game.currentClip.clip.youtubeUrl}
@@ -281,16 +294,53 @@ const Game: FC<GameProps> = ({ game, clipExpirationDate }) => {
               </button>
             </fieldset>
           </form>
-        </GamePageWrapper>
+          <Modal
+            isOpen={isGameOverModalOpen}
+            setIsOpen={setIsGameOverModalOpen}>
+            <ModalHeader setIsOpen={setIsGameOverModalOpen}>
+              Game Over
+            </ModalHeader>
+            <ModalBody>
+              Lorem ipsum dolor, sit amet consectetur adipisicing elit.
+              Necessitatibus, blanditiis odio. Laudantium accusamus unde esse
+              eveniet quisquam, architecto ea voluptatibus.
+            </ModalBody>
+            <ModalFooter>
+              {status === 'authenticated' ? (
+                <>
+                  Your stats are linked and you&apos;re able to submit your own
+                  clips{' '}
+                  <Link
+                    className='text-blue-300 underline underline-offset-2 transition-colors duration-150 hover:no-underline'
+                    href='/submit'>
+                    here!
+                  </Link>
+                </>
+              ) : (
+                <>
+                  <Link
+                    className='text-blue-300 underline underline-offset-2 transition-colors duration-150 hover:no-underline'
+                    onClick={() => {
+                      setIsGameOverModalOpen(false);
+                    }}
+                    href='/login'>
+                    Login
+                  </Link>{' '}
+                  to link your stats and submit your own clips!
+                </>
+              )}
+            </ModalFooter>
+          </Modal>
+        </Wrapper>
       </>
     );
   }
 
   return (
     <>
-      <GamePageWrapper game={game} clipExpirationDate={clipExpirationDate}>
+      <Wrapper game={game} clipExpirationDate={clipExpirationDate}>
         <NoClipToday />
-      </GamePageWrapper>
+      </Wrapper>
     </>
   );
 };

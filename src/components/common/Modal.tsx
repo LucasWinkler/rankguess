@@ -28,20 +28,6 @@ export const ModalHeader: FC<PropsWithChildren<ModalHeaderProps>> = ({
     }
   };
 
-  useEffect(() => {
-    const handleEscape = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
-        setIsOpen(false);
-      }
-    };
-
-    window.addEventListener('keydown', handleEscape);
-
-    return () => {
-      window.removeEventListener('keydown', handleEscape);
-    };
-  }, [setIsOpen]);
-
   return (
     <div className='flex w-full items-start justify-between border-b border-b-blueish-grey-600/80 pb-2'>
       <h2 className='text-lg font-semibold text-neutral-100 md:text-xl lg:text-2xl'>
@@ -104,6 +90,20 @@ export const Modal: FC<PropsWithChildren<ModalProps>> = ({
     }
   }, [isOpen]);
 
+  useEffect(() => {
+    const handleEscapePressed = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener('keydown', handleEscapePressed);
+
+    return () => {
+      document.removeEventListener('keydown', handleEscapePressed);
+    };
+  }, [setIsOpen]);
+
   if (!isOpen) {
     return null;
   }
@@ -111,7 +111,7 @@ export const Modal: FC<PropsWithChildren<ModalProps>> = ({
   return (
     <div
       onClick={handleClickOutside}
-      className='fixed inset-0 z-[15] h-full w-full'>
+      className='fixed inset-0 z-[15] h-full w-full text-left'>
       <div className='fixed inset-0 h-full w-full bg-neutral-900 opacity-50'></div>
       <div className='fixed inset-0 flex h-full w-full items-center justify-center'>
         <Container>

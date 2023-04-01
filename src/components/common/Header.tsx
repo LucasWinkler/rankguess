@@ -13,20 +13,16 @@ import NavItem from './NavItem';
 import navigationItems from '@/data/navigationItems';
 import { Modal, ModalBody, ModalFooter, ModalHeader } from './Modal';
 import { useSession } from 'next-auth/react';
+import { MAX_GUESS_COUNT } from '@/constants';
 
 const Header: FC = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isInformationModalOpen, setIsInformationModalOpen] = useState(false);
-  const informationModalButtonRef = useRef<any>(null);
   const { status } = useSession();
 
   const handleInformationModalOpened = () => {
     setIsMobileMenuOpen(false);
     setIsInformationModalOpen(true);
-  };
-
-  const handleInformationModalClosed = () => {
-    informationModalButtonRef.current.focus();
   };
 
   // Prevent scrolling when the mobile nav is open and force scrollbar to prevent content shifting
@@ -62,21 +58,6 @@ const Header: FC = () => {
       window.removeEventListener('resize', handleViewportChange);
     };
   }, [setIsMobileMenuOpen]);
-
-  // Close the mobile nav when the escape key is pressed
-  useEffect(() => {
-    const handleEscape = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
-        setIsMobileMenuOpen(false);
-      }
-    };
-
-    window.addEventListener('keydown', handleEscape);
-
-    return () => {
-      window.removeEventListener('keydown', handleEscape);
-    };
-  }, []);
 
   return (
     <header className='z-10 border-b border-b-blueish-grey-600/25'>
@@ -192,7 +173,6 @@ const Header: FC = () => {
             </ul>
             <div className='flex justify-end'>
               <button
-                ref={informationModalButtonRef}
                 onClick={handleInformationModalOpened}
                 className='text-[0.9375rem] text-neutral-200 transition-colors duration-200 hover:text-neutral-100'>
                 <>
@@ -203,21 +183,24 @@ const Header: FC = () => {
               <Modal
                 isOpen={isInformationModalOpen}
                 setIsOpen={setIsInformationModalOpen}>
-                <ModalHeader
-                  setIsOpen={setIsInformationModalOpen}
-                  onClose={handleInformationModalClosed}>
+                <ModalHeader setIsOpen={setIsInformationModalOpen}>
                   How To Play
                 </ModalHeader>
                 <ModalBody>
-                  Guess the rank within 3 guesses.
+                  Guess the rank within {MAX_GUESS_COUNT} guesses.
                   <br />
                   Work in progress...
                 </ModalBody>
                 <ModalFooter>
                   {status === 'authenticated' ? (
                     <>
-                      You&apos;re signed in! Your stats are linked and
-                      you&apos;re able to submit your own clips.
+                      Your stats are linked and you&apos;re able to submit your
+                      own clips{' '}
+                      <Link
+                        className='text-blue-300 underline underline-offset-2 transition-colors duration-150 hover:no-underline'
+                        href='/submit'>
+                        here!
+                      </Link>
                     </>
                   ) : (
                     <>
