@@ -33,7 +33,7 @@ const GamePageWrapper: FC<GamePageWrapperProps> = ({
   dayjs.tz.setDefault('UTC');
 
   useEffect(() => {
-    const interval = setInterval(() => {
+    const setCountdownTime = () => {
       const expiration = dayjs.tz(clipExpirationDate).tz('America/Toronto');
       const duration = dayjs.duration(expiration.diff(dayjs()));
 
@@ -44,6 +44,12 @@ const GamePageWrapper: FC<GamePageWrapperProps> = ({
           dayjs.utc(duration.asMilliseconds()).format('[RESETS IN:] H[h] m[m]')
         );
       }
+    };
+
+    setCountdownTime();
+
+    const interval = setInterval(() => {
+      setCountdownTime();
     }, 1000);
 
     return () => {
