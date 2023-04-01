@@ -22,7 +22,6 @@ type LocalGameSave = {
   guessCount: number;
   didWin: boolean;
 };
-
 type GameProps = {
   game: GameWithRanks;
   clipExpirationDate: string;

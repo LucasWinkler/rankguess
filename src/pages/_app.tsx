@@ -33,6 +33,12 @@ const App = ({ Component, pageProps: { session, ...pageProps } }: AppProps) => {
               content: 'width=device-width, initial-scale=1',
             },
           ]}
+          dangerouslySetAllPagesToNoFollow={
+            process.env.NODE_ENV !== 'production'
+          }
+          dangerouslySetAllPagesToNoIndex={
+            process.env.NODE_ENV !== 'production'
+          }
           {...SEO}
         />
         <Header />
