@@ -44,6 +44,9 @@ const HealthBar: FC<HealthBarProps> = ({ guessesLeft, className }) => {
             style={{ width: `${health}%` }}></div>
         </div>
       </div>
+      <span className='text-sm text-neutral-200 xs:text-base'>
+        {guessesLeft}/{MAX_GUESS_COUNT}
+      </span>
     </div>
   );
 };

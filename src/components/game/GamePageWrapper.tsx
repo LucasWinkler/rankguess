@@ -41,7 +41,9 @@ const GamePageWrapper: FC<GamePageWrapperProps> = ({
         setCountdown('LOADING NEW CLIP...');
       } else {
         setCountdown(
-          dayjs.utc(duration.asMilliseconds()).format('[RESETS IN:] H[h] m[m]')
+          dayjs
+            .utc(duration.asMilliseconds())
+            .format('[RESETS IN:] H[h] m[m] s[s]')
         );
       }
     };
@@ -97,7 +99,7 @@ const GamePageWrapper: FC<GamePageWrapperProps> = ({
           <BackgroundGrid />
           <div className='relative'>
             <h1 className='page-heading-1'>{game.name}</h1>
-            <h2 className='page-heading-2 lg:mt-2'>{countdown}</h2>
+            <h2 className='page-heading-2 mt-1 sm:mt-2'>{countdown}</h2>
             {process.env.NODE_ENV === 'development' && (
               <button
                 onClick={handleRefreshData}
