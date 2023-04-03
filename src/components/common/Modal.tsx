@@ -1,17 +1,28 @@
 import { FC, PropsWithChildren, useEffect } from 'react';
 import Container from './Container';
 import Close from './icons/Close';
+import clsx from 'clsx';
 
 type ModalProps = {
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
   canClickOverlayToClose?: boolean;
+  className?: string;
 };
 
 type ModalHeaderProps = {
   onClose?: () => void;
   setIsOpen: (isOpen: boolean) => void;
   hasCloseButton?: boolean;
+  className?: string;
+};
+
+type ModalBodyProps = {
+  className?: string;
+};
+
+type ModalFooterProps = {
+  className?: string;
 };
 
 export const ModalHeader: FC<PropsWithChildren<ModalHeaderProps>> = ({
@@ -19,6 +30,7 @@ export const ModalHeader: FC<PropsWithChildren<ModalHeaderProps>> = ({
   onClose,
   setIsOpen,
   hasCloseButton = true,
+  className,
 }) => {
   const handleClose = () => {
     setIsOpen(false);
@@ -29,7 +41,11 @@ export const ModalHeader: FC<PropsWithChildren<ModalHeaderProps>> = ({
   };
 
   return (
-    <div className='flex w-full items-start justify-between border-b border-b-blueish-grey-600/80 pb-2'>
+    <div
+      className={clsx(
+        'w-full border-b border-b-blueish-grey-600/80 pb-2',
+        className
+      )}>
       <h2 className='text-lg font-semibold text-neutral-100 md:text-xl lg:text-2xl'>
         {children}
       </h2>
@@ -45,17 +61,31 @@ export const ModalHeader: FC<PropsWithChildren<ModalHeaderProps>> = ({
   );
 };
 
-export const ModalBody: FC<PropsWithChildren> = ({ children }) => {
+export const ModalBody: FC<PropsWithChildren<ModalBodyProps>> = ({
+  children,
+  className,
+}) => {
   return (
-    <div className='slim-scrollbar w-full overflow-y-auto py-3 text-neutral-200'>
+    <div
+      className={clsx(
+        'slim-scrollbar w-full overflow-y-auto py-3 text-neutral-200',
+        className
+      )}>
       {children}
     </div>
   );
 };
 
-export const ModalFooter: FC<PropsWithChildren> = ({ children }) => {
+export const ModalFooter: FC<PropsWithChildren<ModalFooterProps>> = ({
+  children,
+  className,
+}) => {
   return (
-    <div className='w-full border-t border-t-blueish-grey-600/80 pt-3 text-sm text-neutral-200 md:text-base'>
+    <div
+      className={clsx(
+        'w-full border-t border-t-blueish-grey-600/80 pt-3 text-sm text-neutral-200 md:text-base',
+        className
+      )}>
       {children}
     </div>
   );
@@ -66,6 +96,7 @@ export const Modal: FC<PropsWithChildren<ModalProps>> = ({
   isOpen,
   setIsOpen,
   canClickOverlayToClose = true,
+  className,
 }) => {
   const handleClickOutside = () => {
     if (canClickOverlayToClose) {
@@ -111,7 +142,7 @@ export const Modal: FC<PropsWithChildren<ModalProps>> = ({
   return (
     <div
       onClick={handleClickOutside}
-      className='fixed inset-0 z-[15] h-full w-full text-left'>
+      className={clsx('fixed inset-0 z-[15] h-full w-full', className)}>
       <div className='fixed inset-0 h-full w-full bg-neutral-900 opacity-50'></div>
       <div className='fixed inset-0 flex h-full w-full items-center justify-center'>
         <Container>

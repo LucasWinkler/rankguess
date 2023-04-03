@@ -22,6 +22,8 @@ import {
   ModalFooter,
 } from '@/components/common/Modal';
 import Link from 'next/link';
+import Image from 'next/image';
+import CountdownTimer from '@/components/game/CountdownTimer';
 
 type LocalGameSave = {
   gameId: string;
@@ -42,7 +44,6 @@ const Game: FC<GameProps> = ({ game, clipExpirationDate }) => {
   const [userGameSaves, setUserGameSaves] = useState<UserGameSave[]>([]);
   const [guessCount, setGuessCount] = useState<number>(0);
   const [isGameOverModalOpen, setIsGameOverModalOpen] = useState(false);
-  const gameOverModalButtonRef = useRef<any>(null);
   const { data: session, status } = useSession();
 
   const router = useRouter();
@@ -297,38 +298,59 @@ const Game: FC<GameProps> = ({ game, clipExpirationDate }) => {
           <Modal
             isOpen={isGameOverModalOpen}
             setIsOpen={setIsGameOverModalOpen}>
-            <ModalHeader setIsOpen={setIsGameOverModalOpen}>
-              Game Over
+            <ModalHeader className='' setIsOpen={setIsGameOverModalOpen}>
+              <span className=''>Today&apos;s Results</span>
             </ModalHeader>
-            <ModalBody>
-              Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-              Necessitatibus, blanditiis odio. Laudantium accusamus unde esse
-              eveniet quisquam, architecto ea voluptatibus.
+            <ModalBody className=''>
+              <div className='flex flex-col items-center gap-1'>
+                <span className=''>Actual Rank</span>
+                <div className='relative h-20 w-20 overflow-hidden rounded-xl border border-blueish-grey-600/80 bg-blueish-grey-600/50'>
+                  <Image
+                    className='flex h-full w-full object-contain p-2'
+                    src={game.currentClip.clip.rank.imagePath}
+                    alt={game.currentClip.clip.rank.name}
+                    fill
+                    priority
+                    quality={65}
+                  />
+                </div>
+              </div>
             </ModalBody>
-            <ModalFooter>
-              {status === 'authenticated' ? (
-                <>
-                  Your stats are linked and you&apos;re able to submit your own
-                  clips{' '}
-                  <Link
-                    className='text-blue-300 underline underline-offset-2 transition-colors duration-150 hover:no-underline'
-                    href='/submit'>
-                    here!
-                  </Link>
-                </>
-              ) : (
-                <>
-                  <Link
-                    className='text-blue-300 underline underline-offset-2 transition-colors duration-150 hover:no-underline'
-                    onClick={() => {
-                      setIsGameOverModalOpen(false);
-                    }}
-                    href='/login'>
-                    Login
-                  </Link>{' '}
-                  to link your stats and submit your own clips!
-                </>
-              )}
+            <ModalFooter className=''>
+              <div>
+                {status === 'authenticated' ? (
+                  <>
+                    Your stats are linked and you&apos;re able to submit your
+                    own clips{' '}
+                    <Link
+                      className='text-blue-300 underline underline-offset-2 transition-colors duration-150 hover:no-underline'
+                      href='/submit'>
+                      here!
+                    </Link>
+                  </>
+                ) : (
+                  <>
+                    <Link
+                      className='text-blue-300 underline underline-offset-2 transition-colors duration-150 hover:no-underline'
+                      onClick={() => {
+                        setIsGameOverModalOpen(false);
+                      }}
+                      href='/login'>
+                      Login
+                    </Link>{' '}
+                    to link your stats and submit your own clips!
+                  </>
+                )}
+              </div>
+              <div className='mt-2 text-base'>
+                Come back in:{' '}
+                <CountdownTimer
+                  className=''
+                  game={game}
+                  clipExpirationDate={clipExpirationDate}
+                />
+                !
+              </div>
             </ModalFooter>
           </Modal>
         </Wrapper>

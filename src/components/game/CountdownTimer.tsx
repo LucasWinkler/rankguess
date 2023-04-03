@@ -5,13 +5,19 @@ import dayjs from 'dayjs';
 import timezone from 'dayjs/plugin/timezone';
 import utc from 'dayjs/plugin/utc';
 import duration from 'dayjs/plugin/duration';
+import clsx from 'clsx';
 
 type CountdownTimer = {
   game: GameWithRanks;
   clipExpirationDate: string;
+  className?: string;
 };
 
-const CountdownTimer: FC<CountdownTimer> = ({ game, clipExpirationDate }) => {
+const CountdownTimer: FC<CountdownTimer> = ({
+  game,
+  clipExpirationDate,
+  className,
+}) => {
   const [countdown, setCountdown] = useState('LOADING...');
   const router = useRouter();
   const secret = process.env.NEXT_PUBLIC_API_SECRET;
@@ -53,9 +59,7 @@ const CountdownTimer: FC<CountdownTimer> = ({ game, clipExpirationDate }) => {
         handleRefreshData();
       } else {
         setCountdown(
-          dayjs
-            .utc(duration.asMilliseconds())
-            .format('[RESETS IN:] H[h] m[m] s[s]')
+          dayjs.utc(duration.asMilliseconds()).format('H[h] m[m] s[s]')
         );
       }
     };
@@ -71,7 +75,7 @@ const CountdownTimer: FC<CountdownTimer> = ({ game, clipExpirationDate }) => {
     };
   }, [clipExpirationDate, game, router, secret]);
 
-  return <>{countdown}</>;
+  return <span className={clsx(className, '')}>{countdown}</span>;
 };
 
 export default CountdownTimer;

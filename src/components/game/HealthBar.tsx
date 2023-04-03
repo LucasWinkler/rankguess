@@ -14,15 +14,18 @@ const HealthBar: FC<HealthBarProps> = ({ guessesLeft, className }) => {
   const healthTicks = Array.from({ length: MAX_GUESS_COUNT - 1 }, (_, i) => {
     const tickPosition = (100 / MAX_GUESS_COUNT) * (i + 1);
 
-    // Ensures we don't draw a tick at the end of the bar
-    if (health <= tickPosition) {
-      return;
-    }
+    // // Ensures we don't draw a tick at the end of the bar
+    // if (health <= tickPosition) {
+    //   return;
+    // }
 
     return (
       <div
         key={i}
-        className='absolute top-[50%] bottom-[50%] h-[90%] w-[1px] bg-blueish-grey-700/50 [transform:translate(-50%,-50%)]'
+        className={clsx(
+          'absolute top-[50%] bottom-[50%] h-[90%] w-[1px] bg-blueish-grey-700/50 transition-opacity duration-[600] ease-in-out [transform:translate(-50%,-50%)]',
+          health <= tickPosition && 'opacity-0'
+        )}
         style={{ left: `${tickPosition}%` }}></div>
     );
   });
@@ -40,7 +43,7 @@ const HealthBar: FC<HealthBarProps> = ({ guessesLeft, className }) => {
         <div className='relative mx-2 h-[60%] w-full overflow-hidden'>
           {healthTicks}
           <div
-            className='h-full w-full rounded-[5px] border border-green-400/50 bg-green-400/50'
+            className='h-full w-full rounded-[5px] border border-green-400/50 bg-green-400/50 transition-all duration-500 ease-in-out'
             style={{ width: `${health}%` }}></div>
         </div>
       </div>

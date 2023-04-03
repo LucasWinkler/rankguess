@@ -34,6 +34,7 @@ const Wrapper: FC<WrapperProps> = ({ game, clipExpirationDate, children }) => {
           <div className='relative'>
             <h1 className='page-heading-1'>{game.name}</h1>
             <h2 className='page-heading-2 mt-1 sm:mt-2'>
+              <span className='uppercase'>Resets in: </span>
               <CountdownTimer
                 game={game}
                 clipExpirationDate={clipExpirationDate}
