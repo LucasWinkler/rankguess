@@ -2,7 +2,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from './auth/[...nextauth]';
 import prisma from '@/lib/prismadb';
-import { Guess } from '@/types/game';
+import { Guess, UserGameSaveWithGuesses } from '@/types/game';
 
 type PostParams = {
   userId: string;
@@ -28,6 +28,9 @@ export default async function handler(
       .findMany({
         where: {
           userId: session.user.id,
+        },
+        include: {
+          guesses: true,
         },
       })
       .catch(error => {

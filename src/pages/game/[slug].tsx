@@ -1,10 +1,10 @@
 import { FC, FormEvent, useEffect, useRef, useState } from 'react';
-import { Rank, UserGameSave } from '@prisma/client';
+import { Guess, Rank, UserGameSave } from '@prisma/client';
 import prisma from '@/lib/prismadb';
 import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
 import Loading from '@/components/common/Loading';
-import { GameWithRanks } from '@/types/game';
+import { GameWithRanks, UserGameSaveWithGuesses } from '@/types/game';
 import { useSession } from 'next-auth/react';
 import clsx from 'clsx';
 import { LOCAL_STORAGE_GAME_SAVES_KEY, MAX_GUESS_COUNT } from '@/constants';
@@ -49,7 +49,7 @@ const Game: FC<GameProps> = ({ game, clipExpirationDate }) => {
   const [userGameSaves, setUserGameSaves] = useState<UserGameSave[]>([]);
   const [guessCount, setGuessCount] = useState<number>(0);
   const [isGameOverModalOpen, setIsGameOverModalOpen] = useState(false);
-  const [selectedRanks, setSelectedRanks] = useState<Rank[]>([]);
+  const [ranksGuessed, setRanksGuessed] = useState<Guess[]>([]);
   const { data: session, status } = useSession();
 
   const router = useRouter();
@@ -79,44 +79,47 @@ const Game: FC<GameProps> = ({ game, clipExpirationDate }) => {
     if (status === 'authenticated' && session.user) {
       fetch('/api/user-game-save')
         .then(res => res.json())
-        .then(({ userGameSaves }: { userGameSaves: UserGameSave[] }) => {
-          if (!userGameSaves) {
-            return;
+        .then(
+          ({ userGameSaves }: { userGameSaves: UserGameSaveWithGuesses[] }) => {
+            if (!userGameSaves) {
+              return;
+            }
+
+            const userGameSave = userGameSaves.find(
+              (gameSave: UserGameSaveWithGuesses) => gameSave.gameId === game.id
+            );
+
+            if (
+              userGameSave &&
+              userGameSave.clipId !== game.currentClip?.clipId
+            ) {
+              const newGameSaves = userGameSaves.map(gameSave => {
+                if (gameSave.gameId === game.id && game.currentClip) {
+                  return {
+                    ...gameSave,
+                    clipId: game.currentClip.clipId,
+                    guessCount: 0,
+                    didWin: false,
+                  };
+                }
+                return gameSave;
+              });
+
+              setGuessCount(0);
+              setUserGameSaves(newGameSaves);
+              setDidWin(false);
+            } else if (userGameSave) {
+              setGuessCount(userGameSave.guessCount);
+              setUserGameSaves(userGameSaves);
+              setDidWin(userGameSave.didWin);
+              setRanksGuessed(userGameSave.guesses);
+            } else {
+              setGuessCount(0);
+              setUserGameSaves(userGameSaves);
+              setDidWin(false);
+            }
           }
-
-          const userGameSave = userGameSaves.find(
-            (gameSave: UserGameSave) => gameSave.gameId === game.id
-          );
-
-          if (
-            userGameSave &&
-            userGameSave.clipId !== game.currentClip?.clipId
-          ) {
-            const newGameSaves = userGameSaves.map(gameSave => {
-              if (gameSave.gameId === game.id && game.currentClip) {
-                return {
-                  ...gameSave,
-                  clipId: game.currentClip.clipId,
-                  guessCount: 0,
-                  didWin: false,
-                };
-              }
-              return gameSave;
-            });
-
-            setGuessCount(0);
-            setUserGameSaves(newGameSaves);
-            setDidWin(false);
-          } else if (userGameSave) {
-            setGuessCount(userGameSave.guessCount);
-            setUserGameSaves(userGameSaves);
-            setDidWin(userGameSave.didWin);
-          } else {
-            setGuessCount(0);
-            setUserGameSaves(userGameSaves);
-            setDidWin(false);
-          }
-        })
+        )
         .catch(error => {
           console.error('Error while fetching user game saves:', error);
         });
@@ -249,7 +252,7 @@ const Game: FC<GameProps> = ({ game, clipExpirationDate }) => {
       setDidWin(true);
     }
 
-    setSelectedRanks([...selectedRanks, selectedRank]);
+    // setRanksGuessed([...ranksGuessed, selectedRank]);
     setSelectedRank(undefined);
   };
 
@@ -277,9 +280,9 @@ const Game: FC<GameProps> = ({ game, clipExpirationDate }) => {
               Guesses: {guessCount}/{MAX_GUESS_COUNT} ({guessesLeft} left)
             </div>
             <div>
-              {selectedRanks.map((rank, index) => (
+              {ranksGuessed.map((rank, index) => (
                 <div key={index}>
-                  Guess {index + 1}: {rank.name}
+                  Guess {index + 1}: {rank.rankName}
                 </div>
               ))}
             </div>

@@ -104,13 +104,14 @@ model CurrentClip {
 }
 
 model Rank {
-  id        String @id @default(cuid())
+  id        String  @id @default(cuid())
   name      String
   imagePath String
   gameId    String
-  order     Int    @default(0)
-  game      Game   @relation(fields: [gameId], references: [id])
+  order     Int     @default(0)
+  game      Game    @relation(fields: [gameId], references: [id])
   clips     Clip[]
+  guess     Guess[]
 
   @@index([gameId])
 }
@@ -149,9 +150,10 @@ model UserGameSave {
 model Guess {
   id             String        @id @default(cuid())
   rankId         String
-  rankName       String
-  userGameSave   UserGameSave? @relation(fields: [userGameSaveId], references: [id])
   userGameSaveId String?
+  rank           Rank          @relation(fields: [rankId], references: [id])
+  userGameSave   UserGameSave? @relation(fields: [userGameSaveId], references: [id])
 
   @@index([userGameSaveId])
+  @@index([rankId])
 }

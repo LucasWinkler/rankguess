@@ -1,6 +1,6 @@
 import { Prisma } from '@prisma/client';
 
-const gameInclude = Prisma.validator<Prisma.GameInclude>()({
+const gameWithRanksInclude = Prisma.validator<Prisma.GameInclude>()({
   ranks: true,
   currentClip: {
     include: {
@@ -14,11 +14,15 @@ const gameInclude = Prisma.validator<Prisma.GameInclude>()({
   },
 });
 
+const userGameSaveWithGuessesInclude =
+  Prisma.validator<Prisma.UserGameSaveInclude>()({
+    guesses: true,
+  });
+
 export type GameWithRanks = Prisma.GameGetPayload<{
-  include: typeof gameInclude;
+  include: typeof gameWithRanksInclude;
 }>;
 
-export type Guess = {
-  rankId: string;
-  rankName: string;
-};
+export type UserGameSaveWithGuesses = Prisma.UserGameSaveGetPayload<{
+  include: typeof userGameSaveWithGuessesInclude;
+}>;
