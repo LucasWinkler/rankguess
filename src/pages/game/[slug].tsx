@@ -30,7 +30,12 @@ type LocalGameSave = {
   clipId: string;
   guessCount: number;
   didWin: boolean;
+  guesses?: {
+    rankId: string;
+    rankName: string;
+  }[];
 };
+
 type GameProps = {
   game: GameWithRanks;
   clipExpirationDate: string;
@@ -44,6 +49,7 @@ const Game: FC<GameProps> = ({ game, clipExpirationDate }) => {
   const [userGameSaves, setUserGameSaves] = useState<UserGameSave[]>([]);
   const [guessCount, setGuessCount] = useState<number>(0);
   const [isGameOverModalOpen, setIsGameOverModalOpen] = useState(false);
+  const [selectedRanks, setSelectedRanks] = useState<Rank[]>([]);
   const { data: session, status } = useSession();
 
   const router = useRouter();
@@ -207,6 +213,11 @@ const Game: FC<GameProps> = ({ game, clipExpirationDate }) => {
           gameSave => gameSave.gameId === game.id
         );
 
+        const newGuess = {
+          rankId: selectedRank.id,
+          rankName: selectedRank.name,
+        };
+
         if (currentGameIndex === -1 && game.currentClip) {
           return [
             ...prevLocalGameSave,
@@ -215,6 +226,7 @@ const Game: FC<GameProps> = ({ game, clipExpirationDate }) => {
               clipId: game.currentClip.clipId,
               guessCount: newGuessCount,
               didWin: newDidWin,
+              guesses: [newGuess],
             },
           ];
         } else {
@@ -224,6 +236,10 @@ const Game: FC<GameProps> = ({ game, clipExpirationDate }) => {
             ...newGameSave[currentGameIndex],
             guessCount: newGuessCount,
             didWin: newDidWin,
+            guesses: [
+              ...(newGameSave[currentGameIndex].guesses || []),
+              newGuess,
+            ],
           };
           return newGameSave;
         }
@@ -234,6 +250,7 @@ const Game: FC<GameProps> = ({ game, clipExpirationDate }) => {
       setDidWin(true);
     }
 
+    setSelectedRanks([...selectedRanks, selectedRank]);
     setSelectedRank(undefined);
   };
 
@@ -259,6 +276,13 @@ const Game: FC<GameProps> = ({ game, clipExpirationDate }) => {
             <div>Won: {didWin ? 'true' : 'false'}</div>
             <div>
               Guesses: {guessCount}/{MAX_GUESS_COUNT} ({guessesLeft} left)
+            </div>
+            <div>
+              {selectedRanks.map((rank, index) => (
+                <div key={index}>
+                  Guess {index + 1}: {rank.name}
+                </div>
+              ))}
             </div>
           </div>
         )}
@@ -345,7 +369,6 @@ const Game: FC<GameProps> = ({ game, clipExpirationDate }) => {
               <div className='mt-2 text-base'>
                 Come back in:{' '}
                 <CountdownTimer
-                  className=''
                   game={game}
                   clipExpirationDate={clipExpirationDate}
                 />

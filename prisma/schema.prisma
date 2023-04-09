@@ -137,10 +137,21 @@ model UserGameSave {
   clipId     String
   guessCount Int     @default(0)
   didWin     Boolean @default(false)
+  guesses    Guess[]
   user       User    @relation(fields: [userId], references: [id])
   game       Game    @relation(fields: [gameId], references: [id])
 
   @@unique([userId, gameId])
   @@index([userId])
   @@index([gameId])
+}
+
+model Guess {
+  id             String        @id @default(cuid())
+  rankId         String
+  rankName       String
+  userGameSave   UserGameSave? @relation(fields: [userGameSaveId], references: [id])
+  userGameSaveId String?
+
+  @@index([userGameSaveId])
 }

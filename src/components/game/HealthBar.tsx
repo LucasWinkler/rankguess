@@ -14,11 +14,6 @@ const HealthBar: FC<HealthBarProps> = ({ guessesLeft, className }) => {
   const healthTicks = Array.from({ length: MAX_GUESS_COUNT - 1 }, (_, i) => {
     const tickPosition = (100 / MAX_GUESS_COUNT) * (i + 1);
 
-    // // Ensures we don't draw a tick at the end of the bar
-    // if (health <= tickPosition) {
-    //   return;
-    // }
-
     return (
       <div
         key={i}
