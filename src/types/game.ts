@@ -17,3 +17,8 @@ const gameInclude = Prisma.validator<Prisma.GameInclude>()({
 export type GameWithRanks = Prisma.GameGetPayload<{
   include: typeof gameInclude;
 }>;
+
+export type Guess = {
+  rankId: string;
+  rankName: string;
+};

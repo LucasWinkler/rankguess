@@ -184,12 +184,15 @@ const Game: FC<GameProps> = ({ game, clipExpirationDate }) => {
     const newDidWin = selectedRank.id === game.currentClip.clip.rank.id;
     setDidWin(newDidWin);
 
-    const newGuessCount = clamp(
-      newDidWin ? guessCount : guessCount + 1,
-      0,
-      MAX_GUESS_COUNT
-    );
+    const newGuessCount = clamp(guessCount + 1, 0, MAX_GUESS_COUNT);
     setGuessCount(newGuessCount);
+
+    console.log('newGuessCount', newGuessCount);
+
+    const newGuess = {
+      rankId: selectedRank.id,
+      rankName: selectedRank.name,
+    };
 
     if (session?.user) {
       fetch('/api/user-game-save', {
@@ -201,6 +204,7 @@ const Game: FC<GameProps> = ({ game, clipExpirationDate }) => {
           clipId: game.currentClip.clipId,
           guessCount: newGuessCount,
           didWin: newDidWin,
+          guess: newGuess,
         }),
       })
         .then(res => res.json())
@@ -212,11 +216,6 @@ const Game: FC<GameProps> = ({ game, clipExpirationDate }) => {
         const currentGameIndex = prevLocalGameSave.findIndex(
           gameSave => gameSave.gameId === game.id
         );
-
-        const newGuess = {
-          rankId: selectedRank.id,
-          rankName: selectedRank.name,
-        };
 
         if (currentGameIndex === -1 && game.currentClip) {
           return [

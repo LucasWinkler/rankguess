@@ -2,6 +2,16 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from './auth/[...nextauth]';
 import prisma from '@/lib/prismadb';
+import { Guess } from '@/types/game';
+
+type PostParams = {
+  userId: string;
+  gameId: string;
+  clipId: string;
+  guessCount: number;
+  didWin: boolean;
+  guess: Guess;
+};
 
 export default async function handler(
   req: NextApiRequest,
@@ -31,7 +41,23 @@ export default async function handler(
       userGameSaves,
     });
   } else if (req.method === 'POST') {
-    const { userId, gameId, clipId, guessCount, didWin } = req.body;
+    const { userId, gameId, clipId, guessCount, didWin, guess }: PostParams =
+      req.body;
+
+    if (
+      typeof userId !== 'string' ||
+      typeof gameId !== 'string' ||
+      typeof clipId !== 'string' ||
+      typeof guessCount !== 'number' ||
+      typeof didWin !== 'boolean' ||
+      typeof guess !== 'object' ||
+      !guess.hasOwnProperty('rankId') ||
+      !guess.hasOwnProperty('rankName')
+    ) {
+      return res.status(400).json({
+        message: 'Missing required fields or type is incorrect',
+      });
+    }
 
     const userGameSave = await prisma.userGameSave
       .upsert({
@@ -53,6 +79,9 @@ export default async function handler(
           guessCount,
           didWin,
         },
+        include: {
+          guesses: true,
+        },
       })
       .catch(error => {
         console.error('Error creating user game save:', error);
@@ -60,6 +89,24 @@ export default async function handler(
           message: 'Internal server error while creating user game save',
         });
       });
+
+    if (userGameSave) {
+      const newGuess = await prisma.guess
+        .create({
+          data: {
+            rankId: guess.rankId,
+            rankName: guess.rankName,
+            userGameSave: {
+              connect: {
+                id: userGameSave.id,
+              },
+            },
+          },
+        })
+        .catch(error => {
+          console.log('Error creating guess:', error);
+        });
+    }
 
     return res.status(200).json({
       userGameSave,
