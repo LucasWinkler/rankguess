@@ -2,7 +2,8 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from './auth/[...nextauth]';
 import prisma from '@/lib/prismadb';
-import { Guess, UserGameSaveWithGuesses } from '@/types/game';
+import { GuessParams, UserGameSaveWithGuesses } from '@/types/game';
+import { Rank } from '@prisma/client';
 
 type PostParams = {
   userId: string;
@@ -10,7 +11,7 @@ type PostParams = {
   clipId: string;
   guessCount: number;
   didWin: boolean;
-  guess: Guess;
+  rankGuessed: Rank;
 };
 
 export default async function handler(
@@ -30,7 +31,11 @@ export default async function handler(
           userId: session.user.id,
         },
         include: {
-          guesses: true,
+          guesses: {
+            include: {
+              rank: true,
+            },
+          },
         },
       })
       .catch(error => {
@@ -44,8 +49,14 @@ export default async function handler(
       userGameSaves,
     });
   } else if (req.method === 'POST') {
-    const { userId, gameId, clipId, guessCount, didWin, guess }: PostParams =
-      req.body;
+    const {
+      userId,
+      gameId,
+      clipId,
+      guessCount,
+      didWin,
+      rankGuessed,
+    }: PostParams = req.body;
 
     if (
       typeof userId !== 'string' ||
@@ -53,9 +64,7 @@ export default async function handler(
       typeof clipId !== 'string' ||
       typeof guessCount !== 'number' ||
       typeof didWin !== 'boolean' ||
-      typeof guess !== 'object' ||
-      !guess.hasOwnProperty('rankId') ||
-      !guess.hasOwnProperty('rankName')
+      typeof rankGuessed !== 'object'
     ) {
       return res.status(400).json({
         message: 'Missing required fields or type is incorrect',
@@ -83,7 +92,11 @@ export default async function handler(
           didWin,
         },
         include: {
-          guesses: true,
+          guesses: {
+            include: {
+              rank: true,
+            },
+          },
         },
       })
       .catch(error => {
@@ -94,11 +107,14 @@ export default async function handler(
       });
 
     if (userGameSave) {
-      const newGuess = await prisma.guess
+      await prisma.guess
         .create({
           data: {
-            rankId: guess.rankId,
-            rankName: guess.rankName,
+            rank: {
+              connect: {
+                id: rankGuessed.id,
+              },
+            },
             userGameSave: {
               connect: {
                 id: userGameSave.id,

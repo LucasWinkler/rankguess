@@ -16,8 +16,16 @@ const gameWithRanksInclude = Prisma.validator<Prisma.GameInclude>()({
 
 const userGameSaveWithGuessesInclude =
   Prisma.validator<Prisma.UserGameSaveInclude>()({
-    guesses: true,
+    guesses: {
+      include: {
+        rank: true,
+      },
+    },
   });
+
+const guessWithRankInclude = Prisma.validator<Prisma.GuessInclude>()({
+  rank: true,
+});
 
 export type GameWithRanks = Prisma.GameGetPayload<{
   include: typeof gameWithRanksInclude;
@@ -26,3 +34,18 @@ export type GameWithRanks = Prisma.GameGetPayload<{
 export type UserGameSaveWithGuesses = Prisma.UserGameSaveGetPayload<{
   include: typeof userGameSaveWithGuessesInclude;
 }>;
+
+export type GuessWithRank = Prisma.GuessGetPayload<{
+  include: typeof guessWithRankInclude;
+}>;
+
+export type GuessParams = {
+  rankId: string;
+  rankName: string;
+};
+
+export type Guess = {
+  rankId: string;
+  rankName: string;
+  rankImagePath: string;
+};
