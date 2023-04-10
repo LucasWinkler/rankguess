@@ -344,7 +344,7 @@ const Game: FC<GameProps> = ({ game, clipExpirationDate }) => {
             <div>
               {ranksGuessed.map((guess, index) => (
                 <div key={index}>
-                  Guess {index + 1}: {guess.rankId}
+                  Guess {index + 1}: {guess.rankName}
                 </div>
               ))}
             </div>
@@ -389,9 +389,13 @@ const Game: FC<GameProps> = ({ game, clipExpirationDate }) => {
             <ModalHeader className='' setIsOpen={setIsGameOverModalOpen}>
               <span className=''>Today&apos;s Results</span>
             </ModalHeader>
-            <ModalBody className=''>
+            <ModalBody className='flex flex-col gap-3'>
               <div className='flex flex-col items-center gap-1'>
-                <span className=''>Actual Rank</span>
+                <span className=''>
+                  {didWin
+                    ? 'You guessed it right! The rank was:'
+                    : 'You lost! The rank was:'}
+                </span>
                 <div className='relative h-20 w-20 overflow-hidden rounded-xl border border-blueish-grey-600/80 bg-blueish-grey-600/50'>
                   <Image
                     className='flex h-full w-full object-contain p-2'
@@ -401,6 +405,25 @@ const Game: FC<GameProps> = ({ game, clipExpirationDate }) => {
                     priority
                     quality={65}
                   />
+                </div>
+              </div>
+              <div className='flex flex-col items-center gap-1'>
+                <span className=''>Your Guesses</span>
+                <div className='flex gap-2'>
+                  {ranksGuessed.map((guess, index) => (
+                    <div
+                      key={index}
+                      className='relative h-20 w-20 overflow-hidden rounded-xl border border-blueish-grey-600/80 bg-blueish-grey-600/50'>
+                      <Image
+                        className='flex h-full w-full object-contain p-2'
+                        src={guess.rankImagePath}
+                        alt={guess.rankName}
+                        fill
+                        priority
+                        quality={65}
+                      />
+                    </div>
+                  ))}
                 </div>
               </div>
             </ModalBody>
@@ -430,7 +453,7 @@ const Game: FC<GameProps> = ({ game, clipExpirationDate }) => {
                   </>
                 )}
               </div>
-              <div className='mt-2 text-base'>
+              <div className='mt-2 text-sm xs:text-base'>
                 Come back in:{' '}
                 <CountdownTimer
                   game={game}
