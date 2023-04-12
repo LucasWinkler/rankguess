@@ -1,5 +1,5 @@
-import { FC, FormEvent, useEffect, useRef, useState } from 'react';
-import { Rank, UserGameSave } from '@prisma/client';
+import { FC, FormEvent, useEffect, useState } from 'react';
+import { Rank } from '@prisma/client';
 import prisma from '@/lib/prismadb';
 import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
@@ -49,6 +49,7 @@ const Game: FC<GameProps> = ({ game, clipExpirationDate }) => {
   const [guessCount, setGuessCount] = useState<number>(0);
   const [isGameOverModalOpen, setIsGameOverModalOpen] = useState(false);
   const [ranksGuessed, setRanksGuessed] = useState<Guess[]>([]);
+  const [shouldShake, setShouldShake] = useState(false);
   const { data: session, status } = useSession();
 
   const router = useRouter();
@@ -315,6 +316,14 @@ const Game: FC<GameProps> = ({ game, clipExpirationDate }) => {
       setDidWin(true);
     }
 
+    if (selectedRank.id !== game.currentClip?.clip.rank.id) {
+      setShouldShake(true);
+
+      setTimeout(() => {
+        setShouldShake(false);
+      }, 1000);
+    }
+
     setSelectedRank(undefined);
   };
 
@@ -364,7 +373,8 @@ const Game: FC<GameProps> = ({ game, clipExpirationDate }) => {
               disabled={isGameOver}
               className={clsx(
                 'transition-all duration-150 ease-in-out',
-                isGameOver && disabledFormClasses
+                isGameOver && disabledFormClasses,
+                shouldShake && shakeClasses
               )}>
               <RankSelection
                 ranks={ranks}
@@ -425,6 +435,7 @@ const Game: FC<GameProps> = ({ game, clipExpirationDate }) => {
                     </div>
                   ))}
                 </div>
+                <span>Stats are a work in progress.</span>
               </div>
             </ModalBody>
             <ModalFooter className=''>
