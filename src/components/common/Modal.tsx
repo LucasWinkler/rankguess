@@ -149,7 +149,7 @@ export const Modal: FC<PropsWithChildren<ModalProps>> = ({
       <div className='fixed inset-0 h-full w-full bg-neutral-900 opacity-50'></div>
       <div
         className={clsx(
-          'fixed inset-0 flex h-full w-full items-center justify-center transition-transform duration-300',
+          'fixed inset-0 flex h-full w-full items-center justify-center transition-transform duration-300 motion-reduce:transition-none',
           isOpen ? 'translate-y-0' : 'translate-y-full'
         )}>
         <Container>
