@@ -138,16 +138,20 @@ export const Modal: FC<PropsWithChildren<ModalProps>> = ({
     };
   }, [setIsOpen]);
 
-  if (!isOpen) {
-    return null;
-  }
-
   return (
     <div
       onClick={handleClickOutside}
-      className={clsx('fixed inset-0 z-[15] h-full w-full', className)}>
+      className={clsx(
+        'fixed inset-0 z-[15] h-full w-full transition-[opacity_visibility] duration-300',
+        isOpen ? 'visible opacity-100' : 'invisible opacity-0',
+        className
+      )}>
       <div className='fixed inset-0 h-full w-full bg-neutral-900 opacity-50'></div>
-      <div className='fixed inset-0 flex h-full w-full items-center justify-center'>
+      <div
+        className={clsx(
+          'fixed inset-0 flex h-full w-full items-center justify-center transition-transform duration-300',
+          isOpen ? 'translate-y-0' : 'translate-y-full'
+        )}>
         <Container>
           <div
             onClick={e => e.stopPropagation()}
