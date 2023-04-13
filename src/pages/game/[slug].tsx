@@ -204,7 +204,9 @@ const Game: FC<GameProps> = ({ game, clipExpirationDate }) => {
     const newDidWin = selectedRank.id === game.currentClip.clip.rank.id;
     setDidWin(newDidWin);
 
-    const newGuessCount = clamp(guessCount + 1, 0, MAX_GUESS_COUNT);
+    const newGuessCount = newDidWin
+      ? guessCount
+      : clamp(guessCount + 1, 0, MAX_GUESS_COUNT);
     setGuessCount(newGuessCount);
 
     const {
@@ -370,7 +372,7 @@ const Game: FC<GameProps> = ({ game, clipExpirationDate }) => {
           />
           <form onSubmit={handleSubmit}>
             <fieldset
-              disabled={isGameOver}
+              disabled={isGameOver || shouldShake}
               className={clsx(
                 'transition-all duration-150 ease-in-out',
                 isGameOver && disabledFormClasses,
@@ -379,7 +381,7 @@ const Game: FC<GameProps> = ({ game, clipExpirationDate }) => {
               <RankSelection
                 ranks={ranks}
                 selectedRank={selectedRank}
-                isDisabled={isGameOver}
+                isDisabled={isGameOver || shouldShake}
                 onSelectRank={handleSelectRank}
               />
               <button
@@ -394,6 +396,7 @@ const Game: FC<GameProps> = ({ game, clipExpirationDate }) => {
             </fieldset>
           </form>
           <Modal
+            shouldDelayOpen={true}
             isOpen={isGameOverModalOpen}
             setIsOpen={setIsGameOverModalOpen}>
             <ModalHeader className='' setIsOpen={setIsGameOverModalOpen}>
