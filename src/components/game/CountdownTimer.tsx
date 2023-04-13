@@ -37,11 +37,11 @@ const CountdownTimer: FC<CountdownTimer> = ({
               !game.currentClip ||
               game.currentClip.clipId !== newGame.currentClip.clipId
             ) {
-              router.replace(router.asPath);
+              router.reload();
               return;
             }
           } else if (!newGame.currentClip && game.currentClip) {
-            router.replace(router.asPath);
+            router.reload();
             return;
           }
           setTimeout(() => {
