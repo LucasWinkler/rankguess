@@ -7,7 +7,7 @@ type ClipPlayerProps = {
 };
 
 const Wrapper = ({ children }: { children: ReactNode }) => (
-  <div className='relative mx-auto aspect-video overflow-hidden rounded-2xl border-2 border-blueish-grey-600/80 bg-blueish-grey-600/25 lg:max-w-4xl'>
+  <div className='ios-overflow-fix relative mx-auto aspect-video overflow-hidden rounded-2xl border-2 border-blueish-grey-600/80 bg-blueish-grey-600/25 lg:max-w-4xl'>
     {children}
   </div>
 );
