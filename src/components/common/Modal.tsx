@@ -54,7 +54,7 @@ export const ModalHeader: FC<PropsWithChildren<ModalHeaderProps>> = ({
           className='absolute right-[-1px] top-[-1px] flex h-[2.1rem] w-[2.1rem] items-center justify-center rounded-bl-xl rounded-tr-xl border border-blueish-grey-600/80 bg-blueish-grey-600 bg-opacity-[20%] p-2 text-neutral-200 transition-colors duration-150 hover:bg-opacity-[60%] hover:text-neutral-100'
           onClick={handleClose}>
           <span className='sr-only'>Close information modal</span>
-          <Close className='h-full w-full' />
+          <Close className='h-4 w-4' />
         </button>
       )}
     </div>
@@ -155,7 +155,7 @@ export const Modal: FC<PropsWithChildren<ModalProps>> = ({
         <Container>
           <div
             onClick={e => e.stopPropagation()}
-            className='flex max-h-[60vh] min-h-[10rem] w-full flex-col items-start overflow-hidden rounded-xl border border-blueish-grey-600/80 bg-blueish-grey-800 bg-opacity-[70%] p-8 backdrop-blur-[6px] md:max-h-[70vh] md:min-w-[35rem] md:max-w-[35rem] lg:min-w-[40rem] lg:max-w-[45rem]'>
+            className='relative flex max-h-[60vh] min-h-[10rem] w-full flex-col items-start overflow-hidden rounded-xl border border-blueish-grey-600/80 bg-blueish-grey-800 bg-opacity-[70%] p-8 backdrop-blur-[6px] md:max-h-[70vh] md:min-w-[35rem] md:max-w-[35rem] lg:min-w-[40rem] lg:max-w-[45rem]'>
             {children}
           </div>
         </Container>
