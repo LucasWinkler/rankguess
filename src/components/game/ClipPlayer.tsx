@@ -40,7 +40,7 @@ const ClipPlayer: FC<ClipPlayerProps> = ({ gameName, youtubeVideoId }) => {
       )}
       <iframe
         onLoad={handleVideoLoaded}
-        className='absolute inset-0 aspect-video h-full w-full'
+        className='absolute inset-0 aspect-video h-full w-full rounded-2xl'
         src={`https://www.youtube.com/embed/${youtubeVideoId}?rel=0`}
         title={`Today's clip for ${gameName}`}
         allowFullScreen

@@ -56,7 +56,7 @@ const GameCard: FC<GameCardProps> = ({ game }) => {
       </span>
       <Image
         draggable={false}
-        className='absolute z-[1] h-full w-full object-cover object-center blur-[1px] brightness-[50%] transition-[blur_scale] duration-[500ms] ease-in-out will-change-transform group-hover:scale-[1.10] group-hover:blur-0 group-hover:brightness-[60%] group-focus:scale-[1.10] group-focus:blur-0 group-focus:brightness-[60%]'
+        className='absolute z-[1] h-full w-full rounded-xl object-cover object-center blur-[1px] brightness-[50%] transition-[blur_scale] duration-[500ms] ease-in-out will-change-transform group-hover:scale-[1.10] group-hover:blur-0 group-hover:brightness-[60%] group-focus:scale-[1.10] group-focus:blur-0 group-focus:brightness-[60%]'
         {...game.imageProps}
         alt={(game.shortName || game.name) + ' thumbnail'}
         priority

@@ -7,9 +7,8 @@ const NoClipToday: FC = () => {
         <h3 className='pt-8 text-2xl text-neutral-100'>Work In Progress</h3>
         <p className='pt-8'>
           If youre seeing this page, it means the game is still in development!
-          This page will be eventually let you know that the game currently does
-          not have a clip today. It will also suggest you to submit your own
-          clips to help.
+          CS:GO is the only game currently working although it&apos;s only
+          playable on the staging site.
         </p>
         <div className='mx-auto max-w-xl pt-14'>
           <h4 className='text-2xl text-neutral-100'>How you can help</h4>
