@@ -51,10 +51,10 @@ export const ModalHeader: FC<PropsWithChildren<ModalHeaderProps>> = ({
       </h2>
       {hasCloseButton && (
         <button
-          className='absolute right-[-1px] top-[-1px] rounded-bl-xl rounded-tr-xl border border-blueish-grey-600/80 bg-blueish-grey-600 bg-opacity-[20%] p-2 text-neutral-200 transition-colors duration-150 hover:bg-opacity-[60%] hover:text-neutral-100'
+          className='absolute right-[-1px] top-[-1px] flex h-[2.1rem] w-[2.1rem] items-center justify-center rounded-bl-xl rounded-tr-xl border border-blueish-grey-600/80 bg-blueish-grey-600 bg-opacity-[20%] p-2 text-neutral-200 transition-colors duration-150 hover:bg-opacity-[60%] hover:text-neutral-100'
           onClick={handleClose}>
           <span className='sr-only'>Close information modal</span>
-          <Close className='h-4 w-auto' />
+          <Close className='h-full w-full' />
         </button>
       )}
     </div>
