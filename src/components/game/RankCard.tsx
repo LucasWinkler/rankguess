@@ -19,7 +19,7 @@ const RankCard: FC<RankCardProps> = ({
   return (
     <div
       className={clsx(
-        'relative mx-[0.5rem] mb-4 flex flex-col transition-all duration-300 ease-in-out',
+        'group relative mx-[0.5rem] mb-4 flex flex-col transition-all duration-300 ease-in-out',
         selectedRank?.id === rank.id &&
           !isDisabled &&
           'mx-[1.0rem] scale-[1.20]'
@@ -33,8 +33,10 @@ const RankCard: FC<RankCardProps> = ({
         )}>
         <div
           className={clsx(
-            'relative h-16 w-16 overflow-hidden rounded-xl border border-blueish-grey-600/80 bg-blueish-grey-600/25 backdrop-blur-[1px] transition-all duration-300 ease-in-out',
-            selectedRank?.id === rank.id && !isDisabled && 'border-2'
+            'relative h-16 w-16 overflow-hidden rounded-xl border border-blueish-grey-600/80 bg-blueish-grey-600/25 backdrop-blur-[1px] transition-all ease-in-out',
+            selectedRank?.id === rank.id && 'bg-blueish-grey-600/40',
+            !isDisabled &&
+              'group-hover:border-blueish-grey-600/90 group-hover:bg-blueish-grey-600/40'
           )}>
           <Image
             className='flex h-full w-full object-contain p-2'
